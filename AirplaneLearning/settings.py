@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-@*k-c3^l=m6(r^v!ykne@w+t#%-9fp+e6hl)8sooveqj@+hl15
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["airplanelearning.azurewebsites.net"]
+ALLOWED_HOSTS = ["localhost", "airplanelearning.azurewebsites.net"]
 
 LOGIN_REDIRECT_URL = 'profile/'
 LOGOUT_REDIRECT_URL = '/'
@@ -142,7 +142,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
