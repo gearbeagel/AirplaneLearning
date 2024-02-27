@@ -33,7 +33,7 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 ## Project Task Decomposition
 **Week 1 (02/27 - 03/5):**
 1. Implement feature: User Authentication with Google account ✔️
-2. Set up Azure deployment environment
+2. Set up Azure deployment environment ✔️
 3. Create Readme.md file with Getting Started documentation ✔️
 4. Develop architecture diagram for project documentation
 5. Create initial project structure in Github repository ✔️
