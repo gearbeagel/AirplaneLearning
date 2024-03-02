@@ -29,6 +29,9 @@ ALLOWED_HOSTS = ["airplanelearning.azurewebsites.net", "localhost"]
 
 LOGIN_REDIRECT_URL = 'profile/'
 LOGOUT_REDIRECT_URL = '/'
+
+SITE_ID = 1
+
 # Application definition
 
 INSTALLED_APPS = [
