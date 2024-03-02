@@ -30,10 +30,12 @@ The Airplane Learning app follows a client-server architecture. The client-side 
 ### Usage
 To use Airplane Learning, simply register or sign in with your Google account. Then, you can access lessons, quizzes and many different activities to improve your English skills.
 
+*You can see more regarding technologies and functionality [here](https://miro.com/app/board/uXjVNnt7ngw=/)*
+
 ## Project Task Decomposition
 **Week 1 (02/27 - 03/5):**
 1. Implement feature: User Authentication with Google account ✔️
-2. Set up Azure deployment environment
+2. Set up Azure deployment environment ✔️
 3. Create Readme.md file with Getting Started documentation ✔️
-4. Develop architecture diagram for project documentation
+4. Develop architecture diagram for project documentation ✔️
 5. Create initial project structure in Github repository ✔️
