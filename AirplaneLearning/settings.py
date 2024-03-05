@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-@*k-c3^l=m6(r^v!ykne@w+t#%-9fp+e6hl)8sooveqj@+hl15
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["airplanelearningpolypro.azurewebsites.net'", "localhost"]
+ALLOWED_HOSTS = ["airplanelearningpolypro.azurewebsites.net", "localhost"]
 
 LOGIN_REDIRECT_URL = 'profile/'
 LOGOUT_REDIRECT_URL = '/'
