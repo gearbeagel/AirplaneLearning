@@ -1,4 +1,4 @@
-# Airplane Learning: Polyglot Pro
+# Airplane Learning: Polyglot Pro (Project №13)
 
 ## About
 "Airplane Learning" is an app for learning English for starters and advanced learners. Accompanied by its mascot, Leari, one can easily understand the basics of English in a couple of clicks.
