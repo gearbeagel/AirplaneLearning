@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["airplanelearningpolypro.azurewebsites.net", "localhost"]
 
-LOGIN_REDIRECT_URL = 'profile/'
+LOGIN_REDIRECT_URL = 'langs/'
 LOGOUT_REDIRECT_URL = '/'
 
 SITE_ID = 1
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    "modules.apps.ModulesConfig"
 ]
 
 MIDDLEWARE = [

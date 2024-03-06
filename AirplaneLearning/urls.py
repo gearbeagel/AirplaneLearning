@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from registration_handle import views as views_reg
 from profile_page import views as views_prof
+from modules import views as views_mod
 
 urlpatterns = [
     path('', views_reg.home, name='home'),  # Home page
@@ -26,5 +27,6 @@ urlpatterns = [
     path('profile/', views_prof.profile_page, name='profile'),
     path("registration_handle/", include("allauth.urls")),
     path('accounts/google/login/callback/', views_reg.callback_view, name='google_callback'),
+    path('langs/', views_mod.all_possible_classes, name='all_possible_classes')
 
 ]

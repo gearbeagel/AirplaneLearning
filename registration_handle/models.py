@@ -12,20 +12,9 @@ class User(AbstractUser):
         default='google'
     )
 
-    groups = models.ManyToManyField(
-        'auth.Group',
-        verbose_name='groups',
-        blank=True,
-        related_name='custom_user_set',
-        help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
-    )
-    user_permissions = models.ManyToManyField(
-        'auth.Permission',
-        verbose_name='user permissions',
-        blank=True,
-        related_name='custom_user_set',
-        help_text='Specific permissions for this user.',
-    )
+    first_name = models.CharField(max_length=255, null=False, blank=False)
+    last_name = models.CharField(max_length=255, null=False, blank=False)
 
     def __str__(self):
-        return self.username
+        return self.first_name
+
