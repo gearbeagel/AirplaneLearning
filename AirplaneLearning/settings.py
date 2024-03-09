@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 from allauth.account.middleware import AccountMiddleware
 
@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-@*k-c3^l=m6(r^v!ykne@w+t#%-9fp+e6hl)8sooveqj@+hl15
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["airplanelearningpolypro.azurewebsites.net", "localhost"]
+ALLOWED_HOSTS = ["airplanelearningpolypro.azurewebsites.net", "localhost", "127.0.0.1"]
 
 LOGIN_REDIRECT_URL = 'langs/'
 LOGOUT_REDIRECT_URL = '/'
@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    "modules.apps.ModulesConfig"
+    "modules.apps.ModulesConfig",
+    'profile_page.apps.ProfilePageConfig',
 ]
 
 MIDDLEWARE = [
@@ -96,6 +97,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'AirplaneLearning.wsgi.application'
 
