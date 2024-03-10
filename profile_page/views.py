@@ -12,12 +12,13 @@ def profile_page(request):
     username = extract_username_from_email(email)
 
     student, created = LeeriApprentices.objects.get_or_create(username=username)
+    progress = LeeriApprentices.objects.get(progress=student.progress)
 
     student.username = username
     if not created:
         student.save()
 
-    return render(request, 'profile_page.html', {'username': username})
+    return render(request, 'profile_page.html', {'username': username, "student": student})
 
 
 def extract_username_from_email(email):

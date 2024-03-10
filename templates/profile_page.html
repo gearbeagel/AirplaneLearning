@@ -9,5 +9,6 @@
 <body>
 <p>This is your profile. Hello, {{ username }}</p>
 <a href="/langs">Let's start studying, shall we?</a>
+<p>Your current progress in learning: {{ student.progress|default_if_none:"0" }}%</p>
 </body>
 </html>
