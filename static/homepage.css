@@ -1,20 +1,23 @@
 body {
-    background-color: #D9D9D9;
+    background-color: white;
 }
 
-.main {
+section {
     display: flex;
+    position: absolute;
     flex-direction: column;
+    top: 50%;
+    left: 50%;
+    width: auto;
     align-items: center;
-    top: 0 !important;
+    margin: -200px 0 0 -450px;
 }
 
 button {
-    background-color: #733A8E;
-    font-family: "Inria Sans", sans-serif;
+    background-color: #d39c3f;
+    font-family: "Sniglet", sans-serif;
     font-size: 35px;
-    color: #D9D9D9;
-    text-shadow: 2px 4px 4px rgba(0, 0, 0, 0.5);
+    color: white;
     border-radius: 25px;
     height: 100px;
     width: 400px;
@@ -22,13 +25,71 @@ button {
 }
 
 h1 {
-    color: #733A8E;
+    color: #d39c3f;
     font-size: 80px;
-    margin-bottom: -25px;
+    margin-bottom: -10px;
+}
+
+h2 {
+    color: #d39c3f;
+    font-size: 60px;
+    margin-bottom: -10px;
+}
+
+.registration {
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    top: 50%;
+    left: 50%;
+    width: auto;
+    align-items: center;
+    margin: -150px 0 0 -350px;
+    border: solid 1px #d39c3f;
+    border-radius: 25px;
+
 }
 
 .sniglet-extrabold {
   font-family: "Sniglet", system-ui;
   font-weight: 800;
   font-style: normal;
+}
+
+.sniglet {
+    font-family: "Sniglet", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.sniglet-bold {
+  font-family: "Sniglet", system-ui;
+  font-weight: 600;
+  font-style: normal;
+}
+
+
+footer {
+    color: #588662;
+    position: absolute;
+    bottom: 0;
+}
+
+a, a:hover {
+    text-decoration: none !important;
+    color: white;
+    font-size: 25px;
+
+}
+
+img {
+    height: 45%;
+    width: 45%;
+    align-items: flex-start;
+}
+
+.reg-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }

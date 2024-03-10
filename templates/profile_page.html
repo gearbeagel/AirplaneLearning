@@ -1,3 +1,5 @@
+{% load socialaccount %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +7,6 @@
     <title>Profile</title>
 </head>
 <body>
-<p>This is your profile. Hello, {{ profile_info.first_name }}</p>
+<p>This is your profile. Hello, {{ username }}</p>
 </body>
 </html>

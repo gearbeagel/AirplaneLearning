@@ -1,14 +1,14 @@
-from django.contrib.auth import login
+from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
-from django.urls import reverse
+"""from profile_page.models import User"""
 
-# Create your views here.
+
 def home(request):
     return render(request, "homepage.html")
 
 
 def register(request):
-    return render(request, "register.html")
+   return render(request, "register.html")
 
 
 def callback_view(request):

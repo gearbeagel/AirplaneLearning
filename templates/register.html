@@ -2,12 +2,21 @@
 
 <!DOCTYPE html>
 <html lang="en">
+<link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/homepage.css">
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
 </head>
 <body>
-    <h2>Register with Google</h2>
-    <a href="{% provider_login_url 'google' %}"><i class="fab fa-google"></i>Register with Google</a>
+<div class="registration">
+    <h2 class="sniglet-bold reg-button">Register with Google</h2>
+    <button>
+        <img src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo">
+        <a href="{% provider_login_url 'google' %}">Login with Google</a></button>
+</div>
+<footer class="sniglet">
+    <p>© gearbeagel (Victoria Kondratska)</p>
+</footer>
 </body>
 </html>
