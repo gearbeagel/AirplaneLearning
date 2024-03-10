@@ -14,7 +14,8 @@ def profile_page(request):
     student, created = LeeriApprentices.objects.get_or_create(username=username)
 
     student.username = username
-    student.save()
+    if not created:
+        student.save()
 
     return render(request, 'profile_page.html', {'username': username})
 
