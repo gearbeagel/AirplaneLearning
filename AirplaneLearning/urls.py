@@ -14,8 +14,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+
+from AirplaneLearning import settings
 from registration_handle import views as views_reg
 from profile_page import views as views_prof
 from modules import views as views_mod
@@ -27,6 +30,5 @@ urlpatterns = [
     path('profile/', views_prof.profile_page, name='profile'),
     path("registration_handle/", include("allauth.urls")),
     path('accounts/google/login/callback/', views_reg.callback_view, name='google_callback'),
-    path('langs/', views_mod.all_possible_classes, name='all_possible_classes')
-
-]
+    path('langs/', views_mod.all_possible_classes, name='all_possible_classes'),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
