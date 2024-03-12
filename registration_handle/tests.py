@@ -16,6 +16,7 @@ class LeeriApprenticesTestCase(TestCase):
         """
         self.assertEqual(self.user.username, 'testuser')
         self.assertTrue(self.user.check_password('testpassword'))
+        print("User created correctly!")
 
     def test_user_groups(self):
         """
@@ -24,8 +25,9 @@ class LeeriApprenticesTestCase(TestCase):
         group = Group.objects.create(name='Test Group')
 
         self.user.groups.add(group)
-
         self.assertTrue(self.user.groups.filter(name='Test Group').exists())
+
+        print("User can belong to a group!")
 
     def test_user_permissions(self):
         """
@@ -33,7 +35,6 @@ class LeeriApprenticesTestCase(TestCase):
         """
         content_type = ContentType.objects.get_for_model(User)
 
-        # Create a permission
         permission = Permission.objects.create(
             name='Test Permission',
             codename='test_permission',
@@ -43,3 +44,4 @@ class LeeriApprenticesTestCase(TestCase):
         self.user.user_permissions.add(permission)
 
         self.assertTrue(self.user.has_perm('auth.test_permission'))
+        print("User can have permissions!")
