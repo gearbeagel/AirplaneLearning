@@ -31,4 +31,4 @@ urlpatterns = [
     path("registration_handle/", include("allauth.urls")),
     path('accounts/google/login/callback/', views_reg.callback_view, name='google_callback'),
     path('langs/', views_mod.all_possible_classes, name='all_possible_classes'),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS)

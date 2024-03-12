@@ -10,7 +10,7 @@ section {
     left: 50%;
     width: auto;
     align-items: center;
-    margin: -200px 0 0 -450px;
+    margin: -300px 0 0 -600px;
 }
 
 button {
@@ -44,9 +44,10 @@ h2 {
     left: 50%;
     width: auto;
     align-items: center;
-    margin: -150px 0 0 -350px;
+    margin: -150px 0 0 -375px;
     border: solid 1px #d39c3f;
     border-radius: 25px;
+    padding: 25px;
 
 }
 
@@ -83,8 +84,8 @@ a, a:hover {
 }
 
 img {
-    height: 45%;
-    width: 45%;
+    height: 25%;
+    width: 25%;
     align-items: flex-start;
 }
 

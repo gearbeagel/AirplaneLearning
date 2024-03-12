@@ -11,4 +11,4 @@ def register(request):
 
 
 def callback_view(request):
-    return redirect('langs')
+    return redirect('/langs')
