@@ -41,7 +41,7 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 5. Create initial project structure in Github repository ✔️
 
 **Week 2 (03/6 - 03/12):**
-1. Implement feature: Lesson Modules ✔️ (unfortunately, it only works on localhost, since i'm still trying to deal with dbs)
+1. Implement feature: Lesson Modules ✔️
 2. Configure Continuous Integration/Continuous Delivery pipeline ✔️
 3. Write unit tests for User Authentication module ✔️
 4. Create Progress Tracking functionality ✔️
