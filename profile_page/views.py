@@ -13,11 +13,5 @@ def profile_page(request):
         progress = student.progress
     except LeeriApprentices.DoesNotExist:
         redirect('submit_username')
-        student = LeeriApprentices.objects.create(
-            username=username,
-            email=request.user.email,
-            progress=0
-        )
-        progress = student.progress
 
     return render(request, 'profile_page.html', {'username': username, 'progress': progress})

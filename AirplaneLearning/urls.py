@@ -34,4 +34,4 @@ urlpatterns = [
     path('langs/', include("modules.urls")),
     path('create_username/', views_reg.create_username, name='create_username'),
     path('submit_username/', views_reg.submit_username, name='submit_username'),
-] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
