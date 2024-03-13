@@ -2,7 +2,7 @@ body {
     background-color: white;
 }
 
-section {
+section, .main {
     display: flex;
     position: absolute;
     flex-direction: column;
@@ -85,7 +85,6 @@ a, a:hover {
 img {
     height: 25%;
     width: 25%;
-    align-items: flex-start;
 }
 
 .reg-button {
@@ -112,5 +111,11 @@ img {
     width: 400px;
     border-style: none;
     z-index: 1;
-    position: relative; /* Ensure the button's position is relative */
+    position: relative;
+}
+
+section, .row {
+    margin: -150px 0 0 -500px;
+    display: flex;
+    flex-direction: row;
 }

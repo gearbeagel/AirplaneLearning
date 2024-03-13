@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["airplanelearningpolypro.azurewebsites.net", "localhost", "127.0.0.1"]
 
-LOGIN_REDIRECT_URL = 'langs/'
+LOGIN_REDIRECT_URL = '/profile/'
 LOGOUT_REDIRECT_URL = '/'
 
 SITE_ID = 1
