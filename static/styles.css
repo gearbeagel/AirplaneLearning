@@ -32,8 +32,7 @@ h1 {
 
 h2 {
     color: #d39c3f;
-    font-size: 60px;
-    margin-bottom: -10px;
+    font-size: 50px;
 }
 
 .registration {
@@ -44,11 +43,11 @@ h2 {
     left: 50%;
     width: auto;
     align-items: center;
-    margin: -150px 0 0 -375px;
+    margin: -150px 0 0 -300px;
     border: solid 1px #d39c3f;
     border-radius: 25px;
     padding: 25px;
-
+    z-index: 1;
 }
 
 .sniglet-extrabold {
@@ -93,4 +92,25 @@ img {
     display: flex;
     flex-direction: row;
     justify-content: center;
+}
+
+.reg-button img {
+    height: 30%;
+    width: 30%;
+}
+
+.reg-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #d39c3f;
+    font-family: "Sniglet", sans-serif;
+    font-size: 35px;
+    color: white;
+    border-radius: 25px;
+    height: 100px;
+    width: 400px;
+    border-style: none;
+    z-index: 1;
+    position: relative; /* Ensure the button's position is relative */
 }

@@ -1,7 +1,14 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static '/styles.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static "favicon.ico" %}">
     <title>{{ language.name }} Modules</title>
 </head>
 <body>
@@ -9,7 +16,7 @@
     <p>{{ language.description }}</p>
 
     <h2>Modules</h2>
-    <ol>
+    <ol class="modules">
     {% if modules %}
         {% for module in modules %}
             <li><a href="{%  url 'lesson_info' language_id=language.id lesson_id=module.id %}">{{ module.title }}</a></li>
