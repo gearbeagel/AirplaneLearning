@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ["airplanelearningpolypro.azurewebsites.net", "localhost", "127.
 LOGIN_REDIRECT_URL = '/profile/'
 LOGOUT_REDIRECT_URL = '/'
 
-SITE_ID = 2
+SITE_ID = 1
 
 # Application definition
 
