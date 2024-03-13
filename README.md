@@ -41,10 +41,10 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 5. Create initial project structure in Github repository ✔️
 
 **Week 2 (03/6 - 03/12):**
-1. Implement feature: Lesson Modules ✔️
+1. Implement feature: Lesson Modules ✔️ (13.03 edit - remade, now modules fully available)
 2. Configure Continuous Integration/Continuous Delivery pipeline ✔️
-3. Write unit tests for User Authentication module ✔️
-4. Create Progress Tracking functionality ✔️
+3. Write unit tests for User Authentication module ✔️ (13.03 edit - remade, now unittests for usernames available)
+4. Create Progress Tracking functionality ✔️ (13.03 edit - remade, now progress tracking available)
 5. [Design User Profile interface](https://www.canva.com/design/DAF_HE1C2sw/4OTDDl0vtZwXWHbL4O-qHQ/edit?utm_content=DAF_HE1C2sw&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) ✔️
 
 **Week 3 (03/13 - 03/19):**
