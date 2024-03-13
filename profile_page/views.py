@@ -12,6 +12,7 @@ def profile_page(request):
         student = LeeriApprentices.objects.get(username=username)
         progress = student.progress
     except LeeriApprentices.DoesNotExist:
+        redirect('submit_username')
         student = LeeriApprentices.objects.create(
             username=username,
             email=request.user.email,
