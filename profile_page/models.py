@@ -6,6 +6,7 @@ from django.db import models
 
 class LeeriApprentices(AbstractUser):
     username = models.CharField(max_length=50, unique=True)
+    email = models.EmailField(unique=True)
     progress = models.IntegerField(default=0)
 
     groups = models.ManyToManyField(

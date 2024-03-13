@@ -18,6 +18,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+import modules
 from AirplaneLearning import settings
 from registration_handle import views as views_reg
 from profile_page import views as views_prof
@@ -30,5 +31,7 @@ urlpatterns = [
     path('profile/', views_prof.profile_page, name='profile'),
     path("registration_handle/", include("allauth.urls")),
     path('accounts/google/login/callback/', views_reg.callback_view, name='google_callback'),
-    path('langs/', views_mod.all_possible_classes, name='all_possible_classes'),
+    path('langs/', include("modules.urls")),
+    path('create_username/', views_reg.create_username, name='create_username'),
+    path('submit_username/', views_reg.submit_username, name='submit_username'),
 ] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS)

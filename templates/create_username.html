@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Username</title>
+</head>
+<body>
+    <p>Before we move on, create a username!</p>
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+    <form action="/submit_username/" method="post">
+        {% csrf_token %}
+        <label>
+            <input type="text" name="username" placeholder="Enter your username" required>
+        </label>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

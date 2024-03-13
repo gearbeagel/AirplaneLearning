@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ language.name }} Modules</title>
+</head>
+<body>
+    <h1>{{ language.name }} Modules</h1>
+    <p>{{ language.description }}</p>
+
+    <h2>Modules</h2>
+    <ol>
+    {% if modules %}
+        {% for module in modules %}
+            <li><a href="{%  url 'lesson_info' language_id=language.id lesson_id=module.id %}">{{ module.title }}</a></li>
+            <p>{{ module.description }}</p>
+        {% endfor %}
+    {% else %}
+    <p>No modules available yet. Sorry. :(</p>
+    {% endif %}
+    </ol>
+
+    <a href="{% url 'all_possible_classes' %}">Back to All Languages</a>
+</body>
+</html>

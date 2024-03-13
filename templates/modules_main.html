@@ -5,24 +5,15 @@
     <title>All Languages</title>
 </head>
 <body>
-<h1>Choose a language to learn</h1>
-<div class="card">
-  <div class="container">
-    <h4><b>English</b></h4>
-    <p>Would you like a cup of tea?</p>
-  </div>
-</div>
-<div class="card">
-  <div class="container">
-    <h4><b>German</b></h4>
-    <p>[insert german joke]</p>
-  </div>
-</div>
-<div class="card">
-  <div class="container">
-    <h4><b>Spanish</b></h4>
-    <p>[insert spanish joke]</p>
-  </div>
-</div>
+    <h1>Choose a language to learn</h1>
+    
+    {% for language in languages %}
+    <div class="card">
+        <div class="container">
+            <h4><b><a href="{% url 'modules_list' language.id %}">{{ language.name }}</a></b></h4>
+            <p>{{ language.joke }}</p>
+        </div>
+    </div>
+    {% endfor %}
 </body>
 </html>

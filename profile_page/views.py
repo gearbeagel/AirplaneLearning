@@ -1,27 +1,22 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from profile_page.models import LeeriApprentices
 
-from django.contrib.auth.models import User
-from .models import LeeriApprentices
 
-
+@login_required
 def profile_page(request):
-    user = User.objects.get(username=request.user.username)
-    email = user.email
-    username = extract_username_from_email(email)
+    username = request.user.username
+    try:
+        student = LeeriApprentices.objects.get(username=username)
+        progress = student.progress
+    except LeeriApprentices.DoesNotExist:
+        student = LeeriApprentices.objects.create(
+            username=username,
+            email=request.user.email,
+            progress=0
+        )
+        progress = student.progress
 
-    student, created = LeeriApprentices.objects.get_or_create(username=username)
-    progress = LeeriApprentices.objects.get(progress=student.progress)
-
-    student.username = username
-    if not created:
-        student.save()
-
-    return render(request, 'profile_page.html', {'username': username, "student": student})
-
-
-def extract_username_from_email(email):
-    parts = email.split('@')
-    username = parts[0]
-    return username
+    return render(request, 'profile_page.html', {'username': username, 'progress': progress})

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ lesson.title }}</title>
+</head>
+<body>
+    <h1>{{ lesson.title }}</h1>
+    <p>{{ lesson.description }}</p>
+    <div id="lesson-content">
+        {% for section in sections %}
+            <div class="lesson-section" style="display: {% if forloop.first %}block{% else %}none{% endif %};">
+                <h3>{{ section.title }}</h3>
+                <p>{{ section.contents }}</p>
+            </div>
+        {% endfor %}
+        <button class="next-section-btn">Next</button>
+        <input type="hidden" id="modules-list-url" value="{% url 'modules_list' language.id %}">
+    </div>
+
+    <script>
+        const sectionDivs = document.querySelectorAll('.lesson-section');
+        const nextBtn = document.querySelector('.next-section-btn');
+        const modulesListUrl = document.getElementById('modules-list-url').value;
+        let currentIndex = 0;
+
+        nextBtn.addEventListener('click', () => {
+            sectionDivs[currentIndex].style.display = 'none'; // Hide current section
+            currentIndex++; // Move to the next section
+            if (currentIndex < sectionDivs.length) {
+                sectionDivs[currentIndex].style.display = 'block'; // Show next section
+            } else {
+                window.location.href = modulesListUrl;
+            }
+        });
+    </script>
+</body>
+</html>
