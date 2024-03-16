@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
 from .models import Language, Lesson
 
@@ -34,6 +35,6 @@ def complete_lesson(request, lesson_id):
     lesson = Lesson.objects.get(pk=lesson_id)
     lesson.status = 'Completed'
     lesson.save()
-    student = U.objects.get(username=request.user.username)
-    student.progress += 3
-    student.save()
+    student = User.objects.get(username=request.user.username)
+    # student.progress += 3
+    # student.save()
