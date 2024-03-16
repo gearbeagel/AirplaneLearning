@@ -14,14 +14,17 @@ def all_possible_classes(request):
 def modules_list(request, language_id):
     language = get_object_or_404(Language, pk=language_id)
     modules = language.module_set.all()
+    lessons = Lesson.objects.filter(module__language=language)
+
     context = {
         'language': language,
-        'modules': modules
+        'modules': modules,
+        'lessons': lessons,
     }
     return render(request, 'modules_list.html', context)
 
 
-def lessons(request, lesson_id, language_id):
+def lessons_list(request, lesson_id, language_id):
     lesson = get_object_or_404(Lesson, pk=lesson_id)
     language = get_object_or_404(Language, pk=language_id)
     sections = lesson.section_set.all()
@@ -35,6 +38,3 @@ def complete_lesson(request, lesson_id):
     lesson = Lesson.objects.get(pk=lesson_id)
     lesson.status = 'Completed'
     lesson.save()
-    student = User.objects.get(username=request.user.username)
-    # student.progress += 3
-    # student.save()

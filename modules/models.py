@@ -27,6 +27,9 @@ class Module(models.Model):
 class Lesson(models.Model):
     title = models.CharField(max_length=100)
     module = models.ForeignKey(Module, on_delete=models.CASCADE, default="1")
+    lesson_type = models.CharField(max_length=10,
+                                   choices=[('I', 'Informational'), ('Q', 'Quiz')],
+                                   default='I')
     description = models.TextField()
     difficulty_level = models.CharField(
         max_length=20,
@@ -35,16 +38,15 @@ class Lesson(models.Model):
             ('medium', _('Medium')),
             ('hard', _('Hard')),
         ],
-        default='medium'
+        default='easy'
     )
-    STATUS_CHOICES = [
-        ('not_started', _('Not Started')),
-        ('in_progress', _('In Progress')),
-        ('completed', _('Completed')),
-    ]
     status = models.CharField(
         max_length=20,
-        choices=STATUS_CHOICES,
+        choices=[
+            ('not_started', _('Not Started')),
+            ('in_progress', _('In Progress')),
+            ('completed', _('Completed')),
+        ],
         default='not_started',
     )
 

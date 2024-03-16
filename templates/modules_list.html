@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static '/styles.css' %}">
+{#    <link rel="stylesheet" href="{% static '/styles.css' %}">#}
     <link rel="icon" type="image/x-icon" href="{% static "favicon.ico" %}">
     <title>{{ language.name }} Modules</title>
 </head>
@@ -19,8 +19,19 @@
     <ol class="modules">
     {% if modules %}
         {% for module in modules %}
-            <li><a href="{%  url 'lesson_info' language_id=language.id lesson_id=module.id %}">{{ module.title }}</a></li>
+            <p>{{ module.title }}</p>
             <p>{{ module.description }}</p>
+            {% if lessons %}
+                {% for lesson in lessons %}
+                    <ul>
+                        <li>
+                            <p><a href="{%  url 'lesson_info' language_id=language.id lesson_id=module.id %}">{{ lesson.title }}</a> ({{ lesson.status }})</p>
+                            <p>{{ lesson.description }}</p>
+                            <p>Difficulty: {{ lesson.difficulty_level }}</p>
+                        </li>
+                    </ul>
+                {% endfor %}
+            {% endif %}
         {% endfor %}
     {% else %}
     <p>No modules available yet. Sorry. :(</p>
