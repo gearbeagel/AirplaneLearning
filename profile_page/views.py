@@ -1,17 +1,13 @@
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from profile_page.models import LeeriApprentices
+from django.shortcuts import redirect, render
 
+from profile_page.models import LeeriApprentices
 
 @login_required
 def profile_page(request):
-    username = request.user.username
+    email = request.user.email
     try:
-        student = LeeriApprentices.objects.get(username=username)
-        progress = student.progress
+        student = LeeriApprentices.objects.get(email=email)
+        return render(request, 'profile_page.html', {'username': student.username, 'progress': student.progress})
     except LeeriApprentices.DoesNotExist:
-        redirect('submit_username')
-
-    return render(request, 'profile_page.html', {'username': username, 'progress': progress})
+        return redirect('/create_username/')

@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ["airplanelearningpolypro.azurewebsites.net", "localhost", "127.
 LOGIN_REDIRECT_URL = '/profile/'
 LOGOUT_REDIRECT_URL = '/'
 
-SITE_ID = 1
+SITE_ID = 2
 
 # Application definition
 
@@ -66,6 +66,7 @@ MIDDLEWARE = [
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
 AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend'
 ]
 
