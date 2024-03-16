@@ -17,16 +17,20 @@ Including another URLconf
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+
+import modules
 from AirplaneLearning import settings
 from registration_handle import views as views_reg
 from profile_page import views as views_prof
+from modules import views as views_mod
 
 urlpatterns = [
     path('', views_reg.home, name='home'),  # Home page
     path('admin/', admin.site.urls),  # Admin interface
     path('register/', views_reg.register, name='register'),  # Registration page
     path('profile/', views_prof.profile_page, name='profile'),
-    path("", include("allauth.urls")),
+    path("registration_handle/", include("allauth.urls")),
+    path('accounts/google/login/callback/', views_reg.callback_view, name='google_callback'),
     path('langs/', include("modules.urls")),
     path('create_username/', views_reg.create_username, name='create_username'),
     path('submit_username/', views_reg.submit_username, name='submit_username'),
