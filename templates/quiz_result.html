@@ -2,15 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Result</title>
 </head>
 <body>
     <h1>Quiz Result</h1>
-    <p>Correct answers for this quiz:</p>
-    {% for question, correct_answer in correct_answers.items %}
-        <p>{{ question }}</p>
-        <p>Correct answer: {{ correct_answer }}</p>
-        <hr>
-    {% endfor %}
+    <ul>
+        {% for question, correct_answer in quiz_data.items %}
+            <li>
+                <strong>Question:</strong> {{ question.text }}<br>
+                <strong>Correct Answer:</strong> {{ correct_answer.text }}
+            </li>
+        {% endfor %}
+    </ul>
 </body>
 </html>

@@ -1,6 +1,8 @@
+from django import template
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
 from .models import Language, Lesson, Question, Answer, Quiz
+
 
 
 def all_possible_classes(request):
@@ -58,24 +60,22 @@ def complete_quiz(request, quiz_id):
     quiz.save()
 
 
-def quiz_result(request, quiz_id):
-    questions = Question.objects.filter(quiz_id=quiz_id)
-    correct_answers = {}
+from django.shortcuts import render
+from .models import Question
+
+
+def quiz_result(request, language_id, quiz_id):
+    questions = Question.objects.all()
+
+    quiz_data = {}
 
     for question in questions:
-        correct_answer = Answer.objects.filter(question=question, is_correct=True).first()
-        if correct_answer:
-            correct_answers[question] = correct_answer
+        correct_answer = question.answer_set.filter(is_correct='Correct').first()
+        quiz_data[question] = correct_answer
 
-    context = {
-        'questions': questions,
-        'correct_answers': correct_answers,
-    }
+    context = {'quiz_data': quiz_data}
+
     return render(request, 'quiz_result.html', context)
 
-
-def get_value(key, value):
-    dictionary = {key: value}
-    return dictionary[key]
 
 

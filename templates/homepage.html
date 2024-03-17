@@ -1,5 +1,6 @@
-{% load static %}
+<!-- index.html -->
 
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,10 +18,14 @@
         <br>
         <h1 class="sniglet-extrabold">Airplane Learning</h1>
         <br>
-        <a href="/register"><button class="get-started">Get started</button></a>
+        {% if user.is_authenticated %}
+            <a href="/profile"><button class="get-started">Go to Profile</button></a>
+        {% else %}
+            <a href="/register"><button class="get-started">Get started</button></a>
+        {% endif %}
     </section>
-<footer class="sniglet">
-    <p>© gearbeagel (Victoria Kondratska)</p>
-</footer>
+    <footer class="sniglet">
+        <p>© gearbeagel (Victoria Kondratska)</p>
+    </footer>
 </body>
 </html>

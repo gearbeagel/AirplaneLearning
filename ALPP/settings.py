@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "registration_handle.apps.RegistrationHandleConfig",
     "modules.apps.ModulesConfig",
     'profile_page.apps.ProfilePageConfig',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -63,6 +64,14 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Basic': {
+            'type': 'basic'
+        }
+    }
+}
 
 SOCIALACCOUNT_LOGIN_ON_GET = True
 

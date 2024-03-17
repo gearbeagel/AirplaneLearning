@@ -11,8 +11,8 @@ def generate_random_password(length=12):
 
 def get_random_profile_pic():
     profile_pics = [
-        'static/plushik_flower.png',
-        'static/plushik_knife.png'
+        '/static/plushik_flower.png',
+        '/static/plushik_knife.png'
     ]
     return random.choice(profile_pics)
 
