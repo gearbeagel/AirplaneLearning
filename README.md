@@ -50,7 +50,7 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 5. [Design User Profile interface](https://www.canva.com/design/DAF_HE1C2sw/4OTDDl0vtZwXWHbL4O-qHQ/edit?utm_content=DAF_HE1C2sw&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) ✔️
 
 **Week 3 (03/13 - 03/19):**
-1. Implement feature: Interactive Quizzes
+1. Implement feature: Interactive Quizzes ✔️
 2. Optimize application for Chrome PC browsers
 3. Write unit tests for Lesson Modules ✔️
 4. Develop Customized Learning Paths feature
