@@ -51,6 +51,7 @@ class Lesson(models.Model):
     )
 
     sections = models.ManyToManyField('Section', related_name='sections')
+    questions = models.ManyToManyField('Question', related_name='questions')
 
     def __str__(self):
         return self.title
@@ -60,3 +61,14 @@ class Section(models.Model):
     lesson_id = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     contents = models.TextField()
+
+
+class Question(models.Model):
+    lesson_id = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    text = models.CharField(max_length=255)
+
+
+class Answer(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    text = models.CharField(max_length=255)
+    is_correct = models.BooleanField(default=False)

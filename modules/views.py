@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
-from .models import Language, Lesson
+from .models import Language, Lesson, Question, Answer
 
 
 def all_possible_classes(request):
@@ -24,14 +24,24 @@ def modules_list(request, language_id):
     return render(request, 'modules_list.html', context)
 
 
-def lessons_list(request, lesson_id, language_id):
+def lesson_info(request, lesson_id, language_id):
     lesson = get_object_or_404(Lesson, pk=lesson_id)
     language = get_object_or_404(Language, pk=language_id)
     sections = lesson.section_set.all()
     section_count = sections.count()
+    context = {'lesson': lesson, 'language': language, 'sections': sections, 'section_count': section_count}
     complete_lesson(request, lesson_id)
-    return render(request, 'lesson_info.html',
-                  {'lesson': lesson, 'language': language, 'sections': sections, 'section_count': section_count})
+    return render(request, 'lesson_info.html', context)
+
+
+def lesson_quiz(request, lesson_id, language_id):
+    lesson = get_object_or_404(Lesson, pk=lesson_id)
+    language = get_object_or_404(Language, pk=language_id)
+    questions = Question.objects.filter(lesson_id=lesson_id)
+    answers = Answer.objects.filter(question__in=questions)
+    complete_lesson(request, lesson_id)
+    return render(request, 'lesson_quiz.html',
+                  {'lesson': lesson, 'language': language, 'questions': questions, 'answers': answers})
 
 
 def complete_lesson(request, lesson_id):

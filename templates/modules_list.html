@@ -23,12 +23,20 @@
             <p>{{ module.description }}</p>
             {% if lessons %}
                 {% for lesson in lessons %}
+                    {%  if lesson.lesson_type == "I" or "Informational" %}
                     <ul>
                         <li>
                             <p><a href="{%  url 'lesson_info' language_id=language.id lesson_id=module.id %}">{{ lesson.title }}</a> ({{ lesson.status }})</p>
                             <p>{{ lesson.description }}</p>
                             <p>Difficulty: {{ lesson.difficulty_level }}</p>
                         </li>
+                    {% elif lesson.lesson_type == "Q" or "Quiz" %}
+                        <li>
+                            <p><a href="{% url 'lesson_quiz' language_id=language.id lesson_id=module.id %}">{{ lesson.title }}</a> ({{ lesson.status }})</p>
+                            <p>{{ lesson.description }}</p>
+                            <p>Difficulty: {{ lesson.difficulty_level }}</p>
+                        </li>
+                    {% endif  %}
                     </ul>
                 {% endfor %}
             {% endif %}
