@@ -1,17 +1,21 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from modules.models import Lesson
 from profile_page.models import Profile
-from django.db.models import Q
+from modules.models import Lesson, Quiz
 
 
 def calculate_progress(user_profile):
     total_lessons = Lesson.objects.count()
+    total_quizzes = Quiz.objects.count()
 
-    completed_lessons = Lesson.objects.filter(Q(status='completed') | Q(status='Completed')).count()
+    completed_lessons = Lesson.objects.filter(status="Completed").count()
+    completed_quizzes = Quiz.objects.filter(status="Completed").count()
 
-    if total_lessons > 0:
-        progress_percentage = (completed_lessons / total_lessons) * 100
+    total_items = total_lessons + total_quizzes
+    completed_items = completed_lessons + completed_quizzes
+
+    if total_items > 0:
+        progress_percentage = (completed_items / total_items) * 100
     else:
         progress_percentage = 0
 

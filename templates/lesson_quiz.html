@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ lesson.title }}</title>
+    <title>{{ quiz.title }}</title>
 </head>
 <body>
-    <h1>{{ lesson.title }}</h1>
-    <form method="post">
+    <h1>{{ quiz.title }}</h1>
+    <form method="post" action="{% url 'quiz_result' language.id quiz.id %}">
+    {%  if quiz.status == 'Not Started' %}
     {% csrf_token %}
     {% for question in questions %}
         <h3>{{ question.text }}</h3>
@@ -14,9 +15,13 @@
             <label>
                 <input type="radio" name="question_{{ question.id }}" value="{{ answer.id }}">
             </label> {{ answer.text }}<br>
-        {% endfor %}
-    {% endfor %}
     <button type="submit">Submit</button>
     </form>
+        {% endfor %}
+    {% endfor %}
+    {% elif quiz.status == 'Completed' %}
+        <p>You have already passed this quiz. :c</p>
+        <a href="{% url 'all_possible_classes' %}">Back to All Languages</a>
+    {% endif %}
 </body>
 </html>

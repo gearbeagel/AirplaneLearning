@@ -7,7 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
-{#    <link rel="stylesheet" href="{% static '/styles.css' %}">#}
     <link rel="icon" type="image/x-icon" href="{% static "favicon.ico" %}">
     <title>{{ language.name }} Modules</title>
 </head>
@@ -15,34 +14,37 @@
     <h1>{{ language.name }} Modules</h1>
     <p>{{ language.description }}</p>
 
-    <h2>Modules</h2>
+    <h2>Lessons</h2>
     <ol class="modules">
-    {% if modules %}
-        {% for module in modules %}
-            <p>{{ module.title }}</p>
-            <p>{{ module.description }}</p>
-            {% if lessons %}
-                {% for lesson in lessons %}
-                    {%  if lesson.lesson_type == "I" or "Informational" %}
-                    <ul>
-                        <li>
-                            <p><a href="{%  url 'lesson_info' language_id=language.id lesson_id=module.id %}">{{ lesson.title }}</a> ({{ lesson.status }})</p>
-                            <p>{{ lesson.description }}</p>
-                            <p>Difficulty: {{ lesson.difficulty_level }}</p>
-                        </li>
-                    {% elif lesson.lesson_type == "Q" or "Quiz" %}
-                        <li>
-                            <p><a href="{% url 'lesson_quiz' language_id=language.id lesson_id=module.id %}">{{ lesson.title }}</a> ({{ lesson.status }})</p>
-                            <p>{{ lesson.description }}</p>
-                            <p>Difficulty: {{ lesson.difficulty_level }}</p>
-                        </li>
-                    {% endif  %}
-                    </ul>
-                {% endfor %}
-            {% endif %}
+    {% if lessons %}
+        {% for lesson in lessons %}
+            <ul>
+                <li>
+                    <a href="{% url 'lesson_info' language_id=language.id lesson_id=lesson.id %}">{{ lesson.title }}</a>
+                    <p>{{ lesson.description }}</p>
+                    <p>Difficulty: {{ lesson.difficulty_level }}</p>
+                </li>
+            </ul>
         {% endfor %}
     {% else %}
-    <p>No modules available yet. Sorry. :(</p>
+    <p>No lessons available yet. Sorry. :(</p>
+    {% endif %}
+    </ol>
+
+    <h2>Quizzes</h2>
+    <ol class="modules">
+    {% if quizzes %}
+        {% for quiz in quizzes %}
+            <ul>
+                <li>
+                    <a href="{% url 'lesson_quiz' language_id=language.id quiz_id=quiz.id %}">{{ quiz.title }}</a>
+                    <p>{{ quiz.description }}</p>
+                    <p>Difficulty: {{ quiz.difficulty_level }}</p>
+                </li>
+            </ul>
+        {% endfor %}
+    {% else %}
+    <p>No quizzes available yet. Sorry. :(</p>
     {% endif %}
     </ol>
 

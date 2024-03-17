@@ -14,7 +14,7 @@
         {% for section in sections %}
             <div class="lesson-section" style="display: {% if forloop.first %}block{% else %}none{% endif %};">
                 <h3>{{ section.title }}</h3>
-                <p>{{ section.contents }}</p>
+                <p>{{ section.contents | safe }}</p>
             </div>
         {% endfor %}
         <button class="next-section-btn">Next</button>
