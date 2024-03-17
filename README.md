@@ -1,7 +1,7 @@
 # Airplane Learning: Polyglot Pro (Project №13)
 
 ## About
-"Airplane Learning" is an app for learning English for starters and advanced learners. Accompanied by its mascot, Leari, one can easily understand the basics of English in a couple of clicks.
+"Airplane Learning" is an app for learning different languages for starters and advanced learners. Accompanied by its mascot, Leari, one can easily understand the basics of English in a couple of clicks.
 
 You can view the website [here](airplanelearningpolypro.azurewebsites.net)
 
@@ -52,7 +52,7 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 **Week 3 (03/13 - 03/19):**
 1. Implement feature: Interactive Quizzes
 2. Optimize application for Chrome PC browsers
-3. Write unit tests for Lesson Modules
+3. Write unit tests for Lesson Modules ✔️
 4. Develop Customized Learning Paths feature
 5. Integrate Notification System
 
