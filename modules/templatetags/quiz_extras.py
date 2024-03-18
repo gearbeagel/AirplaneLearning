@@ -5,7 +5,7 @@ register = template.Library()
 
 @register.filter
 def get_value(dictionary, key):
-    return str(dictionary.get(key))
+    return dictionary.get(key)
 
 
 register.filter('get_value', get_value)

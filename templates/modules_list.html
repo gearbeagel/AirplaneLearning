@@ -4,6 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
@@ -11,43 +12,38 @@
     <title>{{ language.name }} Modules</title>
 </head>
 <body>
-    <h1>{{ language.name }} Modules</h1>
-    <p>{{ language.description }}</p>
-
-    <h2>Lessons</h2>
-    <ol class="modules">
+    <h1 class="sniglet-extrabold">{{ language.name }} Modules</h1>
+    <h2 class="sniglet-bold">Lessons</h2>
+    <ul>
     {% if lessons %}
         {% for lesson in lessons %}
-            <ul>
-                <li>
-                    <a href="{% url 'lesson_info' language_id=language.id lesson_id=lesson.id %}">{{ lesson.title }}</a>
-                    <p>{{ lesson.description }}</p>
-                    <p>Difficulty: {{ lesson.difficulty_level }}</p>
-                </li>
-            </ul>
+                        <li><a href="{% url 'lesson_info' language_id=language.id lesson_id=lesson.id %}" class="sniglet" 
+                               style="color: #d39c3f">{{ lesson.title }}</a> ({{ lesson.status }})</li>
+                            <p>{{ lesson.description }}</p>
+                            <p>Difficulty: {{ lesson.difficulty_level }}</p>
+                    
         {% endfor %}
     {% else %}
-    <p>No lessons available yet. Sorry. :(</p>
+    <li>No lessons available yet. Sorry. :(</li>
     {% endif %}
-    </ol>
-
-    <h2>Quizzes</h2>
-    <ol class="modules">
+    </ul>
+    <br>
+    <h2 class="sniglet-bold">Quizzes</h2>
+    <ul>
     {% if quizzes %}
         {% for quiz in quizzes %}
-            <ul>
-                <li>
-                    <a href="{% url 'lesson_quiz' language_id=language.id quiz_id=quiz.id %}">{{ quiz.title }}</a>
+            <li><a href="{% url 'lesson_quiz' language_id=language.id quiz_id=quiz.id %}" class="sniglet"
+                   style="color: #d39c3f">{{ quiz.title }}</a> ({{ quiz.status }})</li>
                     <p>{{ quiz.description }}</p>
                     <p>Difficulty: {{ quiz.difficulty_level }}</p>
-                </li>
-            </ul>
         {% endfor %}
     {% else %}
-    <p>No quizzes available yet. Sorry. :(</p>
+    <li>No quizzes available yet. Sorry. :(</li>
     {% endif %}
-    </ol>
-
+    </ul>
     <a href="{% url 'all_possible_classes' %}">Back to All Languages</a>
+<footer class="sniglet">
+    <p>© gearbeagel (Victoria Kondratska)</p>
+</footer>
 </body>
 </html>

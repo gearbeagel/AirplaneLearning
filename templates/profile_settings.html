@@ -1,0 +1,8 @@
+<form method="post">
+    {% csrf_token %}
+    <div>
+        <label for="id_learner_type">Learner Type:</label>
+        {{ form.learner_type }}
+    </div>
+    <button type="submit">Save Changes</button>
+</form>

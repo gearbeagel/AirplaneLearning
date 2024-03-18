@@ -45,7 +45,7 @@ urlpatterns = [
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('', registration_handle.views.home, name='home'),
     path("accounts/", include("allauth.urls")),
-    path('profile/', profile_page.views.profile_page, name='profile'),
+    path('profile/', include("profile_page.urls")),
     path('register/', registration_handle.views.register, name='register'),
     path('langs/', include("modules.urls")),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

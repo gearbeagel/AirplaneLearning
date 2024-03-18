@@ -4,18 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="{% static "favicon.ico" %}">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
     <title>All Languages</title>
 </head>
 <body>
-    <h1>Choose a language to learn</h1>
-    
-    {% for language in languages %}
-    <div class="card">
-        <div class="container">
-            <h4><b><a href="{% url 'modules_list' language.id %}">{{ language.name }}</a></b></h4>
-            <p>{{ language.joke }}</p>
-        </div>
-    </div>
-    {% endfor %}
+    <h1 class="sniglet-extrabold" style="place-items: center">Choose a language to learn</h1>
+            <div class="column">
+            {% for language in languages %}
+                    <button class="modules sniglet"><a href="{% url 'modules_list' language.id %}">{{ language.name }}</a></button>
+                    <p>{{ language.joke }}</p>
+            {% endfor %}
+            </div>
+<footer class="sniglet">
+    <p>© gearbeagel (Victoria Kondratska)</p>
+</footer>
 </body>
 </html>

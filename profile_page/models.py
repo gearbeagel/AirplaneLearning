@@ -21,6 +21,10 @@ class Profile(AbstractUser):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     progress = models.IntegerField(default=0)
     profile_pic_url = models.URLField(default=get_random_profile_pic)
+    learner_type = models.CharField(max_length=30, choices=[("A rookie!", "Beginner"),
+                                                            ("A smart cookie!", "Skilled"),
+                                                            ("A very smart cookie!", "Advanced")],
+                                    default='An avid learner!')
     groups = models.ManyToManyField('auth.Group', related_name='profile_set')
     user_permissions = models.ManyToManyField('auth.Permission', related_name='profile_set')
 

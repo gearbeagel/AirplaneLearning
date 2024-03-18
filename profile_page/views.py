@@ -1,5 +1,7 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+
+from profile_page.forms import ProfileForm
 from profile_page.models import Profile
 from modules.models import Lesson, Quiz
 
@@ -34,3 +36,15 @@ def profile_page(request):
         calculate_progress(student)
 
     return render(request, 'profile_page.html', {'student': student, 'user': request.user})
+
+@login_required()
+def profile_settings(request):
+    profile, created = Profile.objects.get_or_create(user=request.user)
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+    else:
+        form = ProfileForm(instance=profile)
+
+    return render(request, 'profile_settings.html', {'form': form})

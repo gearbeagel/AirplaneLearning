@@ -1,3 +1,4 @@
+{% load quiz_extras %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,22 +8,21 @@
 <body>
     <h1>{{ quiz.title }}</h1>
     <form method="post" action="{% url 'quiz_result' language.id quiz.id %}">
-    {%  if quiz.status == 'Not Started' %}
-    {% csrf_token %}
-    {% for question in questions %}
-        <h3>{{ question.text }}</h3>
-        {% for answer in question.answer_set.all %}
-            <label>
-                <input type="radio" name="question_{{ question.id }}" value="{{ answer.id }}">
-            </label> {{ answer.text }}<br>
-    <button type="submit">Submit</button>
-    </form>
+        {% csrf_token %}
+        {% for question in questions %}
+            <h3>{{ question.text }}</h3>
+            {% for answer in answers_dict|get_value:question %}
+                <label>
+                    <input type="radio" name="question_{{ question.id }}" value="{{ answer.id }}">
+                    {{ answer.text }}
+                </label><br>
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
-    {% elif quiz.status == 'Completed' %}
-        <p>You have already passed this quiz. :c</p>
-        <a href="{% url 'all_possible_classes' %}">Back to All Languages</a>
-        <p>However, you can view the results <a href={% url 'quiz_result' language.id quiz.id %}>here</a>.</p>
-    {% endif %}
+        <button type="submit">Submit</button>
+    </form>
+<a href="{% url 'all_possible_classes' %}">Back to All Languages</a>
+<footer class="sniglet">
+    <p>© gearbeagel (Victoria Kondratska)</p>
+</footer>
 </body>
 </html>

@@ -35,7 +35,7 @@ h2 {
     font-size: 50px;
 }
 
-.registration {
+div, .registration {
     display: flex;
     position: absolute;
     flex-direction: column;
@@ -118,4 +118,19 @@ section, .row {
     margin: -150px 0 0 -500px;
     display: flex;
     flex-direction: row;
+}
+
+section, .row_1 {
+    margin: -150px 0 0 -600px;
+    display: flex;
+    flex-direction: row;
+}
+
+div, .column {
+    /* margin: -350px 0 0 -650px; */
+    flex: 1;
+    top: 50%;
+    left: 50%;
+    position: fixed;
+    flex-direction: column;
 }

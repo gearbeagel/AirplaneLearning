@@ -5,12 +5,25 @@
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="{% static "favicon.ico" %}">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
     <title>Profile</title>
 </head>
 <body>
-<img src="{{ student.profile_pic_url }}" style="height: 15%; width: 15%" alt="{{ user.username }}'s profile picture">
-<p>This is your profile. Hello, {{ user.username }}</p>
-<p>Your progress: {{ student.progress }}%</p>
-<a href="/langs">Let's start studying, shall we?</a>
+<div style="margin: -350px 0 0 -600px">
+    <img src="{{ student.profile_pic_url }}" style="height: 15%; width: 15%" alt="{{ user.username }}'s profile picture">
+    <h2 class="sniglet-extrabold">{{ user.username }}</h2>
+    <h3 class="sniglet-bold">{{ user.first_name }} {{ user.last_name }}</h3>
+    <h3 class="sniglet">{{ student.learner_type }}</h3>
+    <h3 class="sniglet">Your progress: {{ student.progress }}%</h3>
+    <button style="background-color: #588662"><a href="{% url 'profile_settings' %}" class="sniglet">Go to settings</a></button>
+    <button class="modules sniglet"><a href="/langs">Let's start studying, shall we?</a></button>
+</div>
+    
+<footer class="sniglet">
+    <p>© gearbeagel (Victoria Kondratska)</p>
+</footer>
 </body>
 </html>
