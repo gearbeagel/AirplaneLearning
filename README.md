@@ -51,9 +51,9 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 
 **Week 3 (03/13 - 03/19):**
 1. Implement feature: Interactive Quizzes ✔️
-2. Design modules interface
+2. Design modules interface +-
 3. Write unit tests for Lesson Modules ✔️
-4. Develop Customized Learning Paths feature
-5. Develop shuffle questions feature
+4. Develop Customized Learning Paths feature ✔️
+5. Develop shuffle questions feature ✔️
 
 
