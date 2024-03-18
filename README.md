@@ -3,7 +3,7 @@
 ## About
 "Airplane Learning" is an app for learning different languages for starters and advanced learners. Accompanied by its mascot, Leari, one can easily understand the basics of English in a couple of clicks.
 
-You can view the website [here](airplanelearningpolypro.azurewebsites.net)
+You can view the website [here](http://airplanelearningpolypro.azurewebsites.net)
 
 ## Author
 Victoria "Vitya" Kondratska
@@ -51,8 +51,9 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 
 **Week 3 (03/13 - 03/19):**
 1. Implement feature: Interactive Quizzes ✔️
-2. Optimize application for Chrome PC browsers
+2. Design modules interface +-
 3. Write unit tests for Lesson Modules ✔️
-4. Develop Customized Learning Paths feature
-5. Integrate Notification System
+4. Develop Customized Learning Paths feature ✔️
+5. Develop shuffle questions feature ✔️
+
 
