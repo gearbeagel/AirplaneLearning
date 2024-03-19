@@ -3,6 +3,8 @@ import random
 from django import template
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
+from django.views.decorators.csrf import csrf_protect
+
 from .models import Language, Lesson, Question, Answer, Quiz
 
 
@@ -42,7 +44,6 @@ def modules_list(request, language_id):
     return render(request, 'modules_list.html', context)
 
 
-
 def lesson_info(request, lesson_id, language_id):
     lesson = get_object_or_404(Lesson, pk=lesson_id)
     language = get_object_or_404(Language, pk=language_id)
@@ -53,6 +54,7 @@ def lesson_info(request, lesson_id, language_id):
     return render(request, 'lesson_info.html', context)
 
 
+@csrf_protect
 def lesson_quiz(request, quiz_id, language_id):
     quiz = get_object_or_404(Lesson, pk=quiz_id)
     language = get_object_or_404(Language, pk=language_id)

@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_protect
 
 from profile_page.forms import ProfileForm
 from profile_page.models import Profile
@@ -37,7 +38,9 @@ def profile_page(request):
 
     return render(request, 'profile_page.html', {'student': student, 'user': request.user})
 
-@login_required()
+
+@login_required
+@csrf_protect
 def profile_settings(request):
     profile, created = Profile.objects.get_or_create(user=request.user)
     if request.method == 'POST':
