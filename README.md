@@ -24,7 +24,10 @@ Airplane Learning is designed to provide an intuitive platform for beginners to 
 
 ### Features
 - User Authentication with Google account
-- Will add more as I develop the project. :)
+- Lesson Modules
+- Progress Tracking
+- Interactive Quizzes
+- Customized Learning Paths
 
 ### Architecture
 The Airplane Learning app follows a client-server architecture. The client-side is built using HTML, CSS, and Jinja, while the server-side is implemented with Django.
