@@ -1,3 +1,6 @@
+{% load static %}
+
+{% block content %}
 <form method="post">
     {% csrf_token %}
     <div>
@@ -6,3 +9,4 @@
     </div>
     <button type="submit">Save Changes</button>
 </form>
+{% endblock %}

@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["airplanelearningpolypro.azurewebsites.net", "localhost", "127.0.0.1"]
 
+CSRF_TRUSTED_ORIGINS = ['https://airplanelearningpolypro.azurewebsites.net']
+
 LOGIN_REDIRECT_URL = '/profile/'
 LOGOUT_REDIRECT_URL = '/'
 
