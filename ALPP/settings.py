@@ -33,7 +33,7 @@ LOGIN_REDIRECT_URL = '/profile/'
 LOGOUT_REDIRECT_URL = '/'
 
 SITE_ID = 1
-A
+
 # Application definition
 
 INSTALLED_APPS = [
