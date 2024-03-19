@@ -83,6 +83,7 @@ def complete_quiz(request, quiz_id):
 
 def quiz_result(request, language_id, quiz_id):
     questions = Question.objects.all()
+    language = Language.objects.get(pk=language_id)
 
     quiz_data = {}
 
@@ -90,6 +91,6 @@ def quiz_result(request, language_id, quiz_id):
         correct_answer = question.answer_set.filter(is_correct='Correct').first()
         quiz_data[question] = correct_answer
 
-    context = {'quiz_data': quiz_data}
+    context = {'quiz_data': quiz_data, 'language': language}
 
     return render(request, 'quiz_result.html', context)

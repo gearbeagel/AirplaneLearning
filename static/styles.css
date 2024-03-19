@@ -78,8 +78,7 @@ footer {
 a, a:hover {
     text-decoration: none !important;
     color: white;
-    font-size: 25px;
-
+    /* font-size: 25px; */
 }
 
 img {
@@ -127,10 +126,28 @@ section, .row_1 {
 }
 
 div, .column {
-    /* margin: -350px 0 0 -650px; */
+    margin: -250px 0 0 -200px;
     flex: 1;
     top: 50%;
     left: 50%;
     position: fixed;
     flex-direction: column;
+}
+
+p, ul {
+    font-family: "Sniglet", sans-serif;
+}
+
+div, .lesson-content {
+    display: flex;
+    position: fixed;
+    flex-direction: column;
+    margin: -100px 0 0 -600px;
+}
+
+.next-section-btn {
+    position: absolute;
+    top: 300px;
+    left: 300px;
+    z-index: 1;
 }

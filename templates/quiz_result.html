@@ -1,20 +1,27 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="{% static "favicon.ico" %}">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Result</title>
 </head>
 <body>
-    <h1>Quiz Result</h1>
+    <h1 class="sniglet-extrabold">Quiz Result</h1>
     <ul>
         {% for question, correct_answer in quiz_data.items %}
-            <li>
+            <li class="sniglet">
                 <strong>Question:</strong> {{ question.text }}<br>
                 <strong>Correct Answer:</strong> {{ correct_answer.text }}
             </li>
         {% endfor %}
     </ul>
+    <button><a href="{% url "modules_list" language.id %}">Go back to all modules</a></button>
 <footer class="sniglet">
     <p>© gearbeagel (Victoria Kondratska)</p>
 </footer>

@@ -38,7 +38,7 @@
                     <p>Difficulty: {{ quiz.difficulty_level }}</p>
         {% endfor %}
     {% else %}
-    <li>No quizzes available yet. Sorry. :(</li>
+        <li><p>No quizzes available yet. Sorry. :(</p></li>
     {% endif %}
     </ul>
     <a href="{% url 'all_possible_classes' %}">Back to All Languages</a>
