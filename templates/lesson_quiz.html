@@ -1,26 +1,33 @@
 {% load quiz_extras %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="{% static "favicon.ico" %}">
     <title>{{ quiz.title }}</title>
 </head>
 <body>
-    <h1>{{ quiz.title }}</h1>
+    <h1 class="sniglet-extrabold">{{ quiz.title }}</h1>
     <form method="post" action="{% url 'quiz_result' language.id quiz.id %}">
         {% csrf_token %}
         {% for question in questions %}
-            <h3>{{ question.text }}</h3>
+            <h3 class="sniglet">{{ question.text }}</h3>
             {% for answer in answers_dict|get_value:question %}
-                <label>
+                <label class="sniglet">
                     <input type="radio" name="question_{{ question.id }}" value="{{ answer.id }}">
                     {{ answer.text }}
                 </label><br>
             {% endfor %}
         {% endfor %}
+        <br>
         <button type="submit">Submit</button>
     </form>
-<a href="{% url 'all_possible_classes' %}">Back to All Languages</a>
+    <button><a href="{% url 'all_possible_classes' %}">Back to All Languages</a></button>
 <footer class="sniglet">
     <p>© gearbeagel (Victoria Kondratska)</p>
 </footer>

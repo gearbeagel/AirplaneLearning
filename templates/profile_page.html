@@ -16,8 +16,11 @@
     <img src="{{ student.profile_pic_url }}" style="height: 15%; width: 15%" alt="{{ user.username }}'s profile picture">
     <h2 class="sniglet-extrabold">{{ user.username }}</h2>
     <h3 class="sniglet-bold">{{ user.first_name }} {{ user.last_name }}</h3>
+    {% block content %}
     <h3 class="sniglet">{{ student.learner_type }}</h3>
     <h3 class="sniglet">Your progress: {{ student.progress }}%</h3>
+    {% endblock %}
+    <button><a href="{% url 'logout' %}">Log out</a></button>
     <button style="background-color: #588662"><a href="{% url 'profile_settings' %}" class="sniglet">Go to settings</a></button>
     <button class="modules sniglet"><a href="/langs">Let's start studying, shall we?</a></button>
 </div>

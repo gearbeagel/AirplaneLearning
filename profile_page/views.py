@@ -1,3 +1,4 @@
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
@@ -31,11 +32,14 @@ def profile_page(request):
         student = Profile.objects.get(user=request.user)
         calculate_progress(student)
     except Profile.DoesNotExist:
-        new_profile, created = Profile.objects.get_or_create(user=request.user)
+        new_profile, created = Profile.objects.get_or_create(user=request.user,
+                                                             email=request.user.email,
+                                                             username=request.user.username)
         student = new_profile
         calculate_progress(student)
 
     return render(request, 'profile_page.html', {'student': student, 'user': request.user})
+
 
 @login_required()
 def profile_settings(request):
@@ -48,3 +52,9 @@ def profile_settings(request):
         form = ProfileForm(instance=profile)
 
     return render(request, 'profile_settings.html', {'form': form})
+
+
+@login_required()
+def logout_page(request):
+    logout(request)
+    return redirect('/')

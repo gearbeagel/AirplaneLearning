@@ -4,16 +4,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="{% static "favicon.ico" %}">
     <title>{{ lesson.title }}</title>
 </head>
 <body>
-    <h1>{{ lesson.title }}</h1>
+    <h1 class="sniglet-extrabold">{{ lesson.title }}</h1>
     <p>{{ lesson.description }}</p>
     <div id="lesson-content">
         {% for section in sections %}
-            <div class="lesson-section" style="display: {% if forloop.first %}block{% else %}none{% endif %};">
-                <h3>{{ section.title }}</h3>
+            <div class="lesson-section" style="display: {% if forloop.first %}inline-flex{% else %}none{% endif %};">
+                <h3 class="sniglet-bold">{{ section.title }}</h3>
                 <p>{{ section.contents | safe }}</p>
             </div>
         {% endfor %}
