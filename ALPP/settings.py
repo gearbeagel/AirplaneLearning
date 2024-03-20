@@ -126,7 +126,7 @@ if 'PRODUCTION' in os.environ:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'AirplaneLearningPolyProDB',
+            'NAME': 'alpp',
             'USER': 'gearbeagel',
             'PASSWORD': 'Funnyhaha111',
             'HOST': 'alpp-server.database.windows.net',
