@@ -32,7 +32,8 @@ def profile_page(request):
         student = Profile.objects.get(user=request.user)
         calculate_progress(student)
     except Profile.DoesNotExist:
-        new_profile, created = Profile.objects.get_or_create(user=request.user)
+        new_profile, created = Profile.objects.get_or_create(user=request.user, username=request.user.username, email=request.user.email,
+                                                             user_id=request.user.id)
         student = new_profile
         student.save()
         calculate_progress(student)

@@ -122,7 +122,8 @@ WSGI_APPLICATION = 'ALPP.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 
-DATABASES = {
+if 'TESTING' in os.environ:
+    DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'alpp',
@@ -130,6 +131,13 @@ DATABASES = {
             'PASSWORD': 'Funnyhaha111',
             'HOST': 'alpp-server.database.windows.net',
             'PORT': '3306',
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
 
