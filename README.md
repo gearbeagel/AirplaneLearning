@@ -13,7 +13,7 @@ Victoria "Vitya" Kondratska
 ## Getting Started:
 To run Airplane Learning locally, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/your-username/airplane-learning.git`
+1. Clone the repository: `git clone https://github.com/gearbeagel/airplane-learning.git`
 2. Install dependencies: `pip install -r requirements.txt`
 3. Run the development server: `python manage.py runserver`
 
