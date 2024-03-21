@@ -122,15 +122,18 @@ WSGI_APPLICATION = 'ALPP.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 
-if 'TESTING' in os.environ:
+if 'PRODUCTION' in os.environ:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.mysql',
+            'ENGINE': 'sql_server.pyodbc',
             'NAME': 'alpp',
             'USER': 'gearbeagel',
             'PASSWORD': 'Funnyhaha111',
             'HOST': 'alpp-server.database.windows.net',
             'PORT': '3306',
+            'OPTIONS': {
+                'driver': 'SQLite3 ODBC Driver'
+            }
         }
     }
 else:
