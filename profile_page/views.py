@@ -4,15 +4,15 @@ from django.shortcuts import render, redirect
 
 from profile_page.forms import ProfileForm
 from profile_page.models import Profile
-from modules.models import Lesson, Quiz
+from modules.models import Lesson, Quiz, LessonStatus, QuizStatus
 
 
 def calculate_progress(user_profile):
-    total_lessons = Lesson.objects.count()
-    total_quizzes = Quiz.objects.count()
+    total_lessons = len(list(Lesson.objects.all()))
+    total_quizzes = len(list(Quiz.objects.all()))
 
-    completed_lessons = Lesson.objects.filter(status="Completed").count()
-    completed_quizzes = Quiz.objects.filter(status="Completed").count()
+    completed_lessons = LessonStatus.objects.filter(profile=user_profile, status="Completed").count()
+    completed_quizzes = QuizStatus.objects.filter(profile=user_profile, status="Completed").count()
 
     total_items = total_lessons + total_quizzes
     completed_items = completed_lessons + completed_quizzes
@@ -32,7 +32,8 @@ def profile_page(request):
         student = Profile.objects.get(user=request.user)
         calculate_progress(student)
     except Profile.DoesNotExist:
-        new_profile, created = Profile.objects.get_or_create(user=request.user, username=request.user.username, email=request.user.email,
+        new_profile, created = Profile.objects.get_or_create(user=request.user, username=request.user.username,
+                                                             email=request.user.email,
                                                              user_id=request.user.id)
         student = new_profile
         student.save()

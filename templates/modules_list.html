@@ -1,5 +1,5 @@
 {% load static %}
-
+{% load quiz_extras %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +18,7 @@
     {% if lessons %}
         {% for lesson in lessons %}
                         <li><a href="{% url 'lesson_info' language_id=language.id lesson_id=lesson.id %}" class="sniglet" 
-                               style="color: #d39c3f">{{ lesson.title }}</a> ({{ lesson.status }})</li>
+                               style="color: #d39c3f">{{ lesson.title }}</a> ({{ lesson_statuses|get_value:lesson.id }})</li>
                             <p>{{ lesson.description }}</p>
                             <p>Difficulty: {{ lesson.difficulty_level }}</p>
                     
@@ -33,7 +33,7 @@
     {% if quizzes %}
         {% for quiz in quizzes %}
             <li><a href="{% url 'lesson_quiz' language_id=language.id quiz_id=quiz.id %}" class="sniglet"
-                   style="color: #d39c3f">{{ quiz.title }}</a> ({{ quiz.status }})</li>
+                   style="color: #d39c3f">{{ quiz.title }}</a> ({{ quiz_statuses|get_value:quiz.id }})</li>
                     <p>{{ quiz.description }}</p>
                     <p>Difficulty: {{ quiz.difficulty_level }}</p>
         {% endfor %}

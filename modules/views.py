@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
 
-from .models import Language, Lesson, Question, Answer, Quiz
+from profile_page.models import Profile
+from .models import Language, Lesson, Question, Answer, Quiz, LessonStatus, QuizStatus
 
 
 def all_possible_classes(request):
@@ -20,26 +21,39 @@ def modules_list(request, language_id):
     user = request.user
     language = get_object_or_404(Language, pk=language_id)
     modules = language.module_set.all()
+    profile = Profile.objects.get(user=user)
 
     user_learner_type = user.profile.learner_type
-    if user_learner_type == "Beginner" or user_learner_type == "A rookie!":
+    if user_learner_type in ["Beginner", "A rookie!"]:
         difficulty_level = "Easy"
-    elif user_learner_type == "Skilled" or user_learner_type == "A smart cookie!":
+    elif user_learner_type in ["Skilled", "A smart cookie!"]:
         difficulty_level = "Medium"
-    elif user_learner_type == "Advanced" or user_learner_type == "A very smart cookie!":
+    elif user_learner_type in ["Advanced", "A very smart cookie!"]:
         difficulty_level = "Hard"
     else:
         difficulty_level = "Easy"
 
     lessons = Lesson.objects.filter(module__language=language, difficulty_level=difficulty_level)
+    lesson_statuses = {}  # Dictionary to store lesson statuses
+
+    for lesson in lessons:
+        lesson_status = LessonStatus.objects.get_or_create(lesson=lesson, profile=profile)[0]
+        lesson_statuses[lesson.id] = lesson_status
 
     quizzes = Quiz.objects.filter(module__language=language, difficulty_level=difficulty_level)
+    quiz_statuses = {}
+
+    for quiz in quizzes:
+        quiz_status = QuizStatus.objects.get_or_create(quiz=quiz, profile=profile)[0]
+        quiz_statuses[quiz.id] = quiz_status
 
     context = {
         'language': language,
         'modules': modules,
         'lessons': lessons,
         'quizzes': quizzes,
+        'lesson_statuses': lesson_statuses,
+        'quiz_statuses': quiz_statuses,
     }
     return render(request, 'modules_list.html', context)
 
@@ -63,22 +77,25 @@ def lesson_quiz(request, quiz_id, language_id):
     answers_dict = {}
     for question in questions:
         answers = list(Answer.objects.filter(question=question))  # Get answers for the question
-        answers_dict[question] = answers  # Store answers for the question
-    complete_quiz(request, quiz_id)
+        answers_dict[question] = answers
     return render(request, 'lesson_quiz.html',
                   {'quiz': quiz, 'language': language, 'questions': questions, 'answers_dict': answers_dict})
 
 
 def complete_lesson(request, lesson_id):
-    lesson = Lesson.objects.get(pk=lesson_id)
-    lesson.status = 'Completed'
-    lesson.save()
+    lesson = get_object_or_404(Lesson, pk=lesson_id)
+    profile = Profile.objects.get(user=request.user)
+    lesson_status = LessonStatus.objects.get(lesson_id=lesson.id, profile=profile)
+    lesson_status.status = "Completed"
+    lesson_status.save()
 
 
 def complete_quiz(request, quiz_id):
-    quiz = Quiz.objects.get(pk=quiz_id)
-    quiz.status = 'Completed'
-    quiz.save()
+    quiz = get_object_or_404(Quiz, pk=quiz_id)
+    profile = Profile.objects.get(user=request.user)
+    quiz_status = QuizStatus.objects.get(quiz_id=quiz.id, profile=profile)
+    quiz_status.status = "Completed"
+    quiz_status.save()
 
 
 def quiz_result(request, language_id, quiz_id):
@@ -92,5 +109,6 @@ def quiz_result(request, language_id, quiz_id):
         quiz_data[question] = correct_answer
 
     context = {'quiz_data': quiz_data, 'language': language}
+    complete_quiz(request, quiz_id)
 
     return render(request, 'quiz_result.html', context)

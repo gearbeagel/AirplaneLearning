@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from profile_page.models import Profile
+
 
 class Language(models.Model):
     name = models.CharField(max_length=100)
@@ -24,15 +26,6 @@ class Lesson(models.Model):
         ],
         default='easy'
     )
-    status = models.CharField(
-        max_length=20,
-        choices=[
-            ('not_started', _('Not Started')),
-            ('in_progress', _('In Progress')),
-            ('completed', _('Completed')),
-        ],
-        default='not_started',
-    )
 
     sections = models.ManyToManyField('Section', related_name='lessons')
 
@@ -52,15 +45,6 @@ class Quiz(models.Model):
             ('hard', _('Hard')),
         ],
         default='easy'
-    )
-    status = models.CharField(
-        max_length=20,
-        choices=[
-            ('not_started', _('Not Started')),
-            ('in_progress', _('In Progress')),
-            ('completed', _('Completed')),
-        ],
-        default='not_started',
     )
 
     questions = models.ManyToManyField('Question', related_name='quizzes')
@@ -106,3 +90,37 @@ class Answer(models.Model):
 
     def __str__(self):
         return self.text
+
+
+class LessonStatus(models.Model):
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ('Not Started', _('Not Started')),
+            ('In Progress', _('In Progress')),
+            ('Completed', _('Completed')),
+        ],
+        default='not_started',
+    )
+
+    def __str__(self):
+        return self.status
+
+
+class QuizStatus(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ('Not Started', _('Not Started')),
+            ('In Progress', _('In Progress')),
+            ('Completed', _('Completed')),
+        ],
+        default='Not Started',
+    )
+
+    def __str__(self):
+        return self.status

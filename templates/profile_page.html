@@ -12,21 +12,30 @@
     <title>Profile</title>
 </head>
 <body>
-<div style="margin: -350px 0 0 -600px">
-    <img src="{{ student.profile_pic_url }}" style="height: 15%; width: 15%" alt="{{ user.username }}'s profile picture">
+<article class="sidebar">
+    
+    <img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 110%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane">
+    <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
+    <br>
+    <br>
+    <a class="sniglet" style="font-size: 15px" href="/langs">Go to all languages</a>
+    <br>
+    <br>
+    <a href="{% url 'profile_settings' %}" class="sniglet" style="font-size: 15px; ">Go to settings</a>
+    <br>
+    <br>
+    <a class="sniglet" style="font-size: 15px" href="{% url 'logout' %}">Log out</a>
+    <footer class="sniglet">
+    <p>© gearbeagel</p>
+    </footer>
+    
+</article>
+<div style="margin: -350px 0 0 -275px; width: 500px;">
+    <img src="{{ student.profile_pic_url }}" style="height: 25%; width: 25%; margin-bottom: -25px" alt="{{ user.username }}'s profile picture">
     <h2 class="sniglet-extrabold">{{ user.username }}</h2>
     <h3 class="sniglet-bold">{{ user.first_name }} {{ user.last_name }}</h3>
-    {% block content %}
     <h3 class="sniglet">{{ student.learner_type }}</h3>
     <h3 class="sniglet">Your progress: {{ student.progress }}%</h3>
-    {% endblock %}
-    <button><a href="{% url 'logout' %}">Log out</a></button>
-    <button style="background-color: #588662"><a href="{% url 'profile_settings' %}" class="sniglet">Go to settings</a></button>
-    <button class="modules sniglet"><a href="/langs">Let's start studying, shall we?</a></button>
 </div>
-    
-<footer class="sniglet">
-    <p>© gearbeagel (Victoria Kondratska)</p>
-</footer>
 </body>
 </html>
