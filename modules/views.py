@@ -3,11 +3,12 @@ from datetime import datetime
 
 from django import template
 from django.contrib.auth.models import User
-from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_protect
 
 from profile_page.models import Profile
-from .models import Language, Lesson, Question, Answer, Quiz, LessonStatus, QuizStatus
+from .models import Language, Lesson, Question, Answer, Quiz, LessonStatus, QuizStatus, QuizUserAnswers
 
 
 def all_possible_classes(request):
@@ -72,16 +73,17 @@ def lesson_info(request, lesson_id, language_id):
 @csrf_protect
 def lesson_quiz(request, quiz_id, language_id):
     quiz = get_object_or_404(Lesson, pk=quiz_id)
+    profile = get_object_or_404(Profile, user=request.user)
+    quiz_status, created = QuizStatus.objects.get_or_create(quiz_id=quiz.id, profile=profile)
     language = get_object_or_404(Language, pk=language_id)
-    questions = list(Question.objects.filter(quiz_id=quiz_id))
+    questions = list(Question.objects.filter(quiz_id=quiz.id))
     random.shuffle(questions)
     answers_dict = {}
     for question in questions:
-        answers = list(Answer.objects.filter(question=question))  # Get answers for the question
+        answers = list(Answer.objects.filter(question=question))
         answers_dict[question] = answers
     return render(request, 'lesson_quiz.html',
-                  {'quiz': quiz, 'language': language, 'questions': questions, 'answers_dict': answers_dict})
-
+                  {'quiz': quiz, 'quiz_status': quiz_status, 'language': language, 'questions': questions, 'answers_dict': answers_dict})
 
 def complete_lesson(request, lesson_id):
     lesson = get_object_or_404(Lesson, pk=lesson_id)
@@ -102,16 +104,52 @@ def complete_quiz(request, quiz_id):
 
 
 def quiz_result(request, language_id, quiz_id):
-    questions = Question.objects.all()
-    language = Language.objects.get(pk=language_id)
+    if request.method == 'POST':
+        submitted_data = request.POST
+        for question_id, answer_id in submitted_data.items():
+            if question_id.startswith('question_'):
+                question_id = question_id.split('_')[1]
 
+                quiz = get_object_or_404(Quiz, pk=quiz_id)
+                question = get_object_or_404(Question, pk=question_id)
+                user_answer = get_object_or_404(Answer, pk=answer_id)
+                profile = get_object_or_404(Profile, user=request.user)
+                correct_answer = question.answer_set.filter(is_correct="Correct").first()
+
+                is_correct = "Correct" if user_answer == correct_answer else "Incorrect"
+
+                QuizUserAnswers.objects.create(
+                    quiz=quiz,
+                    question=question,
+                    profile=profile,
+                    user_answer=user_answer.text,
+                    is_correct=is_correct
+                )
+
+        # Mark the quiz as completed for the user
+        quiz_status, created = QuizStatus.objects.get_or_create(quiz_id=quiz_id, profile=profile)
+        quiz_status.is_completed = True
+        quiz_status.save()
+
+        return redirect('quiz_results', language_id=language_id, quiz_id=quiz_id)
+
+    # Fetch quiz and user answers data
+    quiz = get_object_or_404(Quiz, pk=quiz_id)
+    profile = get_object_or_404(Profile, user=request.user)
+    language = get_object_or_404(Language, pk=language_id)
+    questions = Question.objects.filter(quiz=quiz)
+    user_answers = QuizUserAnswers.objects.filter(quiz=quiz, profile=profile)
+
+    # Construct quiz data for rendering
     quiz_data = {}
-
     for question in questions:
-        correct_answer = question.answer_set.filter(is_correct='Correct').first()
-        quiz_data[question] = correct_answer
+        user_answer = user_answers.filter(question=question).first()
+        correct_answer = question.answer_set.filter(is_correct="Correct").first()
+        quiz_data[question] = {
+            'correct_answer': correct_answer.text if correct_answer else None,
+            'user_answer': user_answer.user_answer if user_answer else None,
+            'is_correct': user_answer.is_correct if user_answer else None
+        }
 
-    context = {'quiz_data': quiz_data, 'language': language}
-    complete_quiz(request, quiz_id)
-
+    context = {'quiz': quiz, 'language': language, 'questions': questions, 'quiz_data': quiz_data}
     return render(request, 'quiz_result.html', context)

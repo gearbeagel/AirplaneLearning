@@ -145,7 +145,7 @@ div, .lesson-content {
     display: flex;
     position: fixed;
     flex-direction: column;
-    margin: -100px 0 0 -600px;
+    /* margin: -100px 0 0 -600px; */
 }
 
 .next-section-btn {

@@ -3,27 +3,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/x-icon" href="{% static "favicon.ico" %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Result</title>
     <link rel="stylesheet" href="{% static 'styles.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Result</title>
+    <link rel="icon" type="image/x-icon" href="{% static "favicon.ico" %}">
 </head>
 <body>
-    <h1 class="sniglet-extrabold">Quiz Result</h1>
-    <ul>
-        {% for question, correct_answer in quiz_data.items %}
-            <li class="sniglet">
+<article class="sidebar">
+
+    <img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane">
+    <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
+    <a class="sniglet" style="font-size: 15px" href="/langs">Go to all languages</a>
+    <br>
+    <br>
+    <a href="{% url 'profile_settings' %}" class="sniglet" style="font-size: 15px; ">Go to settings</a>
+    <br>
+    <br>
+    <a class="sniglet" style="font-size: 15px" href="{% url 'logout' %}">Log out</a>
+    <footer class="sniglet">
+    <p>© gearbeagel</p>
+    </footer>
+
+</article>
+
+    <h1 class="sniglet-extrabold" style="margin-left: 800px">Quiz Result</h1>
+<br>
+    <ul style="margin-left: 250px; list-style-type: none">
+        {% for question, data in quiz_data.items %}
+            <li class="sniglet" style='padding: 10px; border: #d39c3f 3px solid; border-radius: 25px; width: fit-content'>
                 <strong>Question:</strong> {{ question.text }}<br>
-                <strong>Correct Answer:</strong> {{ correct_answer.text }}
+            <hr style="border: none; border-top: 3px solid #d39c3f; width: auto; margin-top: 10px; margin-bottom: 10px">
+                <strong>Correct Answer:</strong> {{ data.correct_answer }}<br>
+                {% if data.user_answer %}
+                    <strong>Your Answer:</strong> {{ data.user_answer }}<br>
+                {% else %}
+                    <strong>Your Answer:</strong> No answer provided<br>
+                {% endif %}
+            <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 10px; margin-bottom: 10px">
+                {% if data.is_correct == "Correct" %}
+                    <span style="color: green;"><strong>Result:</strong> Correct</span><br>
+                {% else %}
+                    <span style="color: red;"><strong>Result:</strong> Incorrect</span><br>
+                {% endif %}
             </li>
+            <br>
         {% endfor %}
     </ul>
-    <button><a href="{% url "modules_list" language.id %}">Go back to all modules</a></button>
-<footer class="sniglet">
-    <p>© gearbeagel (Victoria Kondratska)</p>
-</footer>
 </body>
 </html>

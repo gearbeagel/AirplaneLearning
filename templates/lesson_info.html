@@ -13,7 +13,7 @@
 </head>
 <body>
 <article class="sidebar">
-    
+
     <img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane">
     <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
     <a class="sniglet" style="font-size: 15px" href="{% url 'all_possible_classes' %}">Go to all languages</a>
@@ -26,18 +26,19 @@
     <footer class="sniglet">
     <p>© gearbeagel</p>
     </footer>
-    
+
 </article>
-    <h1 class="sniglet-extrabold">{{ lesson.title }}</h1>
-    <p>{{ lesson.description }}</p>
-    <div id="lesson-content">
+    <h1 class="sniglet-extrabold" style="text-align: center">{{ lesson.title }}</h1>
+    <p style="margin-left: 350px">{{ lesson.description }}</p>
+    <div id="lesson-content" style="border: none">
         {% for section in sections %}
-            <div class="lesson-section" style="display: {% if forloop.first %}inline-flex{% else %}none{% endif %};">
+            <div class="lesson-section" style="display: {% if forloop.first %}inline-flex{% else %}none{% endif %}; width: 500px;
+                    margin: -200px 0 0 -200px;">
                 <h3 class="sniglet-bold">{{ section.title }}</h3>
                 <p>{{ section.contents | safe }}</p>
             </div>
         {% endfor %}
-        <button class="next-section-btn">Next</button>
+        <button class="next-section-btn" style="position: fixed; margin-left: 525px; margin-top: 450px">Next</button>
         <input type="hidden" id="modules-list-url" value="{% url 'modules_list' language.id %}">
     </div>
 

@@ -12,24 +12,43 @@
     <title>{{ quiz.title }}</title>
 </head>
 <body>
-    <h1 class="sniglet-extrabold">{{ quiz.title }}</h1>
+
+<article class="sidebar">
+
+    <img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane">
+    <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
+    <a class="sniglet" style="font-size: 15px" href="{% url 'all_possible_classes' %}">Go to all languages</a>
+    <br>
+    <br>
+    <a class="sniglet" style="font-size: 15px" href='/profile'>Go to profile</a>
+    <br>
+    <br>
+    <a class="sniglet" style="font-size: 15px" href="{% url 'logout' %}">Log out</a>
+    <footer class="sniglet">
+    <p>© gearbeagel</p>
+    </footer>
+
+</article>
+
+    <h1 class="sniglet-extrabold" style="margin-left: 700px">{{ quiz.title }}</h1>
+    <br>
+{% if quiz_status.status == "Not Started" %}
     <form method="post" action="{% url 'quiz_result' language.id quiz.id %}">
         {% csrf_token %}
         {% for question in questions %}
-            <h3 class="sniglet">{{ question.text }}</h3>
+            <h3 class="sniglet" style="margin-left: 400px; padding: 10px; border: #d39c3f 3px solid; border-radius: 25px; width: fit-content">{{ question.text }}</h3>
             {% for answer in answers_dict|get_value:question %}
-                <label class="sniglet">
+                <label class="sniglet" style="margin-left: 450px">
                     <input type="radio" name="question_{{ question.id }}" value="{{ answer.id }}">
                     {{ answer.text }}
                 </label><br>
             {% endfor %}
         {% endfor %}
         <br>
-        <button type="submit">Submit</button>
+        <button type="submit" style="margin-left: 815px">Submit</button>
+{% elif quiz_status.status == "Completed" %}
+    <p style="margin-left: 825px">You have already passed the quiz. You can view the results <a style='color: #637d91' href="{% url "quiz_result" language_id=language.id quiz_id=quiz.id %}">here.</a> </p>
+{% endif %}
     </form>
-    <button><a href="{% url 'all_possible_classes' %}">Back to All Languages</a></button>
-<footer class="sniglet">
-    <p>© gearbeagel (Victoria Kondratska)</p>
-</footer>
 </body>
 </html>

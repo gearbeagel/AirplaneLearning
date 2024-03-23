@@ -123,5 +123,18 @@ class QuizStatus(models.Model):
         default='Not Started',
     )
     finished_at = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
         return self.status
+
+
+class QuizUserAnswers(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    user_answer = models.TextField()
+    is_correct = models.CharField(max_length=15, choices=[("Y", "Correct"), ("N", "Incorrect")], default="Incorrect")
+
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user_answer
