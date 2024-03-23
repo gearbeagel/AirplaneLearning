@@ -132,9 +132,8 @@ if 'PRODUCTION' in os.environ:
             'USER': 'gearbeagel',
             'PASSWORD': 'Funnyhaha111',
             'HOST': 'alpp-server.database.windows.net',
-            'PORT': '3306',
             'OPTIONS': {
-                'driver': 'SQLite3 ODBC Driver'
+                'driver': 'ODBC Driver 17 for SQL Server'
             }
         }
     }
