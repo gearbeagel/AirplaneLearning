@@ -48,4 +48,5 @@ urlpatterns = [
     path('profile/', include("profile_page.urls")),
     path('register/', registration_handle.views.register, name='register'),
     path('langs/', include("modules.urls")),
+    path('about/', registration_handle.views.about, name='about')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

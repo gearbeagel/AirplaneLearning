@@ -11,3 +11,7 @@ def register(request):
         user, created = User.objects.get_or_create(user=request.user)
         user.save()
     return render(request, "register.html")
+
+
+def about(request):
+    return render(request, "about.html")
