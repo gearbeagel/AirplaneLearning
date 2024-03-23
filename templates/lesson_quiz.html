@@ -27,13 +27,22 @@
     <br>
     <br>
     <a class="sniglet" style="font-size: 15px" href="{% url 'logout' %}">Log out</a>
-    <footer class="sniglet">
+    <footer class="sniglet" style="bottom: 45px; left: 75px">
     <p>© gearbeagel</p>
     </footer>
 
 </article>
 
     <h1 class="sniglet-extrabold" style="margin-left: 700px">{{ quiz.title }}</h1>
+    <p style="margin-left: 350px">{{ quiz.description }}</p>
+    <p style="margin-left: 350px; 
+            {% if quiz.difficulty_level == 'Easy' %} 
+                background-color: #578661; /* Easy */
+            {% elif quiz.difficulty_level == 'Medium' %}
+                background-color: #d39c3f; /* Medium */
+            {% elif quiz.difficulty_level == 'Hard' %}
+                background-color: #CC6666; /* Hard */
+            {% endif %}; padding: 10px 40px 10px 40px; border-radius: 20px; color: white; width: 40px">{{ quiz.difficulty_level }}</p>
     <br>
 {% if quiz_status.status == "Not Started" %}
     <form method="post" action="{% url 'quiz_result' language.id quiz.id %}">

@@ -26,7 +26,7 @@
     <br>
     <br>
     <a class="sniglet" style="font-size: 15px" href="{% url 'logout' %}">Log out</a>
-    <footer class="sniglet">
+    <footer class="sniglet" style="bottom: 45px; left: 75px">
     <p>© gearbeagel</p>
     </footer>
     
@@ -46,7 +46,7 @@
                 background-color: #d39c3f; /* Medium */
             {% elif lesson.difficulty_level == 'Hard' %}
                 background-color: #CC6666; /* Hard */
-            {% endif %}; padding: 10px 40px 10px 40px; border-radius: 20px">{{ lesson.difficulty_level }}</p>
+            {% endif %}; padding: 10px 40px 10px 40px; border-radius: 20px; color: white">{{ lesson.difficulty_level }}</p>
             </div>
         {% endfor %}
     {% else %}

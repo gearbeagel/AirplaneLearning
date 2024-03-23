@@ -26,13 +26,21 @@
     <br>
     <br>
     <a class="sniglet" style="font-size: 15px" href="{% url 'logout' %}">Log out</a>
-    <footer class="sniglet">
+    <footer class="sniglet" style="bottom: 45px; left: 75px">
     <p>© gearbeagel</p>
     </footer>
 
 </article>
     <h1 class="sniglet-extrabold" style="text-align: center">{{ lesson.title }}</h1>
     <p style="margin-left: 350px">{{ lesson.description }}</p>
+    <p style="margin-left: 350px; 
+            {% if lesson.difficulty_level == 'Easy' %} 
+                background-color: #578661;
+            {% elif lesson.difficulty_level == 'Medium' %}
+                background-color: #d39c3f;
+            {% elif lesson.difficulty_level == 'Hard' %}
+                background-color: #CC6666;
+            {% endif %}; padding: 10px 40px 10px 40px; border-radius: 20px; color: white; width: 40px;">{{ lesson.difficulty_level }}</p>
     <div id="lesson-content" style="border: none">
         {% for section in sections %}
             <div class="lesson-section" style="display: {% if forloop.first %}inline-flex{% else %}none{% endif %}; width: 500px;
