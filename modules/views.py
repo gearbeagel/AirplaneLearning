@@ -124,7 +124,7 @@ def quiz_result(request, language_id, quiz_id):
                 )
 
         quiz_status, created = QuizStatus.objects.get_or_create(quiz_id=quiz_id, profile=profile)
-        quiz_status.is_completed = True
+        quiz_status.status = "Completed"
         quiz_status.save()
 
         return redirect('quiz_result', language_id=language_id, quiz_id=quiz_id)

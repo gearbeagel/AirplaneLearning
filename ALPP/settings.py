@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     "modules.apps.ModulesConfig",
     'profile_page.apps.ProfilePageConfig',
     'drf_yasg',
-    'fontawesomefree'
+    'fontawesomefree',
+    "discussion_forums.apps.DiscussionForumsConfig"
 ]
 
 MIDDLEWARE = [
