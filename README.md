@@ -63,7 +63,7 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 1. Implement feature: Language Selection ✔️ (was done beforehand)
 2. Refactor code for improved performance ✔️
 3. Write unit tests for Interactive Quizzes ✔️
-4. Enhance User Profile with additional features
+4. Enhance User Profile with additional features ✔️
 5. Set up Community Forums functionality
 
 **Week 5 (03/27 - 04/2):**
