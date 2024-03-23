@@ -12,6 +12,22 @@
     <title>{{ lesson.title }}</title>
 </head>
 <body>
+<article class="sidebar">
+    
+    <img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane">
+    <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
+    <a class="sniglet" style="font-size: 15px" href="{% url 'all_possible_classes' %}">Go to all languages</a>
+    <br>
+    <br>
+    <a class="sniglet" style="font-size: 15px" href='/profile'>Go to profile</a>
+    <br>
+    <br>
+    <a class="sniglet" style="font-size: 15px" href="{% url 'logout' %}">Log out</a>
+    <footer class="sniglet">
+    <p>© gearbeagel</p>
+    </footer>
+    
+</article>
     <h1 class="sniglet-extrabold">{{ lesson.title }}</h1>
     <p>{{ lesson.description }}</p>
     <div id="lesson-content">
@@ -41,8 +57,5 @@
             }
         });
     </script>
-<footer class="sniglet">
-    <p>© gearbeagel (Victoria Kondratska)</p>
-</footer>
 </body>
 </html>

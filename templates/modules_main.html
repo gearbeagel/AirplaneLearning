@@ -11,15 +11,27 @@
     <title>All Languages</title>
 </head>
 <body>
-    <h1 class="sniglet-extrabold" style="place-items: center">Choose a language to learn</h1>
-            <div class="column">
-            {% for language in languages %}
-                    <button class="modules sniglet"><a href="{% url 'modules_list' language.id %}">{{ language.name }}</a></button>
-                    <p>{{ language.joke }}</p>
-            {% endfor %}
-            </div>
-<footer class="sniglet">
-    <p>© gearbeagel (Victoria Kondratska)</p>
-</footer>
+<article class="sidebar">
+    
+    <img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane">
+    <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
+    <a class="sniglet" style="font-size: 15px" href='/profile'>Go to profile</a>
+    <br>
+    <br>
+    <a class="sniglet" style="font-size: 15px" href="{% url 'logout' %}">Log out</a>
+    <footer class="sniglet">
+    <p>© gearbeagel</p>
+    </footer>
+    
+</article>
+    
+<h1 class="sniglet-extrabold" style="text-align: center">Choose a language to learn</h1>
+<div class="column">
+    {% for language in languages %}
+            <button class="modules sniglet"><a href="{% url 'modules_list' language.id %}">{{ language.name }}</a></button>
+            <p>{{ language.joke }}</p>
+        <br>
+    {% endfor %}
+</div>
 </body>
 </html>

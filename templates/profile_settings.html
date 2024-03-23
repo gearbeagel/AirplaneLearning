@@ -1,12 +1,37 @@
+{% extends "profile_page.html" %}
 {% load static %}
-
+{{ block.super }}
+{% block title %}Profile Settings{% endblock %}
 {% block content %}
-<form method="post">
-    {% csrf_token %}
-    <div>
-        <label for="id_learner_type">Learner Type:</label>
-        {{ form.learner_type }}
+    <div style="margin: -350px 0 0 -275px; width: 500px">
+        <h2 class="sniglet" style="color: #d39c3f; margin-bottom: -5px; margin-top: 10px">Settings</h2>
+        <hr style="border: none; border-top: 1px solid #d39c3f; width: 100%; margin-top: 20px;">
+        <form id="settings-form" method="post" class="sniglet" style="color: #d39c3f; text-align: center; font-size: 40px">
+        {% csrf_token %}
+            <label for="id_learner_type">Learner Type:</label>
+            <br>
+            <select name="learner_type" id="id_learner_type" style="font-family: 'Sniglet', sans-serif; height: 30px; width: 250px; margin-bottom: 10px;">
+                <option value="A rookie!">Beginner</option>
+                <option value="A smart cookie!" selected="">Skilled</option>
+                <option value="A very smart cookie!">Advanced</option>
+            </select>
+            <br>
+        {% if message %}
+            <p id="message" style="margin-top: 10px; font-size: 16px;">{{ message }}</p>
+        {% endif %}
+        <button type="submit" id="submit-btn" style="height: 75px; width: 350px; font-size: 30px">Save Changes</button>
+        <br>
+        <a href="{% url 'profile_page' %}" id="back-btn" style="height: 75px; width: 350px; font-size: 30px; margin-top: 15px; display: none;">Go back to profile</a>
+    </form>
     </div>
-    <button type="submit">Save Changes</button>
-</form>
+    <script>
+        document.getElementById('settings-form').addEventListener('submit', function(event) {
+            var messageElement = document.getElementById('message');
+            messageElement.textContent = "Changes saved successfully.";
+            messageElement.style.display = 'block';
+            setTimeout(function() {
+                window.location.href = "{% url 'profile_page' %}";
+            }, 2000);
+        });
+    </script>
 {% endblock %}

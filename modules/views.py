@@ -1,4 +1,5 @@
 import random
+from datetime import datetime
 
 from django import template
 from django.contrib.auth.models import User
@@ -87,6 +88,7 @@ def complete_lesson(request, lesson_id):
     profile = Profile.objects.get(user=request.user)
     lesson_status = LessonStatus.objects.get(lesson_id=lesson.id, profile=profile)
     lesson_status.status = "Completed"
+    lesson_status.finished_at = datetime.now()
     lesson_status.save()
 
 
@@ -95,6 +97,7 @@ def complete_quiz(request, quiz_id):
     profile = Profile.objects.get(user=request.user)
     quiz_status = QuizStatus.objects.get(quiz_id=quiz.id, profile=profile)
     quiz_status.status = "Completed"
+    quiz_status.finished_at = datetime.now()
     quiz_status.save()
 
 

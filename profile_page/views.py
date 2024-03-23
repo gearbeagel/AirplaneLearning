@@ -7,6 +7,13 @@ from profile_page.models import Profile
 from modules.models import Lesson, Quiz, LessonStatus, QuizStatus
 
 
+def get_latest_lesson_and_quiz(profile):
+    latest_lesson_status = LessonStatus.objects.filter(profile=profile, status='Completed').order_by(
+        '-finished_at').first()
+    latest_quiz_status = QuizStatus.objects.filter(profile=profile, status='Completed').order_by('-finished_at').first()
+    return latest_lesson_status.lesson if latest_lesson_status else None, latest_quiz_status.quiz if latest_quiz_status else None
+
+
 def calculate_progress(user_profile):
     total_lessons = len(list(Lesson.objects.all()))
     total_quizzes = len(list(Quiz.objects.all()))
@@ -32,14 +39,17 @@ def profile_page(request):
         student = Profile.objects.get(user=request.user)
         calculate_progress(student)
     except Profile.DoesNotExist:
-        new_profile, created = Profile.objects.get_or_create(user=request.user, username=request.user.username,
-                                                             email=request.user.email,
-                                                             user_id=request.user.id)
+        new_profile = Profile.objects.create(user=request.user, username=request.user.username,
+                                             email=request.user.email,
+                                             user_id=request.user.id)
         student = new_profile
-        student.save()
         calculate_progress(student)
 
-    return render(request, 'profile_page.html', {'student': student, 'user': request.user})
+    latest_lesson = LessonStatus.objects.filter(profile=student, status='Completed').order_by('-finished_at').first()
+    latest_quiz = QuizStatus.objects.filter(profile=student, status='Completed').order_by('-finished_at').first()
+
+    return render(request, 'profile_page.html', {'student': student, 'user': request.user,
+                                                 'latest_lesson': latest_lesson, 'latest_quiz': latest_quiz})
 
 
 @login_required()

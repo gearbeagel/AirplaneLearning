@@ -45,7 +45,7 @@ div, .registration {
     width: auto;
     align-items: center;
     margin: -150px 0 0 -300px;
-    border: solid 1px #d39c3f;
+    border: solid 3px #d39c3f;
     border-radius: 25px;
     padding: 25px;
     z-index: 1;
@@ -117,7 +117,7 @@ img {
 }
 
 section, .row {
-    margin: -150px 0 0 -500px;
+    margin: -160px 0 0 -500px;
     display: flex;
     flex-direction: row;
 }
@@ -168,4 +168,10 @@ div, .lesson-content {
 
 .sidebar a {
     color: white;
+}
+
+.stylised_select {
+    font-family: 'Sniglet', sans-serif;
+    height: 40px;
+    width: 250px;
 }

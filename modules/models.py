@@ -104,6 +104,7 @@ class LessonStatus(models.Model):
         ],
         default='not_started',
     )
+    finished_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.status
@@ -121,6 +122,6 @@ class QuizStatus(models.Model):
         ],
         default='Not Started',
     )
-
+    finished_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.status

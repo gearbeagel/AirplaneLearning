@@ -9,12 +9,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
-    <title>Profile</title>
+    <title>{% block title %}Profile {% endblock %}</title>
 </head>
 <body>
+{% block sidebar %}
 <article class="sidebar">
     
-    <img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 110%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane">
+    <img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane">
     <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
     <br>
     <br>
@@ -30,12 +31,21 @@
     </footer>
     
 </article>
-<div style="margin: -350px 0 0 -275px; width: 500px;">
-    <img src="{{ student.profile_pic_url }}" style="height: 25%; width: 25%; margin-bottom: -25px" alt="{{ user.username }}'s profile picture">
-    <h2 class="sniglet-extrabold">{{ user.username }}</h2>
-    <h3 class="sniglet-bold">{{ user.first_name }} {{ user.last_name }}</h3>
-    <h3 class="sniglet">{{ student.learner_type }}</h3>
-    <h3 class="sniglet">Your progress: {{ student.progress }}%</h3>
+{% endblock %}
+{% block content %}
+<div style="margin: -350px 0 0 -275px; width: 500px">
+    <img src="{{ student.profile_pic_url }}" style="height: 30%; width: 30%; margin-bottom: -25px; margin-left: 25px; margin-right: 25px;" alt="{{ user.username }}'s profile picture">
+    <h2 class="sniglet-extrabold" style="color: #d39c3f; margin-bottom: -15px">{{ user.username }}</h2>
+    <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;">
+    <h3 class="sniglet-bold" style="color: #d39c3f; margin-bottom: -5px">{{ user.first_name }} {{ user.last_name }}</h3>
+    <p class="sniglet" style="color: #d39c3f; margin-bottom: -5px">{{ user.email }}</p>
+    <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;">
+    <h3 class="sniglet" style="color: #637d91; margin-bottom: -5px">{{ student.learner_type }}</h3>
+    <h3 class="sniglet" style="color: #637d91; margin-bottom: -5px">Your progress: <span style="color: #578661;">{{ student.progress|floatformat:2 }}%</span></h3>
+    <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;">
+    <h3 class="sniglet" style="color: #d39c3f; margin-bottom: -5px">Latest lesson: {{ latest_lesson.lesson.title|default:"none passed. :(" }}</h3>
+    <h3 class="sniglet" style="color: #d39c3f; margin-bottom: -5px">Latest quiz: {{ latest_quiz.quiz.title|default:"none passed. :(" }}</h3>
 </div>
+{% endblock %}
 </body>
 </html>
