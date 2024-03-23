@@ -35,7 +35,7 @@ def modules_list(request, language_id):
         difficulty_level = "Easy"
 
     lessons = Lesson.objects.filter(module__language=language, difficulty_level=difficulty_level)
-    lesson_statuses = {}  # Dictionary to store lesson statuses
+    lesson_statuses = {}
 
     for lesson in lessons:
         lesson_status = LessonStatus.objects.get_or_create(lesson=lesson, profile=profile)[0]

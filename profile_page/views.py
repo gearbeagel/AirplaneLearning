@@ -48,8 +48,13 @@ def profile_page(request):
     latest_lesson = LessonStatus.objects.filter(profile=student, status='Completed').order_by('-finished_at').first()
     latest_quiz = QuizStatus.objects.filter(profile=student, status='Completed').order_by('-finished_at').first()
 
+    latest_lesson_language = latest_lesson.lesson.module.language if latest_lesson else None
+    latest_quiz_language = latest_quiz.quiz.module.language if latest_quiz else None
+
     return render(request, 'profile_page.html', {'student': student, 'user': request.user,
-                                                 'latest_lesson': latest_lesson, 'latest_quiz': latest_quiz})
+                                                 'latest_lesson': latest_lesson, 'latest_quiz': latest_quiz,
+                                                 'latest_lesson_language': latest_lesson_language,
+                                                 'latest_quiz_language': latest_quiz_language})
 
 
 @login_required()

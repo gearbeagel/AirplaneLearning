@@ -48,15 +48,15 @@
         {% endfor %}
     {% else %}
         <h2 class="sniglet-bold" style="margin-left: 350px">Lessons</h2>
-        <div class="row" style="margin: -150px 0 0 -500px; width: 1000px; position: fixed">
+        <div class="row" style="margin: -150px 0 0 -400px; width: 1000px; position: fixed">
         <p>No lessons available yet. Sorry. :(</p>
         </div>
     {% endif %}
 </section>
     <br>
 <section>
-    <h2 class="sniglet-bold" style="margin-top: 250px">Quizzes</h2>
     {% if quizzes %}
+        <h2 class="sniglet-bold" style="margin-top: 250px">Quizzes</h2>
         {% for quiz in quizzes %}
             <div class="row" style="width: 1000px; margin: 200px 0 0 -400px">
            <button><a href="{% url 'lesson_quiz' language_id=language.id quiz_id=quiz.id %}" class="sniglet"
@@ -72,8 +72,8 @@
             </div>
         {% endfor %}
     {% else %}
-        <h2 class="sniglet-bold" style="margin-left: 350px; margin-top: 150px">Quizzes</h2>
-        <div class="row" style="margin: 100px 0 0 -500px; width: 1000px; position: fixed">
+        <h2 class="sniglet-bold" style="margin-top: 150px">Quizzes</h2>
+        <div class="row" style="margin: 100px 0 0 -400px; width: 1000px; position: fixed">
         <p>No quizzes available yet. Sorry. :(</p>
         </div>
     {% endif %}

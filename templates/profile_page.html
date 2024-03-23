@@ -14,7 +14,7 @@
 <body>
 {% block sidebar %}
 <article class="sidebar">
-    
+
     <img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane">
     <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
     <br>
@@ -29,7 +29,7 @@
     <footer class="sniglet">
     <p>© gearbeagel</p>
     </footer>
-    
+
 </article>
 {% endblock %}
 {% block content %}
@@ -43,8 +43,8 @@
     <h3 class="sniglet" style="color: #637d91; margin-bottom: -5px">{{ student.learner_type }}</h3>
     <h3 class="sniglet" style="color: #637d91; margin-bottom: -5px">Your progress: <span style="color: #578661;">{{ student.progress|floatformat:2 }}%</span></h3>
     <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;">
-    <h3 class="sniglet" style="color: #d39c3f; margin-bottom: -5px">Latest lesson: {{ latest_lesson.lesson.title|default:"none passed. :(" }}</h3>
-    <h3 class="sniglet" style="color: #d39c3f; margin-bottom: -5px">Latest quiz: {{ latest_quiz.quiz.title|default:"none passed. :(" }}</h3>
+    <h3 class="sniglet" style="color: #d39c3f; margin-bottom: -5px">Latest lesson: {{ latest_lesson.lesson.title|default:"none passed. :(" }} ({{ latest_lesson_language.name|default_if_none:"" }})</h3>
+    <h3 class="sniglet" style="color: #d39c3f; margin-bottom: -5px">Latest quiz: {{ latest_quiz.quiz.title|default:"none passed. :(" }} ({{ latest_quiz_language.name|default:"It won't hurt to try!"}})</h3>
 </div>
 {% endblock %}
 </body>
