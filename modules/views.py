@@ -1,9 +1,6 @@
 import random
 from datetime import datetime
 
-from django import template
-from django.contrib.auth.models import User
-from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_protect
 
@@ -126,21 +123,18 @@ def quiz_result(request, language_id, quiz_id):
                     is_correct=is_correct
                 )
 
-        # Mark the quiz as completed for the user
         quiz_status, created = QuizStatus.objects.get_or_create(quiz_id=quiz_id, profile=profile)
         quiz_status.is_completed = True
         quiz_status.save()
 
-        return redirect('quiz_results', language_id=language_id, quiz_id=quiz_id)
+        return redirect('quiz_result', language_id=language_id, quiz_id=quiz_id)
 
-    # Fetch quiz and user answers data
     quiz = get_object_or_404(Quiz, pk=quiz_id)
     profile = get_object_or_404(Profile, user=request.user)
     language = get_object_or_404(Language, pk=language_id)
     questions = Question.objects.filter(quiz=quiz)
     user_answers = QuizUserAnswers.objects.filter(quiz=quiz, profile=profile)
 
-    # Construct quiz data for rendering
     quiz_data = {}
     for question in questions:
         user_answer = user_answers.filter(question=question).first()
