@@ -1,3 +1,4 @@
+{% load socialaccount %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -8,17 +9,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
-    <title>All Languages</title>
+    <title>{% block title %}Profile {% endblock %}</title>
 </head>
 <body>
 <article class="sidebar">
-    
+
     <img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane">
     <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
     <a class="sniglet" style="font-size: 15px" href="/langs">Go to all languages</a>
-    <br>
-    <br>
-    <a class="sniglet" style="font-size: 15px" href="/forums">Go to discussion forums</a>
     <br>
     <br>
     <a href="{% url 'profile_settings' %}" class="sniglet" style="font-size: 15px; ">Go to settings</a>
@@ -31,16 +29,16 @@
     <footer class="sniglet" style="bottom: 45px; left: 75px">
     <p>© gearbeagel</p>
     </footer>
-    
+
 </article>
-    
-<h1 class="sniglet-extrabold" style="text-align: center">Choose a language to learn</h1>
-<div class="column">
-    {% for language in languages %}
-            <button class="modules sniglet"><a href="{% url 'modules_list' language.id %}">{{ language.name }}</a></button>
-            <p>{{ language.joke }}</p>
-        <br>
-    {% endfor %}
-</div>
+<h1 class="sniglet-extrabold" style="text-align: center; margin-bottom: -40px">Twe-e-eet!</h1>
+<h2 class="sniglet-bold" style="text-align: center">Start a discussion here.</h2>
+{% if all_posts %}
+{% for post in all_posts %}
+<p>{{ post.topic }}</p>
+{% endfor %}
+{% else %}
+<p class="sniglet" style="text-align: center">Sorry, no posts available. :c</p>
+{% endif %}
 </body>
 </html>

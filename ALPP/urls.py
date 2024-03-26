@@ -21,6 +21,7 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
+import discussion_forums.views
 import profile_page.views
 import registration_handle.views
 from ALPP import settings
@@ -48,5 +49,6 @@ urlpatterns = [
     path('profile/', include("profile_page.urls")),
     path('register/', registration_handle.views.register, name='register'),
     path('langs/', include("modules.urls")),
-    path('about/', registration_handle.views.about, name='about')
+    path('about/', registration_handle.views.about, name='about'),
+    path('forums/', include("discussion_forums.urls"))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

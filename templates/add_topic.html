@@ -1,0 +1,27 @@
+{% extends "main_forum_page.html" %}
+{% load static %}
+{% block title %}Add Forum{% endblock %}
+{% block content %}
+<body>
+    <h2 class="sniglet-bold" style="text-align: center">Add Topic</h2>
+     <form method="post" action="{% url 'add_topic' %}">
+        {% csrf_token %}
+         <div class="sniglet" style="display: flex; flex-direction: column; align-items: self-start; margin-left: -275px; margin-top: -200px; width: 500px">
+             <img src="{{ student.profile_pic_url }}" style="height: 25%; width: 25%; margin-left: 25px; margin-right: 25px;" alt="{{ user.username }}'s profile picture">
+             <p>{{ user.username }}</p>
+             <label for="id_title">What would you like to discuss?</label>
+             <input id="id_title" name="title" placeholder="Enter topic title" class="sniglet" style="width: 500px"></input>
+              <label for="id_subject">Which module is it connected to?</label>
+               <select id="id_subject" name="subject" style="width: 250px; height: 20px" class="sniglet">
+               <option value="">-- Select a Subject -- </option>
+                   {% for subject in all_subjects %}
+                       <option value="{{ subject }}">{{ subject }}</option>
+                   {% endfor %}
+               </select>
+             <label for="id_description">Talk more about it:</label>
+             <textarea id="id_description" name="description" placeholder="Enter topic description" rows="5" class="sniglet" style="width: 500px"></textarea>
+         </div>
+        <button type="submit" style="margin-top: 450px; margin-left: 750px">Submit</button>
+     </form>
+</body>
+{% endblock %}

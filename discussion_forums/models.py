@@ -6,12 +6,14 @@ from profile_page.models import Profile
 
 
 class Topic(models.Model):
+    title = models.CharField(max_length=50)
     subject = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    description = models.TextField()
     starter = models.ForeignKey(Profile, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.subject
+        return self.title
 
 
 class Post(models.Model):
