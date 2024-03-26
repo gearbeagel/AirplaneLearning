@@ -133,7 +133,8 @@ db_password: str = os.getenv('db_password')
 environ.Env.DB_SCHEMES['mssql'] = 'mssql'
 env = environ.Env(DEBUG=(bool, False))
 
-DEFAULT_DATABASE_URL = (f"mssql://gearbeagel:{db_password}@alpp-server.database.windows.net:1433/alpp?driver=ODBC+Driver+17+for+SQL+Server")
+DEFAULT_DATABASE_URL = (f"mssql://gearbeagel:{db_password}@alpp-server.database.windows.net:1433/"
+                        f"alpp?driver=ODBC+Driver+17+for+SQL+Server")
 
 
 DATABASE_URL = os.environ.get('DATABASE_URL', DEFAULT_DATABASE_URL)
