@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Make a choice</title>
+</head>
+<body>
+<h1 class="sniglet-extrabold" style="text-align: center">Before we start, it would be great if you could answer a couple of questions.</h1>
+<h2 class="sniglet-bold" style="text-align: center">Choose a language to learn and a learning path</h2>
+<div class="row">
+    <form method="post" action="{% url 'language_and_learning_path_choice_submit' %}">
+        {% csrf_token %}
+        <h3>Choose a language to learn:</h3>
+        {% for language in languages %}
+            <label>
+                <input type="radio" name="chosen_language" value="{{ language.name }}">
+                {{ language.name }}
+            </label>
+            <p>{{ language.joke }}</p>
+            <br>
+        {% endfor %}
+        <h3>Choose a learning path:</h3>
+        {% for path in learning_paths %}
+            <label>
+                <input type="radio" name="chosen_learning_path" value="{{ path.id }}">
+                {{ path.name }}
+            </label>
+            <p>{{ path.description }}</p>
+            <br>
+        {% endfor %}
+        <button type="submit">Submit</button>
+    </form>
+</div>
+<div class="row">
+    
+</div>
+
+</body>
+</html>

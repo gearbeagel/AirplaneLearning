@@ -5,7 +5,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_protect
 
 from profile_page.models import Profile
-from .models import Language, Lesson, Question, Answer, Quiz, LessonStatus, QuizStatus, QuizUserAnswers
+from .models import Language, Lesson, Question, Answer, Quiz
+from .user_progress_models import LessonStatus, QuizStatus, QuizUserAnswers
 
 
 def all_possible_classes(request):

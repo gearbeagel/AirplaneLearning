@@ -10,7 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
+import urllib
 from pathlib import Path
+
+import environ
 from allauth.account.middleware import AccountMiddleware
 from dotenv import load_dotenv
 
@@ -127,28 +130,18 @@ WSGI_APPLICATION = 'ALPP.wsgi.application'
 load_dotenv('.env')
 db_password: str = os.getenv('db_password')
 
-if 'PRODUCTION' in os.environ:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'mssql',
-            'NAME': 'alpp',
-            'USER': 'gearbeagel@myserver',
-            'PASSWORD': db_password,
-            'HOST': 'alpp-server.database.windows.net',
-            'PORT': '',
-            'OPTIONS': {
-                'driver': 'ODBC Driver 17 for SQL Server'
-            }
-        }
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
+environ.Env.DB_SCHEMES['mssql'] = 'mssql'
+env = environ.Env(DEBUG=(bool, False))
 
+DEFAULT_DATABASE_URL = (f"mssql://gearbeagel:{db_password}@alpp-server.database.windows.net:1433/alpp?driver=ODBC+Driver+17+for+SQL+Server")
+
+
+DATABASE_URL = os.environ.get('DATABASE_URL', DEFAULT_DATABASE_URL)
+os.environ['DJANGO_DATABASE_URL'] = DATABASE_URL.format(**os.environ)
+
+DATABASES = {
+    'default': env.db('DJANGO_DATABASE_URL', default=DEFAULT_DATABASE_URL)
+}
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 

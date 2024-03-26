@@ -4,7 +4,8 @@ from django.shortcuts import render, redirect
 
 from profile_page.forms import ProfileForm
 from profile_page.models import Profile
-from modules.models import Lesson, Quiz, LessonStatus, QuizStatus
+from modules.models import Lesson, Quiz
+from modules.user_progress_models import LessonStatus, QuizStatus, QuizUserAnswers
 
 
 def get_latest_lesson_and_quiz(profile):
