@@ -17,5 +17,6 @@ def register(request):
 def about(request):
     return render(request, "about.html")
 
+
 def learning_path_selection(request):
     return HttpResponse("Still developing, sorry!")
