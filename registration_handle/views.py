@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.http import HttpResponse
 from django.shortcuts import render
 
 
@@ -17,4 +18,4 @@ def about(request):
     return render(request, "about.html")
 
 def learning_path_selection(request):
-    pass
+    return HttpResponse("Still developing, sorry!")
