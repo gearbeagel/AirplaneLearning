@@ -2,6 +2,9 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render
 
+from modules.models import Language
+from profile_page.models import LearningPath
+
 
 def home(request):
     return render(request, "homepage.html")
@@ -19,4 +22,6 @@ def about(request):
 
 
 def learning_path_selection(request):
-    return HttpResponse("Still developing, sorry!")
+    languages = Language.objects.all()
+    learning_paths = LearningPath.objects.all()
+    return render(request, 'learning_path_choice.html', {'languages': languages, 'learning_paths': learning_paths})
