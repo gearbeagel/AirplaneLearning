@@ -4,9 +4,9 @@ from unittest.mock import patch
 from django.contrib.auth.models import User
 from django.test import RequestFactory, TestCase
 
-from modules.views import complete_lesson, complete_quiz
+from modules.views import complete_lesson, complete_quiz, quiz_result
 from profile_page.models import Profile
-from .models import Language, Module, Lesson, LessonStatus, Quiz, QuizStatus
+from .models import Language, Module, Lesson, LessonStatus, Quiz, QuizStatus, Question, Answer
 
 
 class LessonCompletionTestCase(TestCase):
@@ -30,7 +30,6 @@ class LessonCompletionTestCase(TestCase):
         self.lesson_status.refresh_from_db()
         self.assertEqual(self.lesson_status.status, 'Completed')
         print(f"Lesson {self.lesson.title} is {self.lesson_status.status}!")
-
 
 
 class QuizCompletionTestCase(TestCase):

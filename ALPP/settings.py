@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 from allauth.account.middleware import AccountMiddleware
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -123,15 +124,18 @@ WSGI_APPLICATION = 'ALPP.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+load_dotenv('.env')
+db_password: str = os.getenv('db_password')
 
 if 'PRODUCTION' in os.environ:
     DATABASES = {
         'default': {
-            'ENGINE': 'sql_server.pyodbc',
+            'ENGINE': 'mssql',
             'NAME': 'alpp',
-            'USER': 'gearbeagel',
-            'PASSWORD': 'Funnyhaha111',
+            'USER': 'gearbeagel@myserver',
+            'PASSWORD': db_password,
             'HOST': 'alpp-server.database.windows.net',
+            'PORT': '',
             'OPTIONS': {
                 'driver': 'ODBC Driver 17 for SQL Server'
             }
