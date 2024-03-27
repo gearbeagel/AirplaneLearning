@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
+import sys
 import urllib
 from pathlib import Path
 
@@ -139,9 +140,17 @@ DEFAULT_DATABASE_URL = (f"mssql://gearbeagel:{db_password}@alpp-server.database.
 DATABASE_URL = os.environ.get('DATABASE_URL', DEFAULT_DATABASE_URL)
 os.environ['DJANGO_DATABASE_URL'] = DATABASE_URL.format(**os.environ)
 
-DATABASES = {
-    'default': env.db('DJANGO_DATABASE_URL', default=DEFAULT_DATABASE_URL)
-}
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
+    }
+else:
+    DATABASES = {
+        'default': env.db('DJANGO_DATABASE_URL', default=DEFAULT_DATABASE_URL)
+    }
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
