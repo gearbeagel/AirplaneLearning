@@ -10,22 +10,24 @@
 <div class="row">
     <form method="post" action="{% url 'language_and_learning_path_choice_submit' %}">
         {% csrf_token %}
-        <h3>Choose a language to learn:</h3>
+        <h3>Which language would like to focus on?:</h3>
         {% for language in languages %}
             <label>
                 <input type="radio" name="chosen_language" value="{{ language.name }}">
                 {{ language.name }}
             </label>
-            <p>{{ language.joke }}</p>
+            {% if language.joke %}
+                <p>{{ language.joke }}</p>
+            {% endif %}
             <br>
         {% endfor %}
-        <h3>Choose a learning path:</h3>
-        {% for path in learning_paths %}
+        <h3>Choose a learning path for that language:</h3>
+        {% for level, description in learning_paths.items %}
             <label>
-                <input type="radio" name="chosen_learning_path" value="{{ path.id }}">
-                {{ path.name }}
+                <input type="radio" name="chosen_learning_path" value="{{ level }}">
+                {{ level }}
             </label>
-            <p>{{ path.description }}</p>
+            <p>{{ description }}</p>
             <br>
         {% endfor %}
         <button type="submit">Submit</button>

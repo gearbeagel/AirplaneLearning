@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ["airplanelearningpolypro.azurewebsites.net", "localhost", "127.
 
 CSRF_TRUSTED_ORIGINS = ['https://airplanelearningpolypro.azurewebsites.net']
 
-LOGIN_REDIRECT_URL = '/setup/'
+LOGIN_REDIRECT_URL = '/profile/'
 LOGOUT_REDIRECT_URL = '/'
 
 SITE_ID = 1
@@ -133,8 +133,7 @@ db_password: str = os.getenv('db_password')
 environ.Env.DB_SCHEMES['mssql'] = 'mssql'
 env = environ.Env(DEBUG=(bool, False))
 
-DEFAULT_DATABASE_URL = (f"mssql://gearbeagel:{db_password}@alpp-server.database.windows.net/"
-                        f"alpp?driver=ODBC+Driver+17+for+SQL+Server")
+DEFAULT_DATABASE_URL = (f"mssql://gearbeagel:{db_password}@alpp-server.database.windows.net/alpp?driver=ODBC+Driver+17+for+SQL+Server")
 
 
 DATABASE_URL = os.environ.get('DATABASE_URL', DEFAULT_DATABASE_URL)

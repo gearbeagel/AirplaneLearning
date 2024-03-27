@@ -24,11 +24,11 @@ def modules_list(request, language_id):
     profile = Profile.objects.get(user=user)
 
     user_learner_type = user.profile.learner_type
-    if user_learner_type in ["Beginner", "A rookie!"]:
+    if user_learner_type in ["A rookie! (Beginner)", "Beginner"]:
         difficulty_level = "Easy"
-    elif user_learner_type in ["Skilled", "A smart cookie!"]:
+    elif user_learner_type in ["A pookie! (Skilled)", "A smart cookie!"]:
         difficulty_level = "Medium"
-    elif user_learner_type in ["Advanced", "A very smart cookie!"]:
+    elif user_learner_type in ["A smart cookie! (Advanced)", "Advanced"]:
         difficulty_level = "Hard"
     else:
         difficulty_level = "Easy"

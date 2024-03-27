@@ -3,8 +3,6 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from modules.models import Language
-from profile_page.models import LearningPath
-
 
 def home(request):
     return render(request, "homepage.html")
@@ -23,5 +21,10 @@ def about(request):
 
 def learning_path_selection(request):
     languages = Language.objects.all()
-    learning_paths = LearningPath.objects.all()
+    learning_paths = {
+        "Beginner": "You don't know the language that well and wish to get better at it.",
+        "Skilled": "You know your stuff, but still need some help (trust us, you will get it here).:)",
+        "Advanced": "You know the language, you 'd like to learn, really well! "
+                    "But you still want to grow and learn more."
+    }
     return render(request, 'learning_path_choice.html', {'languages': languages, 'learning_paths': learning_paths})
