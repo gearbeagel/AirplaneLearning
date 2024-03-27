@@ -70,7 +70,7 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 **Week 5 (03/27 - 04/2):**
 1. Implement feature: User Profile ✔️
 2. Perform security audit and address any vulnerabilities ✔️
-3. Write unit tests for Progress Tracking
+3. Write unit tests for Progress Tracking ✔️
 4. Implement user avatar upload and display
 5. Develop post registration user setup and getting started journey
 
