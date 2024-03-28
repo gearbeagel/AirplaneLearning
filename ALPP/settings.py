@@ -128,29 +128,17 @@ WSGI_APPLICATION = 'ALPP.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-load_dotenv('.env')
-db_password: str = os.getenv('db_password')
-
-environ.Env.DB_SCHEMES['mssql'] = 'mssql'
-env = environ.Env(DEBUG=(bool, False))
-
-DEFAULT_DATABASE_URL = (f"mssql://gearbeagel:{db_password}@alpp-server.database.windows.net/alpp?driver=ODBC+Driver+17+for+SQL+Server")
-
-
-DATABASE_URL = os.environ.get('DATABASE_URL', DEFAULT_DATABASE_URL)
-os.environ['DJANGO_DATABASE_URL'] = DATABASE_URL.format(**os.environ)
-
-if 'test' in sys.argv:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': ':memory:',
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'mssql',
+        'OPTIONS': {
+                'driver': 'ODBC Driver 17 for SQL Server',
+            },
     }
-else:
-    DATABASES = {
-        'default': env.db('DJANGO_DATABASE_URL', default=DEFAULT_DATABASE_URL)
-    }
+}
+MEDIA_URL = '/uploads/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 

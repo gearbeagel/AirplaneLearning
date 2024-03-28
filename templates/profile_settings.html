@@ -20,6 +20,9 @@
         {% if message %}
             <p id="message" style="margin-top: 10px; font-size: 16px;">{{ message }}</p>
         {% endif %}
+        <hr style="border: none; border-top: 1px solid #d39c3f; width: 100%; margin-top: 20px;">
+        <label for="id_profile_pic_url">Profile Picture:</label><br>
+        <input type="file" id="id_profile_pic" name="profile_pic"><br><br>
         <button type="submit" id="submit-btn" style="height: 75px; width: 350px; font-size: 30px">Save Changes</button>
         <br>
         <a href="{% url 'profile_page' %}" id="back-btn" style="height: 75px; width: 350px; font-size: 30px; margin-top: 15px; display: none;">Go back to profile</a>

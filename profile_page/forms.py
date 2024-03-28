@@ -11,4 +11,4 @@ class LearningPathSelectForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['learner_type']
+        fields = ['learner_type', 'profile_pic_url']
