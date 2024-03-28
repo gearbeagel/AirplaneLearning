@@ -70,7 +70,7 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 **Week 5 (03/27 - 04/2):**
 1. Implement feature: User Profile ✔️
 2. Perform security audit and address any vulnerabilities ✔️
-3. Write unit tests for Progress Tracking
+3. Write unit tests for Progress Tracking ✔️
 4. Implement user avatar upload and display
 5. Develop post registration user setup and getting started journey
 
@@ -78,14 +78,14 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 1. Implement feature: Notification System
 2. Conduct user acceptance testing
 3. Write unit tests for User Profile
-4. Enhance Community Forums with moderation features
+4. Implement extensive notification settings
 5. Integrate notifications with User Profiles and Quizzes
 
 **Week 7 (04/10 - 04/16):**
 1. Implement feature: Community Forums
 2. Address user feedback and bug fixes
 3. Write unit tests for Notification System
-4. Expand Resource Library content
+4. Enhance Community Forums with moderation features
 5. Perform load testing for scalability assessment
 
 **Week 8 (04/17 - 04/23):**
@@ -99,14 +99,14 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 1. Implement feature: Feedback Mechanism
 2. Conduct usability testing
 3. Write unit tests for Resource Library
-4. Enhance Social Sharing with user-generated content features
-5. Integrate with User Profile
+4. Send feedback confirmation email when user fills feedback form
+5. Allow adding screenshots to user feedback
 
 **Week 10 (05/1 - 05/7):**
 1. Implement feature: Social Sharing
 2. Address any remaining bugs and issues
 3. Write unit tests for Feedback Mechanism
-4. Finalize documentation for project release
+4. Enhance Social Sharing with user-generated content features
 5. Prepare for production deployment
 
 **Week 11 (05/8 - 05/14):**
