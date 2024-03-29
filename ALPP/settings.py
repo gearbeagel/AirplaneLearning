@@ -30,9 +30,9 @@ SECRET_KEY = 'django-insecure-@*k-c3^l=m6(r^v!ykne@w+t#%-9fp+e6hl)8sooveqj@+hl15
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["airplanelearningpolypro.azurewebsites.net", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["airplanelearning.azurewebsites.net", "localhost", "127.0.0.1"]
 
-CSRF_TRUSTED_ORIGINS = ['https://airplanelearningpolypro.azurewebsites.net']
+CSRF_TRUSTED_ORIGINS = ['https://airplanelearning.azurewebsites.net']
 
 LOGIN_REDIRECT_URL = '/profile/'
 LOGOUT_REDIRECT_URL = '/'
@@ -128,15 +128,29 @@ WSGI_APPLICATION = 'ALPP.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'mssql',
-        'OPTIONS': {
-                'driver': 'ODBC Driver 17 for SQL Server',
-            },
+load_dotenv('.env')
+db_password: str = os.getenv('db_password')
+
+environ.Env.DB_SCHEMES['mssql'] = 'mssql'
+env = environ.Env(DEBUG=(bool,False))
+DEFAULT_DATABASE_URL = f"mssql://gearbeagel:{db_password}@alpp-db-server.database.windows.net/alpp-db?driver=ODBC+Driver+17+for+SQL+Server"
+
+DATABASE_URL = os.environ.get('DATABASE_URL', DEFAULT_DATABASE_URL)
+os.environ['DJANGO_DATABASE_URL'] = DATABASE_URL.format(**os.environ)
+
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
     }
-}
-MEDIA_URL = '/uploads/'
+else:
+    DATABASES = {
+        'default': env.db('DJANGO_DATABASE_URL', default=DEFAULT_DATABASE_URL)
+    }
+
+MEDIA_URL = 'uploads/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 
 # Password validation
@@ -185,4 +199,11 @@ STORAGES = {
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",  # Use FileSystemStorage for media files
+        "OPTIONS": {
+            "location": "/uploads/",  # Specify the directory where media files will be stored
+            "base_url": "/uploads/",  # Specify the base URL for serving media files
+        }
+    }
 }

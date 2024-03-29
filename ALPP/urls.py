@@ -39,7 +39,7 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
-urlpatterns = [
+urlpatterns = ([
     path('admin/', admin.site.urls),
     path('api/', include('modules.urls')),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
@@ -52,3 +52,4 @@ urlpatterns = [
     path('about/', registration_handle.views.about, name='about'),
     path('forums/', include("discussion_forums.urls"))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))

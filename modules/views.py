@@ -70,7 +70,7 @@ def lesson_info(request, lesson_id, language_id):
 
 @csrf_protect
 def lesson_quiz(request, quiz_id, language_id):
-    quiz = get_object_or_404(Lesson, pk=quiz_id)
+    quiz = get_object_or_404(Quiz, pk=quiz_id)
     profile = get_object_or_404(Profile, user=request.user)
     quiz_status, created = QuizStatus.objects.get_or_create(quiz_id=quiz.id, profile=profile)
     language = get_object_or_404(Language, pk=language_id)
@@ -81,7 +81,9 @@ def lesson_quiz(request, quiz_id, language_id):
         answers = list(Answer.objects.filter(question=question))
         answers_dict[question] = answers
     return render(request, 'lesson_quiz.html',
-                  {'quiz': quiz, 'quiz_status': quiz_status, 'language': language, 'questions': questions, 'answers_dict': answers_dict})
+                  {'quiz': quiz, 'quiz_status': quiz_status, 'language': language, 'questions': questions,
+                   'answers_dict': answers_dict})
+
 
 def complete_lesson(request, lesson_id):
     lesson = get_object_or_404(Lesson, pk=lesson_id)

@@ -1,3 +1,4 @@
+import os
 import random
 import string
 
@@ -7,9 +8,14 @@ from django.db import models
 from modules.models import Language
 
 
+def get_upload_path(instance, filename):
+    return os.path.join('uploads', filename)
+
+
 def generate_random_password(length=12):
     letters = string.ascii_letters
     return ''.join(random.choice(letters) for _ in range(length))
+
 
 def get_random_profile_pic():
     profile_pics = [
@@ -24,10 +30,10 @@ class Profile(AbstractUser):
     progress = models.FloatField(default=0)
     profile_pic_url = models.ImageField(upload_to='uploads/', default=get_random_profile_pic)
     learner_type = models.CharField(max_length=50, choices=[("A rookie! (Beginner)", "Beginner"),
-                                                    ("A pookie! (Skilled)", "Skilled"),
-                                                    ("A smart cookie! (Advanced)", "Advanced")],
-                                                    default='An avid learner!')
-    chosen_language = models.ForeignKey(Language, on_delete=models.CASCADE)
+                                                            ("A pookie! (Skilled)", "Skilled"),
+                                                            ("A smart cookie! (Advanced)", "Advanced")],
+                                    default='An avid learner!')
+    # chosen_language = models.ForeignKey(Language, on_delete=models.CASCADE)
     groups = models.ManyToManyField('auth.Group', related_name='profile_set')
     user_permissions = models.ManyToManyField('auth.Permission', related_name='profile_set')
 

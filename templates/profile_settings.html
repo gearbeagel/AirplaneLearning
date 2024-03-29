@@ -5,24 +5,21 @@
 {% block content %}
     <div style="margin: -350px 0 0 -275px; width: 500px">
         <h2 class="sniglet" style="color: #d39c3f; margin-bottom: -5px; margin-top: 10px">Settings</h2>
-        <hr style="border: none; border-top: 1px solid #d39c3f; width: 100%; margin-top: 20px;">
-        <form id="settings-form" method="post" class="sniglet" style="color: #d39c3f; text-align: center; font-size: 40px">
+        <form id="settings-form" method="post" enctype="multipart/form-data" class="sniglet" style="color: #d39c3f; text-align: center; font-size: 40px">
         {% csrf_token %}
+        <hr style="border: none; border-top: 1px solid #d39c3f; width: 100%; margin-top: 20px;">
             <label for="id_learner_type">Learner Type:</label>
             <br>
             <select name="learner_type" id="id_learner_type" style="font-family: 'Sniglet', sans-serif; height: 30px; width: 250px; margin-bottom: 10px;">
                 <option value="" hidden>-- Select a Learning Style --</option>
                 <option value="A rookie! (Beginner)">Beginner</option>
-                <option value="A smart cookie! (Skilled)">Skilled</option>
-                <option value="A very smart cookie! (Advanced)">Advanced</option>
+                <option value="A pookie! (Skilled)">Skilled</option>
+                <option value="A smart cookie! (Advanced)">Advanced</option>
             </select>
             <br>
         {% if message %}
             <p id="message" style="margin-top: 10px; font-size: 16px;">{{ message }}</p>
         {% endif %}
-        <hr style="border: none; border-top: 1px solid #d39c3f; width: 100%; margin-top: 20px;">
-        <label for="id_profile_pic_url">Profile Picture:</label><br>
-        <input type="file" id="id_profile_pic" name="profile_pic"><br><br>
         <button type="submit" id="submit-btn" style="height: 75px; width: 350px; font-size: 30px">Save Changes</button>
         <br>
         <a href="{% url 'profile_page' %}" id="back-btn" style="height: 75px; width: 350px; font-size: 30px; margin-top: 15px; display: none;">Go back to profile</a>

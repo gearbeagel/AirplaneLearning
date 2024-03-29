@@ -2,7 +2,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-from profile_page.forms import ProfileForm
+from profile_page.forms import LearnerTypeSettings
 from profile_page.models import Profile
 from modules.models import Lesson, Quiz
 from modules.user_progress_models import LessonStatus, QuizStatus, QuizUserAnswers
@@ -58,15 +58,19 @@ def profile_page(request):
                                                  'latest_quiz_language': latest_quiz_language})
 
 
-@login_required()
+@login_required
 def profile_settings(request):
     profile, created = Profile.objects.get_or_create(user=request.user)
+
     if request.method == 'POST':
-        form = ProfileForm(request.POST, instance=profile)
+        form = LearnerTypeSettings(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
+            return redirect('profile_page')
+        else:
+            print(form.errors)
     else:
-        form = ProfileForm(instance=profile)
+        form = LearnerTypeSettings(instance=profile)
 
     return render(request, 'profile_settings.html', {'form': form})
 
