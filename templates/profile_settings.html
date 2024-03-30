@@ -1,41 +1,41 @@
 {% extends "profile_page.html" %}
 {% load static %}
-{{ block.super }}
 {% block title %}Profile Settings{% endblock %}
+
 {% block content %}
     <div style="margin: -350px 0 0 -275px; width: 500px">
         <h2 class="sniglet" style="color: #d39c3f; margin-bottom: -5px; margin-top: 10px">Settings</h2>
-        <form id="settings-form" method="post" enctype="multipart/form-data" class="sniglet" style="color: #d39c3f; text-align: center; font-size: 40px">
-        {% csrf_token %}
-        <hr style="border: none; border-top: 1px solid #d39c3f; width: 100%; margin-top: 20px;">
-            <label for="id_learner_type">Learner Type:</label>
-            <br>
-            <select name="learner_type" id="id_learner_type" style="font-family: 'Sniglet', sans-serif; height: 30px; width: 250px; margin-bottom: 10px;">
-                <option value="" hidden>-- Select a Learning Style --</option>
-                <option value="A rookie! (Beginner)">Beginner</option>
-                <option value="A pookie! (Skilled)">Skilled</option>
-                <option value="A smart cookie! (Advanced)">Advanced</option>
-            </select>
-            <br>
-        {% if message %}
-            <p id="message" style="margin-top: 10px; font-size: 16px;">{{ message }}</p>
-        {% endif %}
-        <button type="submit" id="submit-btn" style="height: 75px; width: 350px; font-size: 30px">Save Changes</button>
+        
+        <!-- Learner Type Form -->
+    <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;">
+        <form id="learner-type-form" method="post" class="sniglet" style="color: #d39c3f; text-align: center; font-size: 40px">
+            {% csrf_token %}
+            <label for="learner_type">Learner Type:</label>
         <br>
+            <select name="learner_type" id="learner_type" style="width: 300px; height: 25px; font-size: 15px; font-family: Sniglet, sans-serif">
+                {% for choice in learner_type_form.learner_type.field.choices %}
+                    <option value="{{ choice.0 }}" {% if choice.0 == learner_type_form.learner_type.value %}selected{% endif %}>{{ choice.1 }}</option>
+                {% endfor %}
+            </select>
+        <br>
+            <button type="submit" name="learner_type_submit" style="height: 75px; width: 350px; font-size: 30px; margin-top: 10px">Save Learner Type</button>
+        </form>
+        
+        <!-- Profile Picture Form -->
+        <form id="profile-picture-form" method="post" enctype="multipart/form-data" class="sniglet" style="color: #d39c3f; text-align: center; font-size: 40px">
+            {% csrf_token %}
+            <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;">
+            <label for="profile_pic_url">Profile Picture:</label>
+        <br>
+            <input type="file" name="profile_pic_url" id="profile_pic_url">
+            <br>
+            <button type="submit" name="default_profile_pic" style="font-size: 10px; height: 35px; width: 350px; background-color: #578661">Revert to default profile picture</button>
+            <br>
+            <button type="submit" name="profile_pic_submit" style="height: 75px; width: 350px; font-size: 30px; margin-top: 10px">Save Profile Picture</button>
+        </form>
+        
+        <p id="message" style="margin-top: 10px; font-size: 16px; display: none;"></p>
+        
         <a href="{% url 'profile_page' %}" id="back-btn" style="height: 75px; width: 350px; font-size: 30px; margin-top: 15px; display: none;">Go back to profile</a>
-    </form>
     </div>
 {% endblock %}
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('settings-form').addEventListener('submit', function(event) {
-            var messageElement = document.getElementById('message');
-            messageElement.textContent = "Changes saved successfully.";
-            messageElement.style.display = 'block';
-            setTimeout(function() {
-                window.location.href = "profile/";
-            }, 2000);
-        });
-    });
-</script>

@@ -132,7 +132,7 @@ load_dotenv('.env')
 db_password: str = os.getenv('db_password')
 
 environ.Env.DB_SCHEMES['mssql'] = 'mssql'
-env = environ.Env(DEBUG=(bool,False))
+env = environ.Env(DEBUG=(bool, False))
 DEFAULT_DATABASE_URL = f"mssql://gearbeagel:{db_password}@alpp-db-server.database.windows.net/alpp-db?driver=ODBC+Driver+17+for+SQL+Server"
 
 DATABASE_URL = os.environ.get('DATABASE_URL', DEFAULT_DATABASE_URL)
@@ -202,10 +202,13 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
     "default": {
-        "BACKEND": 'storages.backends.azure_storage.AzureStorage',
+        'BACKEND': 'storages.backends.azure_storage.AzureStorage',
         'AZURE_ACCOUNT_NAME': 'alppstorageaccount',
         'AZURE_ACCOUNT_KEY': storage_key,
         'AZURE_CONTAINER': 'pfpcontainer',
     }
 }
 
+AZURE_ACCOUNT_NAME = 'alppstorageaccount'
+AZURE_ACCOUNT_KEY = storage_key
+AZURE_CONTAINER = 'pfpcontainer'

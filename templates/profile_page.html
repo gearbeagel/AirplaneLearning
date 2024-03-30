@@ -39,7 +39,8 @@
 {% endblock %}
 {% block content %}
 <div style="margin: -350px 0 0 -200px; width: 500px">
-    <img src="{{ student.profile_pic_url }}" style="height: 30%; width: 30%; margin-bottom: -25px; margin-left: 25px; margin-right: 25px;" alt="{{ user.username }}'s profile picture">
+    <img src="{{ profile_picture_url }}" style="height: 30%; width: 30%; margin-bottom: -25px; margin-left: 25px; margin-right: 25px; border-radius: 50%; /* This creates a circular shape */
+        object-fit: cover;" alt="{{ user.username }}'s profile picture">
     <h2 class="sniglet-extrabold" style="color: #d39c3f; margin-bottom: -15px">{{ user.username }}</h2>
     <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;">
     <h3 class="sniglet-bold" style="color: #d39c3f; margin-bottom: -5px">{{ user.first_name }} {{ user.last_name }}</h3>

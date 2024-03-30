@@ -1,9 +1,12 @@
+import os
+
+from azure.storage.blob import BlobServiceClient
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-from profile_page.forms import LearnerTypeSettings
-from profile_page.models import Profile
+from profile_page.forms import LearnerTypeSettings, ProfilePictureSettings
+from profile_page.models import Profile, get_random_profile_pic
 from modules.models import Lesson, Quiz
 from modules.user_progress_models import LessonStatus, QuizStatus, QuizUserAnswers
 
@@ -52,27 +55,54 @@ def profile_page(request):
     latest_lesson_language = latest_lesson.lesson.module.language if latest_lesson else None
     latest_quiz_language = latest_quiz.quiz.module.language if latest_quiz else None
 
+    azure_storage_connection_string = os.getenv("connection_str")
+    container_name = "pfpcontainer"
+    blob_name = student.profile_pic_url
+
+    blob_service_client = BlobServiceClient.from_connection_string(azure_storage_connection_string)
+    blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)
+
+    profile_picture_url = blob_client.url
+
     return render(request, 'profile_page.html', {'student': student, 'user': request.user,
                                                  'latest_lesson': latest_lesson, 'latest_quiz': latest_quiz,
                                                  'latest_lesson_language': latest_lesson_language,
-                                                 'latest_quiz_language': latest_quiz_language})
+                                                 'latest_quiz_language': latest_quiz_language,
+                                                 'profile_picture_url': profile_picture_url})
 
 
 @login_required
 def profile_settings(request):
-    profile, created = Profile.objects.get_or_create(user=request.user)
+    profile = Profile.objects.get(user=request.user)
 
     if request.method == 'POST':
-        form = LearnerTypeSettings(request.POST, request.FILES, instance=profile)
-        if form.is_valid():
-            form.save()
-            return redirect('profile_page')
-        else:
-            print(form.errors)
-    else:
-        form = LearnerTypeSettings(instance=profile)
+        if 'learner_type_submit' in request.POST:
+            learner_type_form = LearnerTypeSettings(request.POST, instance=profile)
+            if learner_type_form.is_valid():
+                learner_type_form.save()
+                return redirect('profile_page')
+            else:
+                print(learner_type_form.errors)
 
-    return render(request, 'profile_settings.html', {'form': form})
+        elif 'profile_pic_submit' in request.POST:
+            profile_pic_form = ProfilePictureSettings(request.POST, request.FILES, instance=profile)
+            if profile_pic_form.is_valid():
+                profile_pic_form.instance.container_name = 'pfpcontainer'  # Set the container name
+                profile_pic_form.save()
+                return redirect('profile_page')
+
+        elif 'default_profile_pic' in request.POST:
+            profile.profile_pic_url = get_random_profile_pic()
+            profile.save()
+            return redirect('profile_page')
+
+    learner_type_form = LearnerTypeSettings(instance=profile)
+    profile_pic_form = ProfilePictureSettings(instance=profile)
+
+    return render(request, 'profile_settings.html', {
+        'learner_type_form': learner_type_form,
+        'profile_pic_form': profile_pic_form
+    })
 
 
 @login_required()
