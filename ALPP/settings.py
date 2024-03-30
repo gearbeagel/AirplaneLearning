@@ -195,15 +195,17 @@ STATIC_URL = STATIC_HOST + "/static/"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+storage_key: str = os.getenv('storage_key')
+
 STORAGES = {
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
     "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",  # Use FileSystemStorage for media files
-        "OPTIONS": {
-            "location": "/uploads/",  # Specify the directory where media files will be stored
-            "base_url": "/uploads/",  # Specify the base URL for serving media files
-        }
+        "BACKEND": 'storages.backends.azure_storage.AzureStorage',
+        'AZURE_ACCOUNT_NAME': 'alppstorageaccount',
+        'AZURE_ACCOUNT_KEY': storage_key,
+        'AZURE_CONTAINER': 'pfpcontainer',
     }
 }
+
