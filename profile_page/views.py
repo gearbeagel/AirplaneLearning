@@ -6,8 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 from profile_page.forms import LearnerTypeSettings, ProfilePictureSettings
-from profile_page.models import Profile, get_random_profile_pic
-from modules.models import Lesson, Quiz
+from profile_page.models import Profile, get_random_profile_pic, LearnerType
+from modules.models import Lesson, Quiz, Module
 from modules.user_progress_models import LessonStatus, QuizStatus, QuizUserAnswers
 
 
@@ -18,9 +18,10 @@ def get_latest_lesson_and_quiz(profile):
     return latest_lesson_status.lesson if latest_lesson_status else None, latest_quiz_status.quiz if latest_quiz_status else None
 
 
-def calculate_progress(user_profile):
-    total_lessons = len(list(Lesson.objects.all()))
-    total_quizzes = len(list(Quiz.objects.all()))
+def calculate_progress(user_profile, chosen_language_id):
+    total_modules = Module.objects.filter(language_id=chosen_language_id)
+    total_lessons = Lesson.objects.filter(module__in=total_modules).count()
+    total_quizzes = Quiz.objects.filter(module__in=total_modules).count()
 
     completed_lessons = LessonStatus.objects.filter(profile=user_profile, status="Completed").count()
     completed_quizzes = QuizStatus.objects.filter(profile=user_profile, status="Completed").count()
@@ -28,26 +29,27 @@ def calculate_progress(user_profile):
     total_items = total_lessons + total_quizzes
     completed_items = completed_lessons + completed_quizzes
 
+    print("Total items:", total_items)
+    print("Completed items:", completed_items)
+
     if total_items > 0:
         progress_percentage = (completed_items / total_items) * 100
     else:
         progress_percentage = 0
 
+    print("Progress percentage:", progress_percentage)
+
     user_profile.progress = progress_percentage
     user_profile.save()
-
 
 @login_required
 def profile_page(request):
     try:
         student = Profile.objects.get(user=request.user)
-        calculate_progress(student)
     except Profile.DoesNotExist:
-        new_profile = Profile.objects.create(user=request.user, username=request.user.username,
-                                             email=request.user.email,
-                                             user_id=request.user.id)
-        student = new_profile
-        calculate_progress(student)
+        return redirect("setup")
+
+    calculate_progress(student, student.chosen_language_id)
 
     latest_lesson = LessonStatus.objects.filter(profile=student, status='Completed').order_by('-finished_at').first()
     latest_quiz = QuizStatus.objects.filter(profile=student, status='Completed').order_by('-finished_at').first()
@@ -74,6 +76,7 @@ def profile_page(request):
 @login_required
 def profile_settings(request):
     profile = Profile.objects.get(user=request.user)
+    learner_types = LearnerType.objects.all
 
     if request.method == 'POST':
         if 'learner_type_submit' in request.POST:
@@ -101,7 +104,8 @@ def profile_settings(request):
 
     return render(request, 'profile_settings.html', {
         'learner_type_form': learner_type_form,
-        'profile_pic_form': profile_pic_form
+        'profile_pic_form': profile_pic_form,
+        'leaner_types': learner_types
     })
 
 

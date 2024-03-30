@@ -1,41 +1,42 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="{% static "favicon.ico" %}">
     <title>Make a choice</title>
 </head>
 <body>
-<h1 class="sniglet-extrabold" style="text-align: center">Before we start, it would be great if you could answer a couple of questions.</h1>
-<h2 class="sniglet-bold" style="text-align: center">Choose a language to learn and a learning path</h2>
-<div class="row">
-    <form method="post" action="{% url 'language_and_learning_path_choice_submit' %}">
+    <h2 class="sniglet-extrabold" style="text-align: center">Before we start, it would be great if you could answer a couple of questions.</h2>
+    <form method="post" action="{% url 'setup' %}">
         {% csrf_token %}
-        <h3>Which language would like to focus on?:</h3>
-        {% for language in languages %}
-            <label>
-                <input type="radio" name="chosen_language" value="{{ language.name }}">
-                {{ language.name }}
-            </label>
-            {% if language.joke %}
-                <p>{{ language.joke }}</p>
-            {% endif %}
-            <br>
-        {% endfor %}
-        <h3>Choose a learning path for that language:</h3>
-        {% for level, description in learning_paths.items %}
-            <label>
-                <input type="radio" name="chosen_learning_path" value="{{ level }}">
-                {{ level }}
-            </label>
-            <p>{{ description }}</p>
-            <br>
-        {% endfor %}
-        <button type="submit">Submit</button>
+        <div class="column" style="margin: -200px 0 0 -600px">
+            <h3 class="sniglet-bold">Which language would you like to focus on?</h3>
+            {% for language in form.chosen_language.field.queryset %}
+                <label class="sniglet">
+                    <input type="radio" name="chosen_language" value="{{ language.id }}">{{ language.name }}
+                </label>
+                {% if language.joke %}
+                    <p>{{ language.joke }}</p>
+                {% endif %}
+                <br>
+            {% endfor %}
+        </div>
+        <div class="column" style="margin: -200px 0 0 100px">
+            <h3 class="sniglet-bold">Choose a learning path for that language:</h3>
+            {% for lp in form.learner_type.field.queryset %}
+                <label class="sniglet">
+                    <input type="radio" name="learner_type" value="{{ lp.id }}">{{ lp.title }}
+                </label>
+                <p>{{ lp.description }}</p>
+                <br>
+            {% endfor %}
+        </div>
+        <button type="submit" class="submit-button" style="margin: 550px 0 0 750px">Submit</button>
     </form>
-</div>
-<div class="row">
-    
-</div>
-
 </body>
 </html>

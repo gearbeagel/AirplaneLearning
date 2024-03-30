@@ -2,19 +2,15 @@ from django import forms
 from storages.backends.azure_storage import AzureStorage
 
 from ALPP import settings
-from .models import Profile
-
-
-# class LearningPathSelectForm(forms.ModelForm):
-#     class Meta:
-#         model = Profile
-#         fields = ['learner_type', 'chosen_language']
+from .models import Profile, LearnerType
 
 
 class LearnerTypeSettings(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['learner_type']
+
+    learner_type = forms.ModelChoiceField(queryset=LearnerType.objects.all())
 
 
 class ProfilePictureSettings(forms.ModelForm):

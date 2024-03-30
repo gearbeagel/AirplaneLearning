@@ -34,7 +34,7 @@ ALLOWED_HOSTS = ["airplanelearning.azurewebsites.net", "localhost", "127.0.0.1"]
 
 CSRF_TRUSTED_ORIGINS = ['https://airplanelearning.azurewebsites.net']
 
-LOGIN_REDIRECT_URL = '/profile/'
+LOGIN_REDIRECT_URL = '/setup/'
 LOGOUT_REDIRECT_URL = '/'
 
 SITE_ID = 1

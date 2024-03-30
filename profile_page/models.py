@@ -25,15 +25,17 @@ def get_random_profile_pic():
     return random.choice(profile_pics)
 
 
+class LearnerType(models.Model):
+    title = models.CharField(max_length=50)
+    alternate_title = models.CharField(max_length=50)
+    description = models.TextField()
+
 class Profile(AbstractUser):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     progress = models.FloatField(default=0)
     profile_pic_url = models.ImageField(upload_to='uploads/', default=get_random_profile_pic)
-    learner_type = models.CharField(max_length=50, choices=[("A rookie! (Beginner)", "Beginner"),
-                                                            ("A pookie! (Skilled)", "Skilled"),
-                                                            ("A smart cookie! (Advanced)", "Advanced")],
-                                    default='An avid learner!')
-    # chosen_language = models.ForeignKey(Language, on_delete=models.CASCADE)
+    learner_type = models.ForeignKey(LearnerType, on_delete=models.CASCADE)
+    chosen_language = models.ForeignKey(Language, on_delete=models.CASCADE)
     groups = models.ManyToManyField('auth.Group', related_name='profile_set')
     user_permissions = models.ManyToManyField('auth.Permission', related_name='profile_set')
 

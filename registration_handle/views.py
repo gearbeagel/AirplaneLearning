@@ -1,8 +1,11 @@
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from django.shortcuts import render
-
+from django.shortcuts import render, redirect
+import logging
 from modules.models import Language
+from profile_page.models import Profile, LearnerType
+from registration_handle.forms import ProfileUpdateForm
+
 
 def home(request):
     return render(request, "homepage.html")
@@ -19,12 +22,22 @@ def about(request):
     return render(request, "about.html")
 
 
-def learning_path_selection(request):
-    languages = Language.objects.all()
-    learning_paths = {
-        "Beginner": "You don't know the language that well and wish to get better at it.",
-        "Skilled": "You know your stuff, but still need some help (trust us, you will get it here).:)",
-        "Advanced": "You know the language, you 'd like to learn, really well! "
-                    "But you still want to grow and learn more."
-    }
-    return render(request, 'learning_path_choice.html', {'languages': languages, 'learning_paths': learning_paths})
+def language_and_learning_path_selection(request):
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            try:
+                Profile.objects.create(
+                    user=request.user,
+                    chosen_language=form_data['chosen_language'],
+                    learner_type=form_data['learner_type']
+                )
+                return redirect('profile_page')
+            except Exception as e:
+                print("Error occurred while creating profile:", e)
+    else:
+        form = ProfileUpdateForm()
+
+    return render(request, 'learning_path_choice.html',
+                  {'form': form})

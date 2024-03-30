@@ -1,54 +1,28 @@
-from django.contrib.auth.models import User
 from django.test import TestCase
-
-from modules.models import Lesson, Quiz, Module, Language
+from unittest.mock import patch, Mock
+from modules.models import Module, Lesson, Quiz
 from modules.user_progress_models import LessonStatus, QuizStatus
-from .models import Profile
-
 from .views import calculate_progress
 
-
 class CalculateProgressTestCase(TestCase):
-    def setUp(self):
-        # Create a user for the Profile
-        self.user = User.objects.create_user(username='test_user')
+    @patch('modules.models.Module.objects.filter')
+    @patch('modules.models.Lesson.objects.filter')
+    @patch('modules.models.Quiz.objects.filter')
+    @patch('modules.user_progress_models.LessonStatus.objects.filter')
+    @patch('modules.user_progress_models.QuizStatus.objects.filter')
+    def test_calculate_progress(self, mock_quiz_status_filter, mock_lesson_status_filter, 
+                                mock_quiz_filter, mock_lesson_filter, mock_module_filter):
 
-        # Create a Profile object for the user
-        self.user_profile = Profile.objects.create(user=self.user, progress=0)
+        user_profile = Mock()
+        chosen_language_id = 1
+        mock_module_filter.return_value = [Mock(), Mock()]
+        mock_lesson_filter.return_value.count.return_value = 3
+        mock_quiz_filter.return_value.count.return_value = 2
+        mock_lesson_status_filter.return_value.count.return_value = 2
+        mock_quiz_status_filter.return_value.count.return_value = 1
 
-        # Create a language
-        self.language = Language.objects.create(name='English')  # Replace 'English' with the actual language name
+        # Call the function
+        calculate_progress(user_profile, chosen_language_id)
 
-        # Create some modules associated with the language
-        self.module1 = Module.objects.create(title='Module 1', language=self.language)
-        self.module2 = Module.objects.create(title='Module 2', language=self.language)
+        self.assertEqual(user_profile.progress, 60.0)
 
-        # Create some lessons and quizzes associated with modules
-        self.lesson1 = Lesson.objects.create(title='Lesson 1', module=self.module1)
-        self.lesson2 = Lesson.objects.create(title='Lesson 2', module=self.module2)
-        self.quiz1 = Quiz.objects.create(title='Quiz 1', module=self.module1)
-        self.quiz2 = Quiz.objects.create(title='Quiz 2', module=self.module2)
-
-        # Mark some lessons and quizzes as completed for the user profile
-        LessonStatus.objects.create(lesson=self.lesson1, profile=self.user_profile, status='Completed')
-        LessonStatus.objects.create(lesson=self.lesson2, profile=self.user_profile, status='Completed')
-        QuizStatus.objects.create(quiz=self.quiz1, profile=self.user_profile, status='Completed')
-
-
-    def test_calculate_progress(self):
-        calculate_progress(self.user_profile)
-
-        updated_profile = Profile.objects.get(pk=self.user_profile.pk)
-
-        total_lessons = Lesson.objects.count()
-        total_quizzes = Quiz.objects.count()
-        completed_lessons = LessonStatus.objects.filter(profile=self.user_profile, status="Completed").count()
-        completed_quizzes = QuizStatus.objects.filter(profile=self.user_profile, status="Completed").count()
-        total_items = total_lessons + total_quizzes
-        completed_items = completed_lessons + completed_quizzes
-        expected_progress = (completed_items / total_items) * 100
-
-        print(f"Expected Progress: {expected_progress}%")
-        print(f"Actual Progress: {updated_profile.progress}%")
-
-        self.assertEqual(updated_profile.progress, expected_progress)

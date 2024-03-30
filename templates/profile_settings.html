@@ -1,25 +1,48 @@
 {% extends "profile_page.html" %}
 {% load static %}
 {% block title %}Profile Settings{% endblock %}
+{% block sidebar %}
+<article class="sidebar">
 
+    <a href="/profile"><img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
+    <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
+    <a class="sniglet" href="/profile">Go to profile</a>
+    <br>
+    <br>
+    <a class="sniglet" style="font-size: 15px" href={% url "modules_list" language_id=user.profile.chosen_language.id %}>Go to available modules</a>
+    <br>
+    <br>
+    <a class="sniglet" style="font-size: 15px" href="/forums">Go to discussion forums</a>
+    <p class="sniglet" style="font-size: 15px; color: white"><u>Go to settings</u></p>
+    <a class="sniglet" style="font-size: 15px" href="{% url 'about' %}">About</a>
+    <br>
+    <br>
+    <a class="sniglet" style="font-size: 15px" href="{% url 'logout' %}">Log out</a>
+    <footer class="sniglet" style="bottom: 45px; left: 75px">
+    <p>© gearbeagel</p>
+    </footer>
+
+</article>
+{% endblock %}
 {% block content %}
     <div style="margin: -350px 0 0 -275px; width: 500px">
         <h2 class="sniglet" style="color: #d39c3f; margin-bottom: -5px; margin-top: 10px">Settings</h2>
         
         <!-- Learner Type Form -->
     <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;">
-        <form id="learner-type-form" method="post" class="sniglet" style="color: #d39c3f; text-align: center; font-size: 40px">
-            {% csrf_token %}
-            <label for="learner_type">Learner Type:</label>
+    <form id="learner-type-form" method="post" class="sniglet" style="color: #d39c3f; text-align: center; font-size: 40px">
+    {% csrf_token %}
+        <label for="learner_type">Learner Type:</label>
+    <br>
+        <select name="learner_type" id="learner_type" style="width: 300px; height: 35px; font-size: 16px; font-family: Sniglet, sans-serif">
+            <option value="" hidden>--------</option>
+            <option value="1">Beginner</option>
+            <option value="2">Skilled</option>
+            <option value="3">Advanced</option>
+        </select>
         <br>
-            <select name="learner_type" id="learner_type" style="width: 300px; height: 25px; font-size: 15px; font-family: Sniglet, sans-serif">
-                {% for choice in learner_type_form.learner_type.field.choices %}
-                    <option value="{{ choice.0 }}" {% if choice.0 == learner_type_form.learner_type.value %}selected{% endif %}>{{ choice.1 }}</option>
-                {% endfor %}
-            </select>
-        <br>
-            <button type="submit" name="learner_type_submit" style="height: 75px; width: 350px; font-size: 30px; margin-top: 10px">Save Learner Type</button>
-        </form>
+        <button type="submit" name="learner_type_submit" style="height: 50px; width: 300px; font-size: 20px; margin-top: 10px">Save Learner Type</button>
+</form>
         
         <!-- Profile Picture Form -->
         <form id="profile-picture-form" method="post" enctype="multipart/form-data" class="sniglet" style="color: #d39c3f; text-align: center; font-size: 40px">
