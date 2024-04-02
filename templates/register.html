@@ -14,10 +14,10 @@
     <img src="{% static 'leeri_stare.png' %}" class='image' alt="Leeri staring into your soul">
     <div class="registration">
         <h2 class="sniglet-bold">Register with Google</h2>
-        <button class="reg-button">
+        <a href="{% provider_login_url 'google' %}?next=/"><button class="reg-button">
         <img src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo" style="height: 25%;
     width: 25%;">
-        <a href="{% provider_login_url 'google' %}?next=/">Login with Google</a></button>
+            <p>Login with Google</p></button></a>
 </div>
 </section>
 <footer class="sniglet" style="color: #578661">

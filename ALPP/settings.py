@@ -34,7 +34,7 @@ ALLOWED_HOSTS = ["airplanelearning.azurewebsites.net", "localhost", "127.0.0.1"]
 
 CSRF_TRUSTED_ORIGINS = ['https://airplanelearning.azurewebsites.net']
 
-LOGIN_REDIRECT_URL = '/setup/'
+LOGIN_REDIRECT_URL = 'setup/'
 LOGOUT_REDIRECT_URL = '/'
 
 SITE_ID = 1
@@ -133,7 +133,8 @@ db_password: str = os.getenv('db_password')
 
 environ.Env.DB_SCHEMES['mssql'] = 'mssql'
 env = environ.Env(DEBUG=(bool, False))
-DEFAULT_DATABASE_URL = f"mssql://gearbeagel:{db_password}@alpp-db-server.database.windows.net/alpp-db?driver=ODBC+Driver+17+for+SQL+Server"
+DEFAULT_DATABASE_URL = (f"mssql://gearbeagel:{db_password}@alpp-db-server.database.windows.net/alpp-db"
+                        f"?driver=ODBC+Driver+17+for+SQL+Server")
 
 DATABASE_URL = os.environ.get('DATABASE_URL', DEFAULT_DATABASE_URL)
 os.environ['DJANGO_DATABASE_URL'] = DATABASE_URL.format(**os.environ)

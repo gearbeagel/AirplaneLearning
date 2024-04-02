@@ -21,7 +21,6 @@ class CalculateProgressTestCase(TestCase):
         mock_lesson_status_filter.return_value.count.return_value = 2
         mock_quiz_status_filter.return_value.count.return_value = 1
 
-        # Call the function
         calculate_progress(user_profile, chosen_language_id)
 
         self.assertEqual(user_profile.progress, 60.0)

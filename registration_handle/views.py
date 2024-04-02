@@ -28,14 +28,20 @@ def language_and_learning_path_selection(request):
         if form.is_valid():
             form_data = form.cleaned_data
             try:
+                print(f"user: {request.user}")
+                print(f"language: {form_data['chosen_language']}")
+                print(f"learning: {form_data['learner_type']}")
                 Profile.objects.create(
                     user=request.user,
+                    email=request.user.email,
+                    username=request.user.username,
+                    user_id=request.user.id,
                     chosen_language=form_data['chosen_language'],
                     learner_type=form_data['learner_type']
                 )
                 return redirect('profile_page')
             except Exception as e:
-                print("Error occurred while creating profile:", e)
+                print("Error occurred while creating profile: %s", e)
     else:
         form = ProfileUpdateForm()
 

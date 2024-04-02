@@ -42,6 +42,7 @@ def calculate_progress(user_profile, chosen_language_id):
     user_profile.progress = progress_percentage
     user_profile.save()
 
+
 @login_required
 def profile_page(request):
     try:
