@@ -25,7 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@*k-c3^l=m6(r^v!ykne@w+t#%-9fp+e6hl)8sooveqj@+hl15'
+load_dotenv('.env')
+secret_key = os.getenv('secret_key')
+SECRET_KEY = secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -94,8 +96,8 @@ SOCIALACCOUNT_PROVIDERS = {
         'SCOPE': ['profile', 'email'],
         'AUTH_PARAMS': {'access_type': 'online'},
         'APP': {
-            'client_id': '92021185036-ija2gcsktesrejq05st3mrst2p8vn6p8.apps.googleusercontent.com',
-            'secret': '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',
+            'client_id': os.environ.get('client_id'),
+            'secret': os.environ.get('secret'),
             'key': ''
         }
     }
@@ -213,3 +215,13 @@ STORAGES = {
 AZURE_ACCOUNT_NAME = 'alppstorageaccount'
 AZURE_ACCOUNT_KEY = storage_key
 AZURE_CONTAINER = 'pfpcontainer'
+
+
+welcome_email_password: str = os.getenv('welcome_email_password')
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'mnoanyesmai@gmail.com'
+EMAIL_HOST_PASSWORD = welcome_email_password
+EMAIL_USE_TLS = True

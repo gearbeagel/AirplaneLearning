@@ -18,7 +18,7 @@
     <a href="/profile"><img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
     <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
     <a class="sniglet" href="/profile">Go to profile</a>
-    <a class="sniglet" style="font-size: 15px" href={% url "modules_list" language_id=student.chosen_language.id %}>Go to available modules</a>
+    <a class="sniglet" style="font-size: 15px" href={% url "modules_list" language_id=user.profile.chosen_language.id %}>Go to available modules</a>
     <br>
     <br>
     <a class="sniglet" style="font-size: 15px" href="/forums">Go to discussion forums</a>
@@ -42,7 +42,7 @@
     <p style="margin-left: 350px; 
             {% if quiz.difficulty_level == 'Easy' %} 
                 background-color: #578661; /* Easy */
-            {% elif quiz.difficulty_level == 'Medium' %}
+            {% elif quiz.difficulty_level == 'Medium' or 'medium' %}
                 background-color: #d39c3f; /* Medium */
             {% elif quiz.difficulty_level == 'Hard' %}
                 background-color: #CC6666; /* Hard */
@@ -53,15 +53,29 @@
         {% csrf_token %}
         {% for question in questions %}
             <h3 class="sniglet" style="margin-left: 400px; padding: 10px; border: #d39c3f 3px solid; border-radius: 25px; width: fit-content">{{ question.text }}</h3>
-            {% for answer in answers_dict|get_value:question %}
-                <label class="sniglet" style="margin-left: 450px">
-                    <input type="radio" name="question_{{ question.id }}" value="{{ answer.id }}">
-                    {{ answer.text }}
+            {% if question.question_type == 'Single Choice' %}
+                {% for answer in answers_dict|get_value:question %}
+                    <label class="sniglet" style="margin-left: 450px">
+                        <input type="radio" name="question_{{ question.id }}" value="{{ answer.id }}">
+                        {{ answer.text }}
+                    </label><br>
+                {% endfor %}
+            {% elif question.question_type == 'Multiple Choice' %}
+                {% for answer in answers_dict|get_value:question %}
+                    <label class="sniglet" style="margin-left: 450px">
+                        <input type="checkbox" name="question_{{ question.id }}" value="{{ answer.id }}">
+                        {{ answer.text }}
+                    </label><br>
+                {% endfor %}
+            {% elif question.question_type == 'Open Text' %}
+                <label>
+                    <textarea name="question_{{ question.id }}" rows="4" cols="50" style="margin-left: 450px; font-family: Sniglet, sans-serif"></textarea>
                 </label><br>
-            {% endfor %}
+            {% endif %}
         {% endfor %}
         <br>
         <button type="submit" style="margin-left: 815px">Submit</button>
+    </form>
 {% elif quiz_status.status == "Completed" %}
     <p style="margin-left: 825px">You have already passed the quiz. You can view the results <a style='color: #637d91' href="{% url "quiz_result" language_id=language.id quiz_id=quiz.id %}">here.</a> </p>
 {% endif %}

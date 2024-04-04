@@ -24,11 +24,11 @@ def modules_list(request, language_id):
     profile = Profile.objects.get(user=user)
 
     user_learner_type = user.profile.learner_type
-    if user_learner_type in ["A rookie! (Beginner)", "Beginner"]:
+    if user_learner_type.id == 1:
         difficulty_level = "Easy"
-    elif user_learner_type in ["A pookie! (Skilled)", "A smart cookie!"]:
+    elif user_learner_type.id == 2:
         difficulty_level = "Medium"
-    elif user_learner_type in ["A smart cookie! (Advanced)", "Advanced"]:
+    elif user_learner_type.id == 3:
         difficulty_level = "Hard"
     else:
         difficulty_level = "Easy"
@@ -118,11 +118,14 @@ def quiz_result(request, language_id, quiz_id):
 
                 is_correct = "Correct" if user_answer == correct_answer else "Incorrect"
 
+                # Convert user answer to string if it's a list
+                user_answer_text = user_answer.text if isinstance(user_answer.text, str) else user_answer.text[0]
+
                 QuizUserAnswers.objects.create(
                     quiz=quiz,
                     question=question,
                     profile=profile,
-                    user_answer=user_answer.text,
+                    user_answer=user_answer_text,
                     is_correct=is_correct
                 )
 
@@ -142,9 +145,13 @@ def quiz_result(request, language_id, quiz_id):
     for question in questions:
         user_answer = user_answers.filter(question=question).first()
         correct_answer = question.answer_set.filter(is_correct="Correct").first()
+
+        # Convert user answer to string if it's a list
+        user_answer_text = user_answer.user_answer if isinstance(user_answer.user_answer, str) else user_answer.user_answer[0]
+
         quiz_data[question] = {
             'correct_answer': correct_answer.text if correct_answer else None,
-            'user_answer': user_answer.user_answer if user_answer else None,
+            'user_answer': user_answer_text if user_answer else None,
             'is_correct': user_answer.is_correct if user_answer else None
         }
 

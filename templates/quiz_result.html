@@ -13,12 +13,12 @@
 </head>
 <body>
 <article class="sidebar">
-
     <a href="/profile"><img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
     <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
     <a class="sniglet" href="/profile">Go to profile</a>
-    <a class="sniglet" style="font-size: 15px" href={% url "modules_list" language_id=student.chosen_language.id %}>Go to available modules</a>
-    
+    <br>
+    <br>
+    <a class="sniglet" style="font-size: 15px" href="{% url "modules_list" language_id=user.profile.chosen_language.id %}">Go to available modules</a>
     <br>
     <br>
     <a class="sniglet" style="font-size: 15px" href="/forums">Go to discussion forums</a>
@@ -32,33 +32,55 @@
     <br>
     <a class="sniglet" style="font-size: 15px" href="{% url 'logout' %}">Log out</a>
     <footer class="sniglet" style="bottom: 45px; left: 75px">
-    <p>© gearbeagel</p>
+        <p>© gearbeagel</p>
     </footer>
-
 </article>
 
-    <h1 class="sniglet-extrabold" style="margin-left: 800px">Quiz Result</h1>
+<h1 class="sniglet-extrabold" style="margin-left: 800px">Quiz Result</h1>
 <br>
-    <ul style="margin-left: 250px; list-style-type: none">
-        {% for question, data in quiz_data.items %}
-            <li class="sniglet" style='padding: 10px; border: #d39c3f 3px solid; border-radius: 25px; width: fit-content'>
-                <strong>Question:</strong> {{ question.text }}<br>
-            <hr style="border: none; border-top: 3px solid #d39c3f; width: auto; margin-top: 10px; margin-bottom: 10px">
-                <strong>Correct Answer:</strong> {{ data.correct_answer }}<br>
-                {% if data.user_answer %}
-                    <strong>Your Answer:</strong> {{ data.user_answer }}<br>
-                {% else %}
-                    <strong>Your Answer:</strong> No answer provided<br>
-                {% endif %}
-            <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 10px; margin-bottom: 10px">
-                {% if data.is_correct == "Correct" %}
-                    <span style="color: green;"><strong>Result:</strong> Correct</span><br>
-                {% else %}
-                    <span style="color: red;"><strong>Result:</strong> Incorrect</span><br>
-                {% endif %}
-            </li>
-            <br>
-        {% endfor %}
-    </ul>
+<ul style="margin-left: 250px; list-style-type: none">
+    {% for question, data in quiz_data.items %}
+    <li class="sniglet" style='padding: 10px; border: #d39c3f 3px solid; border-radius: 25px; width: fit-content'>
+        <strong>Question:</strong> {{ question.text }}<br>
+        <hr style="border: none; border-top: 3px solid #d39c3f; width: auto; margin-top: 10px; margin-bottom: 10px">
+        <strong>Correct Answer:</strong> 
+        {% if data.correct_answer %}
+            {% if question.question_type == 'Multiple Choice' %}
+                <ul>
+                {% for answer in data.correct_answer %}
+                    <li>{{ answer }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                {{ data.correct_answer }}
+            {% endif %}
+        {% else %}
+            No answer provided
+        {% endif %}
+        <br>
+        <strong>Your Answer:</strong> 
+        {% if data.user_answer %}
+            {% if question.question_type == 'Multiple Choice' %}
+                <ul>
+                {% for answer in data.user_answer %}
+                    <li>{{ answer }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                {{ data.user_answer }}
+            {% endif %}
+        {% else %}
+            No answer provided
+        {% endif %}
+        <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 10px; margin-bottom: 10px">
+        {% if data.is_correct == "Correct" %}
+        <span style="color: green;"><strong>Result:</strong> Correct</span><br>
+        {% else %}
+        <span style="color: red;"><strong>Result:</strong> Incorrect</span><br>
+        {% endif %}
+    </li>
+    <br>
+    {% endfor %}
+</ul>
 </body>
 </html>

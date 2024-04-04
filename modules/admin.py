@@ -25,7 +25,7 @@ class SectionAdmin(admin.ModelAdmin):
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('text', 'quiz')  # Customize displayed fields
+    list_display = ('text', 'quiz', 'question_type')  # Customize displayed fields
 
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):

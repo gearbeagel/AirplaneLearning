@@ -38,11 +38,11 @@ class Quiz(models.Model):
     difficulty_level = models.CharField(
         max_length=20,
         choices=[
-            ('easy', _('Easy')),
-            ('medium', _('Medium')),
-            ('hard', _('Hard')),
+            ('Easy', 'Easy'),
+            ('Medium', 'Medium'),
+            ('Hard', 'Hard'),
         ],
-        default='easy'
+        default='Easy'
     )
 
     questions = models.ManyToManyField('Question', related_name='quizzes')
@@ -76,6 +76,9 @@ class Section(models.Model):
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     text = models.CharField(max_length=255)
+    question_type = models.CharField(max_length=50, choices=[('Single Choice', 'Single Choice'),
+                                                             ('Multiple Choice', 'Multiple Choice'),
+                                                             ('Open Text', 'Open Text')])
 
     def __str__(self):
         return self.text
@@ -84,7 +87,7 @@ class Question(models.Model):
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     text = models.CharField(max_length=255)
-    is_correct = models.CharField(max_length=15, choices=[("Y", "Correct"), ("N", "Incorrect")], default="Incorrect")
+    is_correct = models.CharField(max_length=15, choices=[("Correct", "Correct"), ("Incorrect", "Incorrect")], default="Incorrect")
 
     def __str__(self):
         return self.text

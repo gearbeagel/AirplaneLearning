@@ -45,33 +45,51 @@ def calculate_progress(user_profile, chosen_language_id):
 
 @login_required
 def profile_page(request):
-    try:
-        student = Profile.objects.get(user=request.user)
-    except Profile.DoesNotExist:
+    student = get_student_profile(request.user)
+    if not student:
         return redirect("setup")
 
     calculate_progress(student, student.chosen_language_id)
 
-    latest_lesson = LessonStatus.objects.filter(profile=student, status='Completed').order_by('-finished_at').first()
-    latest_quiz = QuizStatus.objects.filter(profile=student, status='Completed').order_by('-finished_at').first()
+    latest_lesson, latest_lesson_language = get_latest_completed_lesson(student)
+    latest_quiz, latest_quiz_language = get_latest_completed_quiz(student)
 
-    latest_lesson_language = latest_lesson.lesson.module.language if latest_lesson else None
-    latest_quiz_language = latest_quiz.quiz.module.language if latest_quiz else None
-
-    azure_storage_connection_string = os.getenv("connection_str")
-    container_name = "pfpcontainer"
-    blob_name = student.profile_pic_url
-
-    blob_service_client = BlobServiceClient.from_connection_string(azure_storage_connection_string)
-    blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)
-
-    profile_picture_url = blob_client.url
+    profile_picture_url = get_profile_picture_url(student.profile_pic_url)
 
     return render(request, 'profile_page.html', {'student': student, 'user': request.user,
                                                  'latest_lesson': latest_lesson, 'latest_quiz': latest_quiz,
                                                  'latest_lesson_language': latest_lesson_language,
                                                  'latest_quiz_language': latest_quiz_language,
                                                  'profile_picture_url': profile_picture_url})
+
+
+def get_student_profile(user):
+    try:
+        return Profile.objects.get(user=user)
+    except Profile.DoesNotExist:
+        return None
+
+
+def get_latest_completed_lesson(student):
+    latest_lesson = LessonStatus.objects.filter(profile=student, status='Completed').order_by('-finished_at').first()
+    latest_lesson_language = latest_lesson.lesson.module.language if latest_lesson else None
+    return latest_lesson, latest_lesson_language
+
+
+def get_latest_completed_quiz(student):
+    latest_quiz = QuizStatus.objects.filter(profile=student, status='Completed').order_by('-finished_at').first()
+    latest_quiz_language = latest_quiz.quiz.module.language if latest_quiz else None
+    return latest_quiz, latest_quiz_language
+
+
+def get_profile_picture_url(profile_pic_url):
+    azure_storage_connection_string = os.getenv("connection_str")
+    container_name = "pfpcontainer"
+    blob_service_client = BlobServiceClient.from_connection_string(azure_storage_connection_string)
+    blob_client = blob_service_client.get_blob_client(container=container_name, blob=profile_pic_url)
+
+    profile_picture_url = blob_client.url
+    return profile_picture_url
 
 
 @login_required
