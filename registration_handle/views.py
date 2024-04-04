@@ -29,6 +29,7 @@ def welcome_email(request):
     from_email = settings.EMAIL_HOST_USER
     recipient_list = [user.email]
     send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+    return redirect('profile_page')
 
 
 def language_and_learning_path_selection(request):
