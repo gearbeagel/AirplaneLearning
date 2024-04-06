@@ -77,7 +77,7 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 **Week 6 (04/3 - 04/9):**
 1. Implement feature: Notification System
 2. Implement additional Quiz question types (short answer, checkboxes) ✔️
-3. Write unit tests for User Profile
+3. Write unit tests for User Profile️ ✔️
 4. Implement extensive notification settings
 5. Integrate notifications with User Profiles and Quizzes
 
