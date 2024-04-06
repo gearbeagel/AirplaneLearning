@@ -47,7 +47,8 @@ def calculate_progress(user_profile, chosen_language_id):
 def profile_page(request):
     student = get_student_profile(request.user)
     if not student:
-        return redirect("setup")
+        if 'setup' not in request.path:
+            return redirect("setup")
 
     calculate_progress(student, student.chosen_language_id)
 

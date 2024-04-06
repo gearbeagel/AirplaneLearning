@@ -132,8 +132,6 @@ def quiz_result(request, language_id, quiz_id):
                     correct_answers = list(correct_answer) if correct_answer else None
                     answer_objects = Answer.objects.filter(pk__in=answer_ids)
                     user_answers = [answer.text for answer in answer_objects]
-                    print("Correct answers: ", correct_answers)
-                    print("User answers: ", user_answers)
                     is_correct = "Correct" if user_answers == correct_answers else "Incorrect"
                     new_answer = QuizUserAnswers.objects.create(
                         quiz=quiz,
@@ -149,8 +147,6 @@ def quiz_result(request, language_id, quiz_id):
                     correct_answer = question.answer_set.filter(is_correct="Correct").first()
                     correct_answer_text = correct_answer.text.strip().lower() if correct_answer else ''
                     is_correct = "Correct" if user_answer_text == correct_answer_text else "Incorrect"
-                    print("User Answer:", user_answer_text)
-                    print("Correct Answer:", correct_answer_text)
                     if user_answer_text:
                         new_answer = QuizUserAnswers.objects.create(
                             quiz=quiz,
@@ -184,7 +180,6 @@ def quiz_result(request, language_id, quiz_id):
         if isinstance(user_answer_text, str) and user_answer_text.startswith('[') and user_answer_text.endswith(']'):
             user_answer_list = user_answer_text[1:-1].split(',')
             user_answer_text = [answer.strip().strip("'") for answer in user_answer_list if answer.strip()]
-            print(user_answer_text)
 
         quiz_data[question] = {
             'correct_answer': correct_answer,
@@ -193,5 +188,4 @@ def quiz_result(request, language_id, quiz_id):
         }
 
     context = {'quiz': quiz, 'language': language, 'questions': questions, 'quiz_data': quiz_data}
-    print(quiz_data)
     return render(request, 'quiz_result.html', context)
