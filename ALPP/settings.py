@@ -96,7 +96,7 @@ SOCIALACCOUNT_PROVIDERS = {
         'SCOPE': ['profile', 'email'],
         'AUTH_PARAMS': {'access_type': 'online'},
         'APP': {
-            'client_id': os.environ.get('client_id'),
+            'client_id': "92021185036-ija2gcsktesrejq05st3mrst2p8vn6p8.apps.googleusercontent.com",
             'secret': os.environ.get('secret'),
             'key': ''
         }

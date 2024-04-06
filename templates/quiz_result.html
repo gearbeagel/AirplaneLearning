@@ -40,47 +40,54 @@
 <br>
 <ul style="margin-left: 250px; list-style-type: none">
     {% for question, data in quiz_data.items %}
-    <li class="sniglet" style='padding: 10px; border: #d39c3f 3px solid; border-radius: 25px; width: fit-content'>
-        <strong>Question:</strong> {{ question.text }}<br>
-        <hr style="border: none; border-top: 3px solid #d39c3f; width: auto; margin-top: 10px; margin-bottom: 10px">
-        <strong>Correct Answer:</strong> 
-        {% if data.correct_answer %}
-            {% if question.question_type == 'Multiple Choice' %}
+<li class="sniglet" style='padding: 10px; border: #d39c3f 3px solid; border-radius: 25px; width: fit-content'>
+    <strong>Question:</strong> {{ question.text }}<br>
+    <hr style="border: none; border-top: 3px solid #d39c3f; width: auto; margin-top: 10px; margin-bottom: 10px">
+    <strong>Correct Answer:</strong> 
+    {% if data.correct_answer %}
+        {% if question.question_type == 'Multiple Choice' %}
+            {% if data.correct_answer|length > 1 %}
                 <ul>
                 {% for answer in data.correct_answer %}
                     <li>{{ answer }}</li>
                 {% endfor %}
                 </ul>
             {% else %}
-                {{ data.correct_answer }}
+                {{ data.correct_answer|join:','}}
             {% endif %}
         {% else %}
-            No answer provided
-        {% endif %}
-        <br>
-        <strong>Your Answer:</strong> 
-        {% if data.user_answer %}
-            {% if question.question_type == 'Multiple Choice' %}
-                <ul>
-                {% for answer in data.user_answer %}
-                    <li>{{ answer }}</li>
+            {% for answer in data.correct_answer %}
+                {{ answer }}
                 {% endfor %}
-                </ul>
-            {% else %}
-                {{ data.user_answer }}
-            {% endif %}
-        {% else %}
-            No answer provided
         {% endif %}
-        <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 10px; margin-bottom: 10px">
-        {% if data.is_correct == "Correct" %}
-        <span style="color: green;"><strong>Result:</strong> Correct</span><br>
-        {% else %}
-        <span style="color: red;"><strong>Result:</strong> Incorrect</span><br>
-        {% endif %}
-    </li>
+    {% else %}
+        No answer provided
+    {% endif %}
     <br>
-    {% endfor %}
+    <strong>Your Answer:</strong> 
+    {% if data.user_answer %}
+        {% if question.question_type == 'Multiple Choice' %}
+            <ul>
+            {% for answer in data.user_answer %}
+                <li>{{ answer }}</li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            {{ data.user_answer }}
+        {% endif %}
+    {% else %}
+        No answer provided
+    {% endif %}
+    <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 10px; margin-bottom: 10px">
+    {% if data.is_correct == "Correct" %}
+    <span style="color: green;"><strong>Result:</strong> Correct</span><br>
+    {% else %}
+    <span style="color: red;"><strong>Result:</strong> Incorrect</span><br>
+    {% endif %}
+</li>
+<br>
+{% endfor %}
 </ul>
+<a href="{% url "modules_list" language_id=user.profile.chosen_language.id %}" style="margin-left: 290px"><button>Go back to all modules</button></a>
 </body>
 </html>

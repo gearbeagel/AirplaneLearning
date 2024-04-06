@@ -61,12 +61,12 @@
                     </label><br>
                 {% endfor %}
             {% elif question.question_type == 'Multiple Choice' %}
-                {% for answer in answers_dict|get_value:question %}
-                    <label class="sniglet" style="margin-left: 450px">
-                        <input type="checkbox" name="question_{{ question.id }}" value="{{ answer.id }}">
-                        {{ answer.text }}
-                    </label><br>
-                {% endfor %}
+            {% for answer in question.answer_set.all %}
+                <label class="sniglet" style="margin-left: 450px">
+                    <input type="checkbox" name="question_{{ question.id }}" value="{{ answer.id }}">
+                    {{ answer.text }}
+                </label><br>
+            {% endfor %}
             {% elif question.question_type == 'Open Text' %}
                 <label>
                     <textarea name="question_{{ question.id }}" rows="4" cols="50" style="margin-left: 450px; font-family: Sniglet, sans-serif"></textarea>

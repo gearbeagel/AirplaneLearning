@@ -9,4 +9,7 @@ def get_value(dictionary, key):
         return None
     return dictionary.get(key)
 
-register.filter('get_value', get_value)
+
+@register.filter
+def join_string(string1, string2):
+    return string1 + ", " + string2

@@ -106,28 +106,60 @@ def complete_quiz(request, quiz_id):
 def quiz_result(request, language_id, quiz_id):
     if request.method == 'POST':
         submitted_data = request.POST
+        quiz = get_object_or_404(Quiz, pk=quiz_id)
+        profile = get_object_or_404(Profile, user=request.user)
+
         for question_id, answer_id in submitted_data.items():
             if question_id.startswith('question_'):
                 question_id = question_id.split('_')[1]
-
-                quiz = get_object_or_404(Quiz, pk=quiz_id)
                 question = get_object_or_404(Question, pk=question_id)
-                user_answer = get_object_or_404(Answer, pk=answer_id)
-                profile = get_object_or_404(Profile, user=request.user)
-                correct_answer = question.answer_set.filter(is_correct="Correct").first()
 
-                is_correct = "Correct" if user_answer == correct_answer else "Incorrect"
+                if question.question_type == "Single Choice":
+                    user_answer = get_object_or_404(Answer, pk=answer_id)
+                    is_correct = "Correct" if user_answer.is_correct == "Correct" else "Incorrect"
+                    new_answer = QuizUserAnswers.objects.create(
+                        quiz=quiz,
+                        question=question,
+                        profile=profile,
+                        user_answer=user_answer.text,
+                        is_correct=is_correct
+                    )
+                    new_answer.save()
 
-                # Convert user answer to string if it's a list
-                user_answer_text = user_answer.text if isinstance(user_answer.text, str) else user_answer.text[0]
+                elif question.question_type == "Multiple Choice":
+                    answer_ids = submitted_data.getlist(f"question_{question.id}")
+                    correct_answer = question.answer_set.filter(is_correct="Correct").values_list('text', flat=True)
+                    correct_answers = list(correct_answer) if correct_answer else None
+                    answer_objects = Answer.objects.filter(pk__in=answer_ids)
+                    user_answers = [answer.text for answer in answer_objects]
+                    print("Correct answers: ", correct_answers)
+                    print("User answers: ", user_answers)
+                    is_correct = "Correct" if user_answers == correct_answers else "Incorrect"
+                    new_answer = QuizUserAnswers.objects.create(
+                        quiz=quiz,
+                        question=question,
+                        profile=profile,
+                        user_answer=user_answers,
+                        is_correct=is_correct
+                    )
+                    new_answer.save()
 
-                QuizUserAnswers.objects.create(
-                    quiz=quiz,
-                    question=question,
-                    profile=profile,
-                    user_answer=user_answer_text,
-                    is_correct=is_correct
-                )
+                elif question.question_type == "Open Text":
+                    user_answer_text = answer_id.strip().lower()
+                    correct_answer = question.answer_set.filter(is_correct="Correct").first()
+                    correct_answer_text = correct_answer.text.strip().lower() if correct_answer else ''
+                    is_correct = "Correct" if user_answer_text == correct_answer_text else "Incorrect"
+                    print("User Answer:", user_answer_text)
+                    print("Correct Answer:", correct_answer_text)
+                    if user_answer_text:
+                        new_answer = QuizUserAnswers.objects.create(
+                            quiz=quiz,
+                            question=question,
+                            profile=request.user.profile,
+                            user_answer=user_answer_text,
+                            is_correct=is_correct
+                        )
+                        new_answer.save()
 
         quiz_status, created = QuizStatus.objects.get_or_create(quiz_id=quiz_id, profile=profile)
         quiz_status.status = "Completed"
@@ -144,16 +176,22 @@ def quiz_result(request, language_id, quiz_id):
     quiz_data = {}
     for question in questions:
         user_answer = user_answers.filter(question=question).first()
-        correct_answer = question.answer_set.filter(is_correct="Correct").first()
+        correct_answer = question.answer_set.filter(is_correct="Correct").values_list('text', flat=True)
+        correct_answer = list(correct_answer) if correct_answer else None
 
-        # Convert user answer to string if it's a list
-        user_answer_text = user_answer.user_answer if isinstance(user_answer.user_answer, str) else user_answer.user_answer[0]
+        user_answer_text = user_answer.user_answer if user_answer else None
+
+        if isinstance(user_answer_text, str) and user_answer_text.startswith('[') and user_answer_text.endswith(']'):
+            user_answer_list = user_answer_text[1:-1].split(',')
+            user_answer_text = [answer.strip().strip("'") for answer in user_answer_list if answer.strip()]
+            print(user_answer_text)
 
         quiz_data[question] = {
-            'correct_answer': correct_answer.text if correct_answer else None,
-            'user_answer': user_answer_text if user_answer else None,
+            'correct_answer': correct_answer,
+            'user_answer': user_answer_text,
             'is_correct': user_answer.is_correct if user_answer else None
         }
 
     context = {'quiz': quiz, 'language': language, 'questions': questions, 'quiz_data': quiz_data}
+    print(quiz_data)
     return render(request, 'quiz_result.html', context)
