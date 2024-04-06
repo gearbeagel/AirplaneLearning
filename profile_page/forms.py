@@ -32,3 +32,11 @@ class ProfilePictureSettings(forms.ModelForm):
         if commit:
             instance.save()
         return instance
+
+
+class NotificationSettings(forms.ModelForm):
+    receive_notifications = forms.ChoiceField(choices=[('Send', 'Send'), ('Do not send', 'Do not send')])
+
+    class Meta:
+        model = Profile
+        fields = ['receive_notifications']

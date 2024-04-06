@@ -3,7 +3,7 @@ from .models import Profile, LearnerType  # Import your Profile model
 
 
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'progress')
+    list_display = ('user_id', 'username', 'progress')
 
 
 class LearnerTypeAdmin(admin.ModelAdmin):

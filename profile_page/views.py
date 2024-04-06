@@ -5,7 +5,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-from profile_page.forms import LearnerTypeSettings, ProfilePictureSettings
+from profile_page.forms import LearnerTypeSettings, ProfilePictureSettings, NotificationSettings
 from profile_page.models import Profile, get_random_profile_pic, LearnerType
 from modules.models import Lesson, Quiz, Module
 from modules.user_progress_models import LessonStatus, QuizStatus, QuizUserAnswers
@@ -110,7 +110,7 @@ def profile_settings(request):
         elif 'profile_pic_submit' in request.POST:
             profile_pic_form = ProfilePictureSettings(request.POST, request.FILES, instance=profile)
             if profile_pic_form.is_valid():
-                profile_pic_form.instance.container_name = 'pfpcontainer'  # Set the container name
+                profile_pic_form.instance.container_name = 'pfpcontainer'
                 profile_pic_form.save()
                 return redirect('profile_page')
 
@@ -119,12 +119,24 @@ def profile_settings(request):
             profile.save()
             return redirect('profile_page')
 
+        elif 'receive_notifications_submit' in request.POST:
+            receive_notifications_form = NotificationSettings(request.POST, instance=profile)
+            if receive_notifications_form.is_valid():
+                print("Form is valid")
+                receive_notifications_form.save()
+                return redirect('profile_page')
+            else:
+                print("Form is invalid")
+                print(receive_notifications_form.errors)
+
     learner_type_form = LearnerTypeSettings(instance=profile)
     profile_pic_form = ProfilePictureSettings(instance=profile)
+    receive_notifications_form = NotificationSettings(instance=profile)
 
     return render(request, 'profile_settings.html', {
         'learner_type_form': learner_type_form,
         'profile_pic_form': profile_pic_form,
+        'receive_notifications_form': receive_notifications_form,
         'leaner_types': learner_types
     })
 
