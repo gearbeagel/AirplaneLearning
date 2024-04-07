@@ -1,6 +1,9 @@
 from django.contrib.auth.models import User
 from django.http import HttpResponseBadRequest, HttpResponse
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
 from profile_page.models import Profile, LearnerType
 from registration_handle.forms import ProfileUpdateForm
 from django.core.mail import send_mail
@@ -25,10 +28,11 @@ def about(request):
 def welcome_email(request):
     user = request.user
     subject = 'Welcome to Airplane Learning!'
-    message = f'{user.username}, thanks for becoming a part of our community!'
-    from_email = settings.EMAIL_HOST_USER
+    html_message = render_to_string('email_welcome_message.html', {'user': user})
+    plain_message = strip_tags(html_message)
     recipient_list = [user.email]
-    send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+
+    send_mail(subject, plain_message, None, recipient_list, html_message=html_message, fail_silently=False)
     return redirect('profile_page')
 
 
