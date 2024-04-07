@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, HttpResponse
 from django.shortcuts import render, redirect
 from profile_page.models import Profile, LearnerType
 from registration_handle.forms import ProfileUpdateForm
@@ -33,6 +33,8 @@ def welcome_email(request):
 
 
 def language_and_learning_path_selection(request):
+    if Profile.objects.filter(user=request.user).exists():
+        return HttpResponse(f"Why are you here, {request.user.username}?")
     if request.method == 'POST':
         form = ProfileUpdateForm(request.POST)
         if form.is_valid():
