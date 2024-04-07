@@ -23,12 +23,15 @@ To run Airplane Learning locally, follow these steps:
 Airplane Learning is designed to provide an intuitive platform for beginners to learn English. With its user-friendly interface and engaging lessons, users can quickly grasp the fundamentals of the English language.
 
 ### Features
-- User Authentication with Google account
-- Lesson Modules
-- Progress Tracking
-- Interactive Quizzes
-- Customized Learning Paths
-- Language Selection
+- User Authentication: Users can sign in using their Google accounts through OAuth 2.0.
+- User Profile: Individual user profiles to track learning history, achievements, and preferences.
+- Lesson Modules: Engaging lesson modules covering various aspects of language learning, including vocabulary, grammar, and pronunciation.
+- Interactive Quizzes: Interactive quizzes to reinforce learning and assess progress.
+- Progress Tracking: Personalized progress tracking to monitor language proficiency and track improvement over time.
+- Customized Learning Paths: Users can create personalized learning paths based on their language goals and proficiency levels.
+- Language Selection: Option to choose from a wide range of languages for learning.
+- Notification System: Notification system to provide updates on new lessons, quizzes, and progress milestones.
+
 
 ### Architecture
 The Airplane Learning app follows a client-server architecture. The client-side is built using HTML, CSS, and Jinja, while the server-side is implemented with Django.
