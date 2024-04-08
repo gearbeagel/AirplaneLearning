@@ -64,14 +64,14 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 5. Develop shuffle questions feature ✔️
 
 **Week 4 (03/20 - 03/26):**
-1. Implement feature: Language Selection ✔️ (was done beforehand)
+1. Implement feature: Language Selection ✔️
 2. Refactor code for improved performance ✔️
 3. Write unit tests for Interactive Quizzes ✔️
 4. Enhance User Profile with additional features ✔️
 5. Set up Community Forums functionality ✔️
 
 **Week 5 (03/27 - 04/2):**
-1. Implement feature: User Profile ✔️ (was done beforehand)
+1. Implement feature: User Profile ✔️
 2. Perform security audit and address any vulnerabilities ✔️
 3. Write unit tests for Progress Tracking ✔️
 4. Implement user avatar upload and display ✔️
