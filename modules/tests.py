@@ -1,12 +1,14 @@
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 from django.contrib.auth.models import User
 from django.test import RequestFactory, TestCase
 
+from modules.signals import send_module_notification
 from modules.views import complete_lesson, complete_quiz, quiz_result
 from profile_page.models import Profile
-from .models import Language, Module, Lesson, LessonStatus, Quiz, QuizStatus, Question, Answer
+from .models import Language, Module, Lesson, Quiz, Question, Answer
+from .user_progress_models import LessonStatus, QuizStatus
 
 
 class LessonCompletionTestCase(TestCase):
@@ -53,6 +55,34 @@ class QuizCompletionTestCase(TestCase):
         self.quiz_status.refresh_from_db()
         self.assertEqual(self.quiz_status.status, 'Completed')
         print(f"Quiz {self.quiz.title} is {self.quiz_status.status}!")
+
+
+class TestSendModuleNotification(TestCase):
+    def setUp(self):
+        self.language = Language.objects.create(name="Test Language", joke="Test Joke")
+        self.module = Module.objects.create(title='Test Module',
+                                            language=self.language)  # Example module object creation
+
+    @patch('modules.signals.render_to_string')
+    @patch('modules.signals.send_mail')
+    @patch('modules.signals.Profile.objects.filter')
+    def test_send_module_notification(self, mock_filter, mock_send_mail, mock_render_to_string):
+        mock_profile = MagicMock()
+        mock_profile.user.email = 'test@example.com'
+        mock_filter.return_value = [mock_profile]
+        mock_render_to_string.return_value = '<html><body>Test</body></html>'
+
+        send_module_notification(sender=Module, instance=self.module, created=True)
+
+        # Assertions
+        mock_render_to_string.assert_called_once_with('email_new_module.html', {'module': self.module})
+        mock_send_mail.assert_called_once_with(
+            "New Module Added",
+            "Test",
+            None,
+            ['test@example.com'],
+            html_message='<html><body>Test</body></html>'
+        )
 
 
 if __name__ == '__main__':
