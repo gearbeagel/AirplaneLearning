@@ -29,15 +29,11 @@ def calculate_progress(user_profile, chosen_language_id):
     total_items = total_lessons + total_quizzes
     completed_items = completed_lessons + completed_quizzes
 
-    print("Total items:", total_items)
-    print("Completed items:", completed_items)
-
     if total_items > 0:
         progress_percentage = (completed_items / total_items) * 100
     else:
         progress_percentage = 0
 
-    print("Progress percentage:", progress_percentage)
 
     user_profile.progress = progress_percentage
     user_profile.save()

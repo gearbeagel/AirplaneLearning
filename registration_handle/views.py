@@ -38,7 +38,7 @@ def welcome_email(request):
 
 def language_and_learning_path_selection(request):
     if Profile.objects.filter(user=request.user).exists():
-        return HttpResponse(f"Why are you here, {request.user.username}?")
+        return redirect('profile_page')
     if request.method == 'POST':
         form = ProfileUpdateForm(request.POST)
         if form.is_valid():

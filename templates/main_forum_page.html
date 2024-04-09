@@ -36,17 +36,29 @@
 
 </article>
 {% endblock %}
-<h1 class="sniglet-extrabold" style="text-align: center; margin-bottom: -40px">Twe-e-eet!</h1>
+<h1 class="sniglet-extrabold" style="margin-left:300px; text-align: center">Twe-e-etscussion forums!</h1>
 {% block content %}
-<h2 class="sniglet-bold" style="text-align: center">Start a discussion here.</h2>
 {% if all_topics %}
-{% for topic in all_topics %}
-<p>{{ topic.subject }}</p>
+    <ul style="margin-left: 300px; list-style-type: none">
+    {% for topic in all_topics %}
+        <li style="border: solid 3px #d39c3f; border-radius: 25px; width: 1300px; margin: 10px; padding: 10px">
+            <a href="{% url 'topic_page' topic_id=topic.id %}"><h1 class="sniglet">{{ topic.title }}</h1></a>
+            <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;">
+        <h3 class="sniglet">{{ topic.subject }}</h3>
+        <h2 class="sniglet" style="margin-top: -10px">{{ topic.description }}</h2>
+        </li>
 {% endfor %}
+    </ul>
 {% else %}
+    <h2 class="sniglet-bold" style="text-align: center; margin-bottom: 200px">Start a discussion here.</h2>
+    <br>
+    <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;">
+    <br>
 <p class="sniglet" style="text-align: center">Sorry, no topics available. :c</p>
 {% endif %}
-<button style="justify-content: center; margin-left: 750px"><a href="{% url "add_topic" %}">Create a new topic</a></button>
+    {% if is_admin %}
+<button style="justify-content: center; margin-left: 800px; position: relative;"><a href="{% url "add_topic" %}">Create a new topic</a></button>
+    {% endif %}
 {% endblock %}
 </body>
 </html>
