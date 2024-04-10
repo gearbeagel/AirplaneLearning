@@ -37,18 +37,12 @@ def modules_list(request, language_id):
         difficulty_level = "Easy"
 
     lessons = Lesson.objects.filter(module__language=language, difficulty_level=difficulty_level)
-    lesson_statuses = {}
-
     for lesson in lessons:
-        lesson_status = LessonStatus.objects.get_or_create(lesson=lesson, profile=profile)[0]
-        lesson_statuses[lesson.id] = lesson_status
+        lesson_statuses = LessonStatus.objects.filter(profile=profile, lesson=lesson)
 
     quizzes = Quiz.objects.filter(module__language=language, difficulty_level=difficulty_level)
-    quiz_statuses = {}
-
     for quiz in quizzes:
-        quiz_status = QuizStatus.objects.get_or_create(quiz=quiz, profile=profile)[0]
-        quiz_statuses[quiz.id] = quiz_status
+        quiz_statuses = QuizStatus.objects.filter(profile=profile, quiz=quiz)
 
     context = {
         'language': language,
