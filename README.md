@@ -85,10 +85,10 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 5. Integrate notifications with User Profiles and Quizzes ✔️
 
 **Week 7 (04/10 - 04/16):**
-1. Implement feature: Community Forums
-2. Integrate Community Forums with Notification System
+1. Implement feature: Community Forums ✔️
+2. Integrate Community Forums with Notification System ✔️
 3. Write unit tests for Notification System ✔️
-4. Enhance Community Forums with moderation features
+4. Enhance Community Forums with moderation features ✔️
 5. Perform load testing for scalability assessment ✔️
 
 **Week 8 (04/17 - 04/23):**

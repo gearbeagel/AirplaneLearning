@@ -42,18 +42,15 @@
     <ul style="margin-left: 300px; list-style-type: none">
     {% for topic in all_topics %}
         <li style="border: solid 3px #d39c3f; border-radius: 25px; width: 1300px; margin: 10px; padding: 10px">
-            <a href="{% url 'topic_page' topic_id=topic.id %}"><h1 class="sniglet">{{ topic.title }}</h1></a>
+            <a href="{% url 'topic_page' topic_id=topic.id %}"><h2 class="sniglet">{{ topic.title }}</h2></a>
             <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;">
         <h3 class="sniglet">{{ topic.subject }}</h3>
-        <h2 class="sniglet" style="margin-top: -10px">{{ topic.description }}</h2>
+        <h3 class="sniglet" style="margin-top: -10px">{{ topic.description }}</h3>
         </li>
 {% endfor %}
     </ul>
 {% else %}
-    <h2 class="sniglet-bold" style="text-align: center; margin-bottom: 200px">Start a discussion here.</h2>
-    <br>
-    <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;">
-    <br>
+    <h2 class="sniglet-bold" style="text-align: center;">Start a discussion here.</h2>
 <p class="sniglet" style="text-align: center">Sorry, no topics available. :c</p>
 {% endif %}
     {% if is_admin %}

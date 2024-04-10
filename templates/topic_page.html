@@ -1,4 +1,5 @@
 {% load static %}
+{% load forums_extras %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,11 +9,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
+    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
     <title>{{ topic.title }}</title>
 </head>
 <body>
 <article class="sidebar">
-
     <a href="/profile"><img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
     <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
     <a class="sniglet" href="/profile">Go to profile</a>
@@ -31,18 +34,57 @@
     <footer class="sniglet" style="bottom: 45px; left: 75px">
     <p>© gearbeagel</p>
     </footer>
-
 </article>
 
 <h1 class="sniglet" style="text-align: center">{{ topic.title }}</h1>
 <ul style="margin-left: 300px; list-style-type: none">
-        <li style="border: solid 3px #d39c3f; border-radius: 25px; width: 1300px; margin: 10px; padding: 10px">
-            <a href="{% url 'topic_page' topic_id=topic.id %}"><h1 class="sniglet">{{ topic.title }}</h1></a>
-            <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;">
-        <h3 class="sniglet">{{ topic.subject }}</h3>
-        <h2 class="sniglet" style="margin-top: -10px">{{ topic.description }}</h2>
-        </li>
-    </ul>
+    <li style="border: solid 3px #d39c3f; border-radius: 25px; width: 1300px; margin: 10px; padding: 10px">
+        <h3 class="sniglet"><span style="color: #d39c3f">Lesson:</span> {{ topic.subject }}</h3>
+        <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;">
+        <br>
+        <h3 class="sniglet" style="margin-top: -10px"><span style="color: #d39c3f">Discussion:</span> {{ topic.description }}</h3>
+    </li>
+</ul>
 <h2 class="sniglet" style="margin-left: 300px">Comments:</h2>
+
+<form method="post" style="margin-left: 300px;">
+    {% csrf_token %}
+    <label>
+        <textarea id="comment_text" name="comment_text" rows="4" cols="200" placeholder="Enter your comment here" style="font-family: Sniglet, sans-serif; resize: none"></textarea>
+    </label><br>
+    {% if message %}
+    <p>{{ message }}</p>
+    {% endif %}
+    <button type="submit" value="Add Comment" style="height: 50px; width: 300px; font-size: 20px; margin-top: 5px;">Add comment</button>
+</form>
+
+<ul style="margin-left: 300px; list-style-type: none">
+{% if all_comments %}
+    {% for comment in all_comments %}
+    <li style="border: solid 3px #d39c3f; border-radius: 10px; width: 1300px; margin: 10px; padding: 10px; display: flex; flex-direction: row; align-items: center">
+            <img src="{{ comment.created_by|get_profile_picture_url}}" style="height: 50px; width: 50px; border-radius: 50%; object-fit: cover; overflow: hidden; margin-right: 10px;" alt="{{ comment.created_by.username }}'s profile picture">
+        <span><span onclick="insertUsername('{{ comment.created_by.username }}')" style="cursor: pointer; color: #637d91;">{{ comment.created_by.username }}</span> {{ comment.message }} • <span style="color: lightgray">{{ comment.created_at }}</span></span>
+        <span style="flex-grow: 1"></span>
+        {% if is_admin or request.user == comment.created_by %}
+        <form action="{% url 'delete_comment' comment_id=comment.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" style="background: none; border: none; cursor: pointer; height: fit-content; width: fit-content">
+                <i class="fa fa-trash" aria-hidden="true" style="color: black; font-size: 20px"></i>
+            </button>
+        </form>
+    {% endif %}
+    </li>
+    {% endfor %}
+{% else %}
+    <p style="text-align: center">No comments available. :(</p>
+{% endif %}
+</ul>
 </body>
+<script>
+    function insertUsername(username) {
+        var textarea = document.getElementById('comment_text');
+        textarea.value = '@' + username + ' ';
+        textarea.focus(); // Focus on the textarea after inserting the username
+    }
+</script>
 </html>

@@ -1,10 +1,16 @@
 import os
+import re
+from datetime import datetime
 
 from azure.storage.blob import BlobServiceClient
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 from discussion_forums.forms import TopicForm
-from discussion_forums.models import Topic, Post
+from discussion_forums.models import Topic, Comment
 from modules.models import Lesson
 from profile_page.models import Profile
 
@@ -18,13 +24,7 @@ def main_forum_page(request):
 def add_topic(request):
     student = Profile.objects.get(user=request.user)
     all_subjects = Lesson.objects.all()
-    profile_pic_url = student.profile_pic_url
-    azure_storage_connection_string = os.getenv("connection_str")
-    container_name = "pfpcontainer"
-    blob_service_client = BlobServiceClient.from_connection_string(azure_storage_connection_string)
-    blob_client = blob_service_client.get_blob_client(container=container_name, blob=profile_pic_url)
 
-    profile_pic_url = blob_client.url
     if request.method == 'POST':
         form = TopicForm(request.POST)
         if form.is_valid():
@@ -36,12 +36,73 @@ def add_topic(request):
             print(form.errors)
     else:
         form = TopicForm()
-    return render(request, 'add_topic.html', {'form': form, 'all_subjects': all_subjects, 'student': student,
-                                              'profile_pic_url': profile_pic_url})
+    return render(request, 'add_topic.html', {'form': form, 'all_subjects': all_subjects, 'student': student})
+
 
 def topic_page(request, topic_id):
     topic = get_object_or_404(Topic, pk=topic_id)
-    all_posts = Post.objects.filter(topic_id=topic_id)
+    is_admin = True if request.user.is_superuser else False
 
-    return render(request, 'topic_page.html', {'topic': topic, 'all_posts': all_posts})
+    all_comments = Comment.objects.filter(topic_id=topic_id).order_by("-created_at")
 
+    profile_pictures = {}
+
+    for comment in all_comments:
+        user_profile = comment.created_by
+        profile_pictures[user_profile.username] = get_profile_pic_url(user_profile)
+
+    if request.method == 'POST':
+        comment_text = request.POST.get('comment_text')
+        if comment_text:
+            comment = Comment.objects.create(
+                message=comment_text,
+                topic=topic,
+                created_by=request.user.profile,
+                created_at=datetime.now()
+            )
+            comment.save()
+            send_reply_notification_email(comment, comment_text)
+            return redirect('topic_page', topic_id=topic_id)
+        else:
+            message = 'Comment cannot be empty.'
+            return render(request, 'topic_page.html',
+                          {'topic': topic, 'all_comments': all_comments,
+                           'profile_pictures': profile_pictures, 'message': message, 'is_admin': is_admin, 'request': request})
+    return render(request, 'topic_page.html',
+                  {'topic': topic, 'all_comments': all_comments,
+                   'profile_pictures': profile_pictures, 'is_admin': is_admin, 'request': request})
+
+
+def send_reply_notification_email(comment, comment_text):
+    mentioned_usernames = re.findall(r'@(\w+)', comment_text)
+    for username in mentioned_usernames:
+        try:
+            user = User.objects.get(username=username)
+            recipient_email = user.email
+            subject = 'You have been mentioned in a comment'
+            context = {'user': user, 'comment': comment}
+            html_message = render_to_string('email_mention_notification.html', context)
+            plain_message = strip_tags(html_message)
+            send_mail(subject, plain_message, None, [recipient_email], html_message=html_message)
+        except User.DoesNotExist:
+            pass
+
+
+def get_profile_pic_url(student):
+    azure_storage_connection_string = os.getenv("connection_str")
+    container_name = "pfpcontainer"
+    blob_service_client = BlobServiceClient.from_connection_string(azure_storage_connection_string)
+    blob_client = blob_service_client.get_blob_client(container=container_name, blob=student.profile_pic_url)
+    profile_pic_url = blob_client.url
+    return profile_pic_url
+
+
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id)
+    if request.method == 'POST':
+        if request.user == comment.created_by or request.user.is_superuser:
+            comment.delete()
+            return redirect('topic_page', topic_id=comment.topic_id)
+        else:
+            pass
+    return redirect('topic_page', topic_id=comment.topic_id)
