@@ -95,7 +95,7 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 1. Implement feature: Resource Library
 2. Conduct performance optimization
 3. Write unit tests for Community Forums
-4. Enhance Feedback Mechanism with sentiment analysis
+4. Implement Quiz results page with links to Resource Library
 5. Integrate analytics for user behavior tracking
 
 **Week 9 (04/24 - 04/30):**
