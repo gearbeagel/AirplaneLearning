@@ -14,9 +14,9 @@
 <body>
 <article class="sidebar">
     
-    <a href="/profile"><img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
+    <a class="sniglet" href="{% url "profile_page" username=request.user.username %}"><img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
     <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
-    <a class="sniglet" href="/profile">Go to profile</a>
+    <a class="sniglet" href="{% url "profile_page" username=request.user.username %}">Go to profile</a>
     <p class="sniglet" style="font-size: 15px; color: white"><u>Go to available modules</u></p>
     <a class="sniglet" style="font-size: 15px" href="/forums">Go to discussion forums</a>
     <br>
@@ -33,10 +33,10 @@
     </footer>
     
 </article>
-    <h1 class="sniglet-extrabold" style="text-align: center">{{ language.name }} Modules</h1>
+    <h1 class="sniglet" style="text-align: center">{{ language.name }} Modules</h1>
 <section>
     {% if lessons %}
-        <h2 class="sniglet-bold" style="margin-top: -150px">Lessons</h2>
+        <h2 class="sniglet" style="margin-top: -150px">Lessons</h2>
         {% for lesson in lessons %}
             <div class="row" style="width: 1000px; margin: -175px 0 0 -400px">
             <button><a href="{% url 'lesson_info' language_id=language.id lesson_id=lesson.id %}" class="sniglet" 
@@ -52,7 +52,7 @@
             </div>
         {% endfor %}
     {% else %}
-        <h2 class="sniglet-bold" style="margin-top: -150px">Lessons</h2>
+        <h2 class="sniglet" style="margin-top: -150px">Lessons</h2>
         <div class="row" style="margin: -150px 0 0 -400px; width: 1000px; position: fixed">
         <p>No lessons available yet. Sorry. :(</p>
         </div>
@@ -61,7 +61,7 @@
     <br>
 <section>
     {% if quizzes %}
-        <h2 class="sniglet-bold" style="margin-top: 250px">Quizzes</h2>
+        <h2 class="sniglet" style="margin-top: 250px">Quizzes</h2>
         {% for quiz in quizzes %}
             <div class="row" style="width: 1000px; margin: 200px 0 0 -400px">
            <button><a href="{% url 'lesson_quiz' language_id=language.id quiz_id=quiz.id %}" class="sniglet"
@@ -77,7 +77,7 @@
             </div>
         {% endfor %}
     {% else %}
-        <h2 class="sniglet-bold" style="margin-top: 150px">Quizzes</h2>
+        <h2 class="sniglet" style="margin-top: 150px">Quizzes</h2>
         <div class="row" style="margin: 100px 0 0 -400px; width: 1000px; position: fixed">
         <p>No quizzes available yet. Sorry. :(</p>
         </div>

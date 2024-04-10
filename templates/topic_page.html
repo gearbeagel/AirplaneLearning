@@ -16,9 +16,9 @@
 </head>
 <body>
 <article class="sidebar">
-    <a href="/profile"><img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
+    <a class="sniglet" href="{% url "profile_page" username=request.user.username %}"><img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
     <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
-    <a class="sniglet" href="/profile">Go to profile</a>
+    <a class="sniglet" href="{% url "profile_page" username=user.username %}">Go to profile</a>
     <br>
     <br>
     <a class="sniglet" style="font-size: 15px" href={% url "modules_list" language_id=user.profile.chosen_language.id %}>Go to available modules</a>
@@ -62,10 +62,10 @@
 {% if all_comments %}
     {% for comment in all_comments %}
     <li style="border: solid 3px #d39c3f; border-radius: 10px; width: 1300px; margin: 10px; padding: 10px; display: flex; flex-direction: row; align-items: center">
-            <img src="{{ comment.created_by|get_profile_picture_url}}" style="height: 50px; width: 50px; border-radius: 50%; object-fit: cover; overflow: hidden; margin-right: 10px;" alt="{{ comment.created_by.username }}'s profile picture">
+        <a href="{% url "profile_page" username=comment.created_by.username %}"><img src="{{ comment.created_by|get_profile_picture_url}}" style="height: 50px; width: 50px; border-radius: 50%; object-fit: cover; overflow: hidden; margin-right: 10px;" alt="{{ comment.created_by.username }}'s profile picture"></a>
         <span><span onclick="insertUsername('{{ comment.created_by.username }}')" style="cursor: pointer; color: #637d91;">{{ comment.created_by.username }}</span> {{ comment.message }} • <span style="color: lightgray">{{ comment.created_at }}</span></span>
         <span style="flex-grow: 1"></span>
-        {% if is_admin or request.user == comment.created_by %}
+        {% if is_admin or request.user.profile == comment.created_by %}
         <form action="{% url 'delete_comment' comment_id=comment.id %}" method="post">
             {% csrf_token %}
             <button type="submit" style="background: none; border: none; cursor: pointer; height: fit-content; width: fit-content">

@@ -3,6 +3,7 @@ import os
 from azure.storage.blob import BlobServiceClient
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
 from profile_page.forms import LearnerTypeSettings, ProfilePictureSettings, NotificationSettings
@@ -18,8 +19,8 @@ def get_latest_lesson_and_quiz(profile):
     return latest_lesson_status.lesson if latest_lesson_status else None, latest_quiz_status.quiz if latest_quiz_status else None
 
 
-def calculate_progress(user_profile, chosen_language_id):
-    total_modules = Module.objects.filter(language_id=chosen_language_id)
+def calculate_progress(user_profile, chosen_language_id, learner_type):
+    total_modules = Module.objects.filter(language_id=chosen_language_id, )
     total_lessons = Lesson.objects.filter(module__in=total_modules).count()
     total_quizzes = Quiz.objects.filter(module__in=total_modules).count()
 
@@ -40,13 +41,13 @@ def calculate_progress(user_profile, chosen_language_id):
 
 
 @login_required
-def profile_page(request):
-    student = get_student_profile(request.user)
+def profile_page(request, username):
+    student = get_student_profile(username)
     if not student:
         if 'setup' not in request.path:
             return redirect("setup")
 
-    calculate_progress(student, student.chosen_language_id)
+    calculate_progress(student, student.chosen_language_id, student.learner_type)
 
     latest_lesson, latest_lesson_language = get_latest_completed_lesson(student)
     latest_quiz, latest_quiz_language = get_latest_completed_quiz(student)
@@ -60,10 +61,11 @@ def profile_page(request):
                                                  'profile_picture_url': profile_picture_url})
 
 
-def get_student_profile(user):
+def get_student_profile(username):
     try:
+        user = User.objects.get(username=username)
         return Profile.objects.get(user=user)
-    except Profile.DoesNotExist:
+    except (User.DoesNotExist, Profile.DoesNotExist):
         return None
 
 
@@ -99,7 +101,7 @@ def profile_settings(request):
             learner_type_form = LearnerTypeSettings(request.POST, instance=profile)
             if learner_type_form.is_valid():
                 learner_type_form.save()
-                return redirect('profile_page')
+                return redirect('profile_page', username=request.user.username)
             else:
                 print(learner_type_form.errors)
 
@@ -108,19 +110,19 @@ def profile_settings(request):
             if profile_pic_form.is_valid():
                 profile_pic_form.instance.container_name = 'pfpcontainer'
                 profile_pic_form.save()
-                return redirect('profile_page')
+                return redirect('profile_page', username=request.user.username)
 
         elif 'default_profile_pic' in request.POST:
             profile.profile_pic_url = get_random_profile_pic()
             profile.save()
-            return redirect('profile_page')
+            return redirect('profile_page', username=request.user.username)
 
         elif 'receive_notifications_submit' in request.POST:
             receive_notifications_form = NotificationSettings(request.POST, instance=profile)
             if receive_notifications_form.is_valid():
                 print("Form is valid")
                 receive_notifications_form.save()
-                return redirect('profile_page')
+                return redirect('profile_page', username=request.user.username)
             else:
                 print("Form is invalid")
                 print(receive_notifications_form.errors)

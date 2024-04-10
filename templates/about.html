@@ -16,9 +16,9 @@
 <body>
 <article class="sidebar">
 
-    <a href="/profile"><img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
+    <a class="sniglet" href="{% url "profile_page" username=request.user.username %}"><img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
     <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
-    <a class="sniglet" href="/profile">Go to profile</a>
+    <a class="sniglet" href="{% url "profile_page" username=request.user.username %}">Go to profile</a>
     <br>
     <br>
     <a class="sniglet" style="font-size: 15px" href={% url "modules_list" language_id=user.profile.chosen_language.id %}>Go to available modules</a>
@@ -37,7 +37,7 @@
 </article>
 <div style="margin: -350px 0 0 -200px; width: 500px">
     <img src="{% static "leeri_stare.png" %}" style="height: 30%; width: 30%; margin-bottom: -25px; margin-left: 25px; margin-right: 25px;" alt="{{ user.username }}'s profile picture">
-    <h2 class="sniglet-extrabold" style="color: #d39c3f; margin-bottom: -15px; text-align: center">Victoria Kondatska</h2>
+    <h2 class="sniglet" style="color: #d39c3f; margin-bottom: -15px; text-align: center">Victoria Kondatska</h2>
     <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;">
     <p class="sniglet" style="color: #637d91; margin-bottom: -5px">Airplane Learning: Polyglot Pro (Project №13)</p>
     <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;">

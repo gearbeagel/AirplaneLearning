@@ -14,9 +14,9 @@
 <body>
 <article class="sidebar">
     
-    <a href="/profile"><img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
+    <a class="sniglet" href="{% url "profile_page" username=request.user.username %}"><img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
     <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
-    <a class="sniglet" href="/profile">Go to profile</a>
+    <a class="sniglet" href="{% url "profile_page" username=request.user.username %}">Go to profile</a>
     <br>
     <br>
     <a class="sniglet" style="font-size: 15px" href={% url "modules_list" language_id=user.profile.chosen_language.id %}>Go to available modules</a>
@@ -37,7 +37,7 @@
     </footer>
 
 </article>
-    <h1 class="sniglet-extrabold" style="text-align: center">{{ lesson.title }}</h1>
+    <h1 class="sniglet" style="text-align: center">{{ lesson.title }}</h1>
     <p style="margin-left: 350px">{{ lesson.description }}</p>
     <p style="margin-left: 350px; 
             {% if lesson.difficulty_level == 'Easy' %} 
@@ -51,7 +51,7 @@
         {% for section in sections %}
             <div class="lesson-section" style="display: {% if forloop.first %}inline-flex{% else %}none{% endif %}; width: 500px;
                     margin: -200px 0 0 -200px;">
-                <h3 class="sniglet-bold">{{ section.title }}</h3>
+                <h3 class="sniglet">{{ section.title }}</h3>
                 <p>{{ section.contents | safe }}</p>
             </div>
         {% endfor %}
