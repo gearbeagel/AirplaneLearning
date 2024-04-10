@@ -84,6 +84,12 @@ SWAGGER_SETTINGS = {
     }
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny'
+    )
+}
+
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
 AUTHENTICATION_BACKENDS = [
