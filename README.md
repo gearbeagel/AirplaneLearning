@@ -89,7 +89,7 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 2. Integrate Community Forums with Notification System ✔️
 3. Write unit tests for Notification System ✔️
 4. Enhance Community Forums with moderation features ✔️
-5. Address user feedback and fix bugs ✔️
+5. [Address user feedback and fix bugs](https://docs.google.com/document/d/1ziUYwNKN42H73Bgy8OVEV4kgQD3KgAL1r0redvjKEoQ/) ✔️
 
 **Week 8 (04/17 - 04/23):**
 1. Implement feature: Resource Library

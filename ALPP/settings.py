@@ -61,7 +61,8 @@ INSTALLED_APPS = [
     'profile_page.apps.ProfilePageConfig',
     'drf_yasg',
     'fontawesomefree',
-    "discussion_forums.apps.DiscussionForumsConfig"
+    "discussion_forums.apps.DiscussionForumsConfig",
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -74,6 +75,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 SWAGGER_SETTINGS = {
@@ -83,6 +85,28 @@ SWAGGER_SETTINGS = {
         }
     }
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "https://https://airplanelearning.azurewebsites.net",
+    "http://localhost:8000",  # Add your local development server if needed
+]
+
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS'
+]
+
+CORS_ALLOW_HEADERS = [
+    'Accept',
+    'Accept-Language',
+    'Content-Language',
+    'Content-Type',
+    'Authorization',
+]
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
