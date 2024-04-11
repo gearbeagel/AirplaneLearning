@@ -113,10 +113,11 @@ def get_profile_pic_url(student):
 def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id)
     if request.method == 'POST':
-        if request.user == comment.created_by or request.user.is_superuser:
+        if request.user == comment.created_by.user or request.user.is_superuser:
             com_event = CommentDeletionEvent.objects.create(comment=comment, deleted_by=request.user)
             com_event.save()
             comment.delete()
+            print("Comment deleted")
             return redirect('topic_page', topic_id=comment.topic_id)
         else:
             pass
