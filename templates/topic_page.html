@@ -52,9 +52,11 @@
 
 <form method="post" style="margin-left: 300px;">
     {% csrf_token %}
-    <label>
-        <textarea id="comment_text" name="comment_text" rows="4" cols="200" placeholder="Enter your comment here" style="font-family: Sniglet, sans-serif; resize: none"></textarea>
-    </label><br>
+    <label style="position: relative;">
+    <textarea class="comment_text" name="comment_text" rows="4" cols="200" placeholder="Enter your comment here" style="font-family: Sniglet, sans-serif; resize: none"></textarea>
+    <span class="character-count" style="font-family: Sniglet, sans-serif; position: absolute; bottom: 3px; right: 5px; color: lightgray;"></span>
+</label>
+<br>
     {% if message %}
     <p>{{ message }}</p>
     {% endif %}
@@ -64,9 +66,9 @@
 <ul style="margin-left: 300px; list-style-type: none">
 {% if all_comments %}
     {% for comment in all_comments %}
-    <li style="border: solid 3px #d39c3f; border-radius: 10px; width: 1300px; margin: 10px; padding: 10px; display: flex; flex-direction: row; align-items: center">
+    <li style="border: solid 3px #d39c3f; border-radius: 10px; width: 1300px; margin: 10px; padding: 10px; display: flex; flex-direction: row; align-items: start">
         <a href="{% url "profile_page" username=comment.created_by.username %}"><img src="{{ comment.created_by|get_profile_picture_url}}" style="height: 50px; width: 50px; border-radius: 50%; object-fit: cover; overflow: hidden; margin-right: 10px;" alt="{{ comment.created_by.username }}'s profile picture"></a>
-        <span><span onclick="insertUsername('{{ comment.created_by.username }}')" style="cursor: pointer; color: #637d91;">{{ comment.created_by.username }}</span> {{ comment.message }} • <span style="color: lightgray">{{ comment.created_at }}</span></span>
+        <span><span style="display: flex; flex-direction: column"><span onclick="insertUsername('{{ comment.created_by.username }}')" style="cursor: pointer; color: #637d91;">{{ comment.created_by.username }} • <span style="color: lightgray">{{ comment.humanized_created_at }}</span></span> {{ comment.message }}</span></span>
         <span style="flex-grow: 1"></span>
         {% if is_admin or request.user.profile == comment.created_by %}
         <form action="{% url 'delete_comment' comment_id=comment.id %}" method="post">
@@ -89,5 +91,26 @@
         textarea.value = '@' + username + ' ';
         textarea.focus(); // Focus on the textarea after inserting the username
     }
+    
+    var commentTextAreas = document.getElementsByClassName("comment_text");
+
+    var commentTextAreas = document.getElementsByClassName("comment_text");
+
+for (var i = 0; i < commentTextAreas.length; i++) {
+    commentTextAreas[i].onkeyup = function () {
+        var text_max = 500;
+        var text_length = this.value.length;
+        var text_remaining = text_max - text_length;
+        var characterCountLabel = this.nextElementSibling;
+
+        characterCountLabel.innerHTML = "Character count: " + text_length + "/" + text_max;
+
+        if (text_length >= text_max) {
+            characterCountLabel.style.color = "red";
+        } else {
+            characterCountLabel.style.color = "lightgray"; // Reset color if not maxed out
+        }
+    };
+}
 </script>
 </html>

@@ -39,9 +39,9 @@
     <br>
         <select name="learner_type" id="learner_type" style="width: 300px; height: 35px; font-size: 16px; font-family: Sniglet, sans-serif">
             <option value="" hidden>--------</option>
-            <option value="1">Beginner</option>
-            <option value="2">Skilled</option>
-            <option value="3">Advanced</option>
+            <option value="1" {% if user.profile.learner_type.id == 1 %} selected {% endif %}>Beginner</option>
+            <option value="2" {% if user.profile.learner_type.id == 2 %} selected {% endif %}>Skilled</option>
+            <option value="3" {% if user.profile.learner_type.id == 3 %} selected {% endif %}>Advanced</option>
         </select>
         <br>
         <button type="submit" name="learner_type_submit" style="height: 50px; width: 300px; font-size: 20px; margin-top: 10px">Save Learner Type</button>
@@ -53,7 +53,7 @@
             <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;">
             <label for="profile_pic_url">Profile Picture:</label>
         <br>
-            <input type="file" name="profile_pic_url" id="profile_pic_url">
+            <input type="file" accept="image/*" name="profile_pic_url" id="profile_pic_url">
             <br>
             <button type="submit" name="default_profile_pic" style="font-size: 10px; height: 35px; width: 350px; background-color: #578661">Revert to default profile picture</button>
             <br>
@@ -78,3 +78,15 @@
     </form>
     </div>
 {% endblock %}
+
+<script>
+    var selectedValue = "<?php echo $learner_type; ?>";
+    var selectElement = document.getElementById("learner_type");
+
+    for (var i = 0; i < selectElement.options.length; i++) {
+        if (selectElement.options[i].value === selectedValue) {
+            selectElement.options[i].setAttribute("selected", "selected");
+            break;
+        }
+    }
+</script>

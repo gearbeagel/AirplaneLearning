@@ -38,7 +38,7 @@ def welcome_email(request):
 
 def language_and_learning_path_selection(request):
     if Profile.objects.filter(user=request.user).exists():
-        return redirect('profile_page')
+        return redirect('profile_page', username=request.user.username)
     if request.method == 'POST':
         form = ProfileUpdateForm(request.POST)
         if form.is_valid():
@@ -53,7 +53,7 @@ def language_and_learning_path_selection(request):
                     learner_type=form_data['learner_type']
                 )
                 welcome_email(request)
-                return redirect('profile_page')
+                return redirect('profile_page', username=request.user.username)
             except Exception as e:
                 print("Error occurred while creating profile:", e)
         else:
