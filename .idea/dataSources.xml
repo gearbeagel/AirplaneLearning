@@ -2,7 +2,7 @@
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
     <data-source source="LOCAL" name="db [2]" uuid="34411711-c0fd-4161-9f08-3c0790146aff">
-      <driver-ref>sqlite.xerial</driver-ref>
+      <driver-ref>6042eae0-0b95-41e6-a4ec-24c60a082d6e</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:C:\Users\kondr\Coding\university\uni_4_sem\WEB\Kondratska.University.AirplaneLearning\db.sqlite3</jdbc-url>
@@ -14,7 +14,7 @@
       </libraries>
     </data-source>
     <data-source source="LOCAL" name="db" uuid="4ec7f477-4197-42b6-9369-bc12387e12b9">
-      <driver-ref>sqlite.xerial</driver-ref>
+      <driver-ref>6042eae0-0b95-41e6-a4ec-24c60a082d6e</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:C:\Users\kondr\Coding\university\uni_4_sem\WEB\Kondratska.University.AirplaneLearning\db (6).sqlite3</jdbc-url>

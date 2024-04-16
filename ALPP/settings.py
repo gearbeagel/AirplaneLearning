@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'fontawesomefree',
     "discussion_forums.apps.DiscussionForumsConfig",
     'corsheaders',
+    "resource_library.apps.ResourceLibraryConfig"
 ]
 
 MIDDLEWARE = [
@@ -87,7 +88,7 @@ SWAGGER_SETTINGS = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "https://https://airplanelearning.azurewebsites.net",
+    "https://airplanelearning.azurewebsites.net",
     "http://localhost:8000",  # Add your local development server if needed
 ]
 

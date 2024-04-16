@@ -87,30 +87,32 @@
 </body>
 <script>
     function insertUsername(username) {
-        var textarea = document.getElementById('comment_text');
+        var textarea = document.querySelector('.comment_text');
         textarea.value = '@' + username + ' ';
-        textarea.focus(); // Focus on the textarea after inserting the username
+        textarea.focus(); 
     }
     
-    var commentTextAreas = document.getElementsByClassName("comment_text");
+    function countChars() {
+        var commentTextAreas = document.querySelectorAll(".comment_text");
+        
+        for (var i = 0; i < commentTextAreas.length; i++) {
+            commentTextAreas[i].onkeyup = function () {
+                var text_max = 500;
+                var text_length = this.value.length;
+                var text_remaining = text_max - text_length;
+                var characterCountLabel = this.nextElementSibling;
 
-    var commentTextAreas = document.getElementsByClassName("comment_text");
+                characterCountLabel.innerHTML = "Character count: " + text_length + "/" + text_max;
 
-for (var i = 0; i < commentTextAreas.length; i++) {
-    commentTextAreas[i].onkeyup = function () {
-        var text_max = 500;
-        var text_length = this.value.length;
-        var text_remaining = text_max - text_length;
-        var characterCountLabel = this.nextElementSibling;
-
-        characterCountLabel.innerHTML = "Character count: " + text_length + "/" + text_max;
-
-        if (text_length >= text_max) {
-            characterCountLabel.style.color = "red";
-        } else {
-            characterCountLabel.style.color = "lightgray"; // Reset color if not maxed out
-        }
-    };
-}
+                if (text_length >= text_max) {
+                    characterCountLabel.style.color = "red";
+                } else {
+                    characterCountLabel.style.color = "lightgray"; // Reset color if not maxed out
+                }
+            };
+        }   
+    }
+    
+    countChars();
 </script>
 </html>

@@ -58,25 +58,43 @@
                 <p>{{ section.contents | safe }}</p>
             </div>
         {% endfor %}
-        <button class="next-section-btn" style="position: fixed; margin-left: 525px; margin-top: 450px">Next</button>
+    <span style="display: flex; flex-direction: row">
+        <button class="prev-section-btn" style="margin-top: 450px; left: -100px">Previous</button>
+        <button class="next-section-btn" style="margin-top: 450px; right: -100px">Next</button>
+    </span>
         <input type="hidden" id="modules-list-url" value="{% url 'modules_list' language.id %}">
     </div>
 
     <script>
         const sectionDivs = document.querySelectorAll('.lesson-section');
-        const nextBtn = document.querySelector('.next-section-btn');
-        const modulesListUrl = document.getElementById('modules-list-url').value;
-        let currentIndex = 0;
-
-        nextBtn.addEventListener('click', () => {
-            sectionDivs[currentIndex].style.display = 'none';
-            currentIndex++;
-            if (currentIndex < sectionDivs.length) {
-                sectionDivs[currentIndex].style.display = 'block';
-            } else {
-                window.location.href = modulesListUrl;
-            }
-        });
+    const nextBtn = document.querySelector('.next-section-btn');
+    const prevBtn = document.querySelector('.prev-section-btn'); // Add this line
+    const modulesListUrl = document.getElementById('modules-list-url').value;
+    let currentIndex = 0;
+    
+    nextBtn.addEventListener('click', () => {
+        navigateSection(1);
+    });
+    
+    prevBtn.addEventListener('click', () => {
+        navigateSection(-1);
+    });
+    
+    function navigateSection(step) {
+        sectionDivs[currentIndex].style.display = 'none';
+        currentIndex += step;
+        if (currentIndex >= 0 && currentIndex < sectionDivs.length) {
+            sectionDivs[currentIndex].style.display = 'block';
+        } else if (currentIndex === sectionDivs.length) {
+            window.location.href = modulesListUrl;
+        }
+    }
+    
+    sectionDivs.forEach((div, index) => {
+        if (index !== 0) {
+            div.style.display = 'none';
+        }
+    });
     </script>
 </body>
 </html>

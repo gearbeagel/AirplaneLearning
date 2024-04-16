@@ -5,7 +5,7 @@ from .models import Topic, Comment
 
 @admin.register(Topic)
 class TopicAdmin(admin.ModelAdmin):
-    list_display = ('title', 'subject', 'starter', 'created_at')  # Customize displayed fields
+    list_display = ('title', 'subject', 'created_at')  # Customize displayed fields
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):

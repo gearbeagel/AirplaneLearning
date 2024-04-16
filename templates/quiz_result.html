@@ -49,15 +49,11 @@
     <strong>Correct Answer:</strong> 
     {% if data.correct_answer %}
         {% if question.question_type == 'Multiple Choice' %}
-            {% if data.correct_answer|length > 1 %}
                 <ul>
                 {% for answer in data.correct_answer %}
                     <li>{{ answer }}</li>
                 {% endfor %}
-                </ul>
-            {% else %}
-                {{ data.correct_answer|join:','}}
-            {% endif %}
+            </ul>
         {% else %}
             {% for answer in data.correct_answer %}
                 {{ answer }}
