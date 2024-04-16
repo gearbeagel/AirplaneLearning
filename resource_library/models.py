@@ -9,7 +9,7 @@ class Resource(models.Model):
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100, choices=[("Article", "Article"), ("Video", "Video"), ("Other", "Other")],
                             default="Other")
-    related_lesson = models.OneToOneField(Lesson, on_delete=models.CASCADE, related_name='related_lesson')
+    related_lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='related_lesson')
     source = models.URLField(max_length=500)
     added_at = models.DateTimeField(auto_now_add=True)
 

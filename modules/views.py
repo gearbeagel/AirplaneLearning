@@ -8,6 +8,7 @@ from django.utils.html import strip_tags
 from django.views.decorators.csrf import csrf_protect
 
 from profile_page.models import Profile
+from resource_library.models import Resource
 from .models import Language, Lesson, Question, Answer, Quiz
 from .user_progress_models import LessonStatus, QuizStatus, QuizUserAnswers
 
@@ -197,5 +198,11 @@ def quiz_result(request, language_id, quiz_id):
             'is_correct': user_answer.is_correct if user_answer else None
         }
 
-    context = {'quiz': quiz, 'language': language, 'questions': questions, 'quiz_data': quiz_data}
+    resources = Resource.objects.all()
+    resource_data = []
+    for resource in resources:
+        if quiz.title == resource.name:
+            resource_data.append(resource)
+
+    context = {'quiz': quiz, 'language': language, 'questions': questions, 'quiz_data': quiz_data, 'resource_data': resource_data}
     return render(request, 'quiz_result.html', context)

@@ -93,6 +93,15 @@
 <br>
 {% endfor %}
 </ul>
+    {% if resource_data %}
+    <h2 class="sniglet" style="margin-left: 300px; margin-bottom: -10px">Related Resources:</h2>
+    <ul style="margin-left: 250px; list-style-type: none">
+        {% for resource in resource_data %}
+                <a href="{{ resource.source }}" target="_blank"><button style="background-color: #637d91; height: 70px; width: 250px; font-size: 20px">{{ resource.name }}</button></a> 
+        {% endfor %}
+    {% endif %}
+    </ul>
+<br>
 <a href="{% url "modules_list" language_id=user.profile.chosen_language.id %}" style="margin-left: 290px"><button>Go back to all modules</button></a>
 </body>
 </html>

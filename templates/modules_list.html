@@ -52,13 +52,14 @@
     {% if lessons %}
         <h2 class="sniglet" style="margin-top: -150px">Lessons</h2>
         {% for lesson in lessons %}
-            <div class="row" style="width: fit-content; margin: -175px 0 0 -400px; z-index: 0">
+            <div class="row" style="width: 1000px; margin: -175px 0 0 -400px; z-index: 0">
             <button style='width: 250px; height: 100px; font-size: 30px'><a href="{% url 'lesson_info' language_id=language.id lesson_id=lesson.id %}" class="sniglet" 
                                    style="color: white">{{ lesson.title }}</a></button>
             {% for ls in lesson_statuses %}
             {% if ls.lesson == lesson and ls.status == "Completed" %}
                 <i class="fa fa-check" aria-hidden="true" style="color: #578661; margin-left: 50px"></i>
             {% endif %}
+                {% endfor %}
             <span style="flex-grow: 1">
             </span>
             <p style="margin-left: 550px; 
@@ -70,7 +71,6 @@
                 background-color: #CC6666; /* Hard */
             {% endif %}; padding: 10px 40px 10px 40px; border-radius: 20px; color: white">{{ lesson.difficulty_level }}</p>
             </div>
-                {% endfor %}
         {% endfor %}
     {% else %}
         <h2 class="sniglet" style="margin-top: -150px">Lessons</h2>
