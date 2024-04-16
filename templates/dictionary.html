@@ -15,16 +15,19 @@
 <article class="sidebar">
     <a class="sniglet" href="{% url "profile_page" username=request.user.username %}"><img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
     <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
-    <a class="sniglet" href="{% url "profile_page" username=request.user.username %}">Go to profile</a>
+    <a class="sniglet" href="{% url "profile_page" username=request.user.username %}">Profile</a>
     <br>
     <br>
-    <a class="sniglet" style="font-size: 15px" href="{% url "modules_list" language_id=user.profile.chosen_language.id %}">Go to available modules</a>
+    <a class="sniglet" style="font-size: 15px" href="{% url "modules_list" language_id=user.profile.chosen_language.id %}">Modules</a>
     <br>
     <br>
-    <a class="sniglet" style="font-size: 15px" href="/forums">Go to discussion forums</a>
+    <a class="sniglet" style="font-size: 15px" href="/forums">Discussion Forums</a>
     <br>
     <br>
-    <a href="{% url 'profile_settings' %}" class="sniglet" style="font-size: 15px; ">Go to settings</a>
+    <a class="sniglet" style="font-size: 15px" href="/resources">Resource Library</a>
+    <br>
+    <br>
+    <a href="{% url 'profile_settings' %}" class="sniglet" style="font-size: 15px; ">Settings</a>
     <br>
     <br>
     <a class="sniglet" style="font-size: 15px" href="{% url 'about' %}">About</a>
@@ -48,13 +51,15 @@
         <button style="margin-left: 50px" type="submit">Search</button>
     </form>
     {% if meanings %}
-    <h2 class="sniglet" style="margin-top: 100px; margin-left: 850px">{{ word }} means:</h2>
-    <ul style="list-style-type: none; margin-left: 650px; margin-top: 50px; border: #d39c3f 3px solid; border-radius: 25px; width: fit-content; padding: 10px">
+    <h2 class="sniglet" style="margin-top: 60px; margin-left: 850px">{{ word }} means:</h2>
+    <ul style="list-style-type: none; margin-left: 650px; margin-top: 50px; border: #d39c3f 3px solid; border-radius: 25px; width: 600px; padding: 10px">
         {% for meaning in meanings %}
         <li>{{ meaning }}
         <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;"></li>
         {% endfor %}
     </ul>
+    {% else %}
+        <p style="margin-left: 850px; margin-top: 60px">No meaning for "{{ word }}" found. :(</p>
     {% endif %}
 </body>
 </html>

@@ -3,17 +3,23 @@
 {% block title %}Profile Settings{% endblock %}
 {% block sidebar %}
 <article class="sidebar">
-
     <a class="sniglet" href="{% url "profile_page" username=request.user.username %}"><img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
     <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
-    <a class="sniglet" href="{% url "profile_page" username=request.user.username %}">Go to profile</a>
+    <a class="sniglet" href="{% url "profile_page" username=request.user.username %}">Profile</a>
     <br>
     <br>
-    <a class="sniglet" style="font-size: 15px" href={% url "modules_list" language_id=user.profile.chosen_language.id %}>Go to available modules</a>
+    <a class="sniglet" style="font-size: 15px" href="{% url "modules_list" language_id=user.profile.chosen_language.id %}">Modules</a>
     <br>
     <br>
-    <a class="sniglet" style="font-size: 15px" href="/forums">Go to discussion forums</a>
-    <p class="sniglet" style="font-size: 15px; color: white"><u>Go to settings</u></p>
+    <a class="sniglet" style="font-size: 15px" href="/forums">Discussion Forums</a>
+    <br>
+    <br>
+    <a class="sniglet" style="font-size: 15px" href="/resources">Resource Library</a>
+    <br>
+    <br>
+    <a class="sniglet" style="font-size: 15px;"><u>Settings</u></a>
+    <br>
+    <br>
     <a class="sniglet" style="font-size: 15px" href="{% url 'about' %}">About</a>
     <br>
     <br>
@@ -22,9 +28,8 @@
     <br>
     <a class="sniglet" style="font-size: 15px" href="{% url 'schema-swagger-ui' %}">Swagger</a>
     <footer class="sniglet" style="bottom: 45px; left: 75px">
-    <p>© gearbeagel</p>
+        <p>© gearbeagel</p>
     </footer>
-
 </article>
 {% endblock %}
 {% block content %}

@@ -10,6 +10,7 @@ def resources(request):
 
 def dictionary(request):
     meanings = []
+    word = ""
 
     if request.method == "POST":
         word = request.POST.get('word', '')

@@ -9,36 +9,17 @@ from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-
-from discussion_forums.forms import TopicForm
 from discussion_forums.models import Topic, Comment, CommentDeletionEvent
-from modules.models import Lesson
-from profile_page.models import Profile
+from modules.models import Module, Lesson
 
 
 def main_forum_page(request):
-    all_topics = Topic.objects.order_by('-created_at')
-    is_admin = True if request.user.is_superuser else False
+    modules_for_topics = Module.objects.filter(language=request.user.profile.chosen_language)
+    lessons_for_topics = Lesson.objects.filter(module__in=modules_for_topics)
+    topics_for_lessons = Topic.objects.filter(subject__in=lessons_for_topics)
+    all_topics = topics_for_lessons.order_by('-created_at')
+    is_admin = request.user.is_superuser
     return render(request, "main_forum_page.html", {'all_topics': all_topics, 'is_admin': is_admin})
-
-
-def add_topic(request):
-    student = Profile.objects.get(user=request.user)
-    all_subjects = Lesson.objects.all()
-
-    if request.method == 'POST':
-        form = TopicForm(request.POST)
-        if form.is_valid():
-            topic = form.save(commit=False)
-            topic.starter = student
-            topic.save()
-            return redirect('main_forum_page')
-        else:
-            print(form.errors)
-    else:
-        form = TopicForm()
-    return render(request, 'add_topic.html', {'form': form, 'all_subjects': all_subjects, 'student': student})
-
 
 def topic_page(request, topic_id):
     topic = get_object_or_404(Topic, pk=topic_id)
@@ -117,7 +98,6 @@ def delete_comment(request, comment_id):
             com_event = CommentDeletionEvent.objects.create(comment=comment, deleted_by=request.user)
             com_event.save()
             comment.delete()
-            print("Comment deleted")
             return redirect('topic_page', topic_id=comment.topic_id)
         else:
             pass

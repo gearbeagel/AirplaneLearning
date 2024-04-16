@@ -15,16 +15,19 @@
 <article class="sidebar">
     <a class="sniglet" href="{% url "profile_page" username=request.user.username %}"><img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
     <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
-    <a class="sniglet" href="{% url "profile_page" username=request.user.username %}">Go to profile</a>
+    <a class="sniglet" href="{% url "profile_page" username=request.user.username %}">Profile</a>
     <br>
     <br>
-    <a class="sniglet" style="font-size: 15px" href="{% url "modules_list" language_id=user.profile.chosen_language.id %}">Go to available modules</a>
+    <a class="sniglet" style="font-size: 15px" href="{% url "modules_list" language_id=user.profile.chosen_language.id %}">Modules</a>
     <br>
     <br>
-    <a class="sniglet" style="font-size: 15px" href="/forums">Go to discussion forums</a>
+    <a class="sniglet" style="font-size: 15px" href="/forums">Discussion Forums</a>
     <br>
     <br>
-    <a href="{% url 'profile_settings' %}" class="sniglet" style="font-size: 15px; ">Go to settings</a>
+    <a class="sniglet" style="font-size: 15px"><u>Resource Library</u></a>
+    <br>
+    <br>
+    <a href="{% url 'profile_settings' %}" class="sniglet" style="font-size: 15px; ">Settings</a>
     <br>
     <br>
     <a class="sniglet" style="font-size: 15px" href="{% url 'about' %}">About</a>
