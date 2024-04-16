@@ -92,7 +92,7 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 5. [Address user feedback and fix bugs](https://docs.google.com/document/d/1ziUYwNKN42H73Bgy8OVEV4kgQD3KgAL1r0redvjKEoQ/) ✔️
 
 **Week 8 (04/17 - 04/23):**
-1. Implement feature: Resource Library
+1. Implement feature: Resource Library ✔️
 2. Conduct performance optimization
 3. Write unit tests for Community Forums
 4. Implement Quiz results page with links to Resource Library

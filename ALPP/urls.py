@@ -39,6 +39,7 @@ urlpatterns = ([
     path('register/', registration_handle.views.register, name='register'),
     path('langs/', include("modules.urls")),
     path('about/', registration_handle.views.about, name='about'),
-    path('forums/', include("discussion_forums.urls"))
+    path('forums/', include("discussion_forums.urls")),
+    path('resources/', include("resource_library.urls")),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
   + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))

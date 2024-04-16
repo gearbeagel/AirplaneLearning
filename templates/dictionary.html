@@ -38,10 +38,23 @@
         <p>© gearbeagel</p>
     </footer>
 </article>
-    <h1 class="sniglet" style="margin-left: 500px">Welcome to the Resources Page!</h1>
-<br>
-    <ul style="list-style-type: none; margin-left: 300px;">
-        <li style="border: #d39c3f 3px solid; border-radius: 25px; padding: 20px; width: 1300px"><a href="{% url "dictionary" %}"><button>Dictionary</button></a></li>
+    <h1 class="sniglet" style="margin-left: 800px;">Dictionary</h1>
+    <form action="{% url 'dictionary' %}" method="post" style="margin-left: 700px; margin-top: 50px; border: #d39c3f 3px solid; border-radius: 25px; width: fit-content; padding: 10px">
+        {% csrf_token %}
+        <label class="sniglet" style="font-size: 30px; text-align: center;" for="word">Enter a Word:</label>
+        <br>
+        <input type="text" name="word" id="word" style="width: 500px;  height: 40px; margin-bottom: 10px; margin-top: 10px">
+        <br>
+        <button style="margin-left: 50px" type="submit">Search</button>
+    </form>
+    {% if meanings %}
+    <h2 class="sniglet" style="margin-top: 100px; margin-left: 850px">{{ word }} means:</h2>
+    <ul style="list-style-type: none; margin-left: 650px; margin-top: 50px; border: #d39c3f 3px solid; border-radius: 25px; width: fit-content; padding: 10px">
+        {% for meaning in meanings %}
+        <li>{{ meaning }}
+        <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;"></li>
+        {% endfor %}
     </ul>
+    {% endif %}
 </body>
 </html>
