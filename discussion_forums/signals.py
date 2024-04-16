@@ -25,6 +25,6 @@ def create_discussion_topic(sender, instance, created, **kwargs):
         content = f"Here, you will discuss your experience on learning {instance.title}"
         Topic.objects.create(
             title=instance.title,
-            subject=instance.subject,
-            content=content,
+            subject=instance,
+            description=content,
         )

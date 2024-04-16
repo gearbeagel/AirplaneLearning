@@ -94,9 +94,9 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 **Week 8 (04/17 - 04/23):**
 1. Implement feature: Resource Library ✔️
 2. Implement a feed with contents of Resource Library ✔️
-3. Write unit tests for Community Forums
+3. Write unit tests for Community Forums ✔️
 4. Implement Quiz results page with links to Resource Library
-5. Integrate analytics for user behavior tracking
+5. Implement statistics page for User Profile
 
 **Week 9 (04/24 - 04/30):**
 1. Implement feature: Feedback Mechanism
