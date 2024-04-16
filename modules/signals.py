@@ -15,7 +15,7 @@ def send_module_notification(sender, instance, created, **kwargs):
         html_message = render_to_string('email_new_module.html', {'module': instance})
         plain_message = strip_tags(html_message)
 
-        users_to_notify = Profile.objects.filter(chosen_language_id=instance.language.id)
+        users_to_notify = Profile.objects.filter(chosen_language_id=instance.language.id, new_modules_notifications="Send")
         recipient_list = [user.user.email for user in users_to_notify]
 
         send_mail(subject, plain_message, None, recipient_list, html_message=html_message)

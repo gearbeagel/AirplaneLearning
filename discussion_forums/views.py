@@ -71,7 +71,7 @@ def send_reply_notification_email(comment, comment_text):
     for username in mentioned_usernames:
         try:
             user = User.objects.get(username=username)
-            if user.profile.receive_notifications == "Send":
+            if user.profile.discussion_notifications == "Send":
                 recipient_email = user.email
                 subject = 'You have been mentioned in a comment'
                 context = {'user': user, 'comment': comment}

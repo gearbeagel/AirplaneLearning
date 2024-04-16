@@ -3,8 +3,11 @@
 {% block title %}Profile Settings{% endblock %}
 {% block sidebar %}
 <article class="sidebar">
-    <a class="sniglet" href="{% url "profile_page" username=request.user.username %}"><img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
-    <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
+    <a class="sniglet" href="{% url "profile_page" username=request.user.username %}"><img src="{% static "/leeri_logo.png" %}" style="height: 210px; width: 210px; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
+    <p class="sniglet" style="color: white; font-size: 25px">Airplane Learning</p>
+    <hr style="color: white; width: 100%">
+    <a class="sniglet">Logged in as: {{ request.user.username }}</a>
+    <hr style="color: white; width: 100%">
     <a class="sniglet" href="{% url "profile_page" username=request.user.username %}">Profile</a>
     <br>
     <br>
@@ -33,7 +36,7 @@
 </article>
 {% endblock %}
 {% block content %}
-    <div style="margin: -400px 0 0 -275px; width: 500px">
+    <div style="margin: -425px 0 0 -200px; width: 500px;">
         <h2 class="sniglet" style="color: #d39c3f; margin-bottom: -5px; margin-top: 10px">Settings</h2>
         
         <!-- Learner Type Form -->
@@ -52,10 +55,10 @@
         <button type="submit" name="learner_type_submit" style="height: 50px; width: 300px; font-size: 20px; margin-top: 10px">Save Learner Type</button>
 </form>
         
+    <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;">
         <!-- Profile Picture Form -->
         <form id="profile-picture-form" method="post" enctype="multipart/form-data" class="sniglet" style="color: #d39c3f; text-align: center; font-size: 40px">
             {% csrf_token %}
-            <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;">
             <label for="profile_pic_url">Profile Picture:</label>
         <br>
             <input type="file" accept="image/*" name="profile_pic_url" id="profile_pic_url">
@@ -70,21 +73,80 @@
         <a href="{% url 'profile_page' username=user.username %}" id="back-btn" style="height: 75px; width: 350px; font-size: 30px; margin-top: 15px; display: none;">Go back to profile</a>
     
     <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;">
-    <form id="notification-settings-form" method="post" class="sniglet" style="color: #d39c3f; text-align: center; font-size: 40px">
-        {% csrf_token %}
-        <label for="receive_notifications">Receive Notifications:</label>
-        <br>
-        <select name="receive_notifications" id="receive_notifications" style="width: 300px; height: 35px; font-size: 16px; font-family: Sniglet, sans-serif">
-            <option value="Send" {% if user.profile.receive_notifications %}selected{% endif %}>On</option>
-            <option value="Do not send" {% if not user.profile.receive_notifications %}selected{% endif %}>Off</option>
-        </select>
-        <br>
-        <button type="submit" name="receive_notifications_submit" style="height: 50px; width: 300px; font-size: 20px; margin-top: 10px">Save Notification Settings</button>
+    
+    <!-- Receive Notifications -->
+    <form id="notification-settings-form" method="post" class="sniglet" style="color: #d39c3f; text-align: center; font-size: 24px; max-width: 600px; margin: 0 auto;">
+    {% csrf_token %}
+    
+    <!-- Receive Notifications -->
+    <label>Receive Notifications:</label>
+<br>
+<select name="receive_notifications" id="receive_notifications" style="width: 300px; height: 35px; font-size: 16px; font-family: Sniglet, sans-serif">
+    <option value="Send" {% if user.profile.receive_notifications == 'Send' %}selected{% endif %}>On</option>
+    <option value="Do not send" {% if user.profile.receive_notifications == 'Do not send' %}selected{% endif %}>Off</option>
+</select>
+<br>
+
+<!-- Other Notification Types -->
+<label>Other Notification Types:</label>
+<br>
+<span style="margin-bottom: 10px;">
+<label style='color: black; font-size: 15px'>New Modules Notifications</label>
+    <select name="new_modules_notifications" style="width: 50px; height: 35px; font-size: 16px; font-family: Sniglet, sans-serif">
+        <option value="Send" {% if user.profile.new_modules_notifications == 'Send' %}selected{% endif %}>On</option>
+        <option value="Do not send" {% if user.profile.new_modules_notifications == 'Do not send' %}selected{% endif %}>Off</option>
+    </select>
+</span>
+<br>
+<span style="margin-bottom: 10px;">
+<label style='color: black; font-size: 15px'>Quiz Results Notifications</label>
+    <select name="quiz_results_notifications" style="width: 50px; height: 35px; font-size: 16px; font-family: Sniglet, sans-serif">
+        <option value="Send" {% if user.profile.quiz_results_notifications == 'Send' %}selected{% endif %}>On</option>
+        <option value="Do not send" {% if user.profile.quiz_results_notifications == 'Do not send' %}selected{% endif %}>Off</option>
+    </select>
+</span>
+<br>
+<span style="margin-bottom: 10px;">
+<label style='color: black; font-size: 15px'>Discussion Notifications</label>
+    <select name="discussion_notifications" style="width: 50px; height: 35px; font-size: 16px; font-family: Sniglet, sans-serif">
+        <option value="Send" {% if user.profile.discussion_notifications == 'Send' %}selected{% endif %}>On</option>
+        <option value="Do not send" {% if user.profile.discussion_notifications == 'Do not send' %}selected{% endif %}>Off</option>
+    </select>
+</span>
+<br>
+<span style="margin-bottom: 10px;">
+<label style='color: black; font-size: 15px'>New Resources Notifications</label>
+    <select name="new_resources_notifications" style="width: 50px; height: 35px; font-size: 16px; font-family: Sniglet, sans-serif">
+        <option value="Send" {% if user.profile.new_resources_notifications == 'Send' %}selected{% endif %}>On</option>
+        <option value="Do not send" {% if user.profile.new_resources_notifications == 'Do not send' %}selected{% endif %}>Off</option>
+    </select>
+</span>
+<br>
+
+<!-- Save Button -->
+<button type="submit" name="receive_notifications_submit" style="height: 50px; width: 100%; font-size: 20px; margin-top: 10px">Save Notification Settings</button>
+    </form>
     </form>
     </div>
 {% endblock %}
 
 <script>
+    function toggleNotifications() {
+    var receiveNotifications = document.getElementById("receive_notifications");
+    var notificationTypes = document.querySelectorAll("#notification-settings-form select");
+
+    if (receiveNotifications.value === "Do not send") {
+        notificationTypes.forEach(function(select) {
+            select.disabled = true;
+            select.value = "Do not send";
+        });
+    } else {
+        notificationTypes.forEach(function(select) {
+            select.disabled = false;
+        });
+    }
+}
+    
     var selectedValue = "<?php echo $learner_type; ?>";
     var selectElement = document.getElementById("learner_type");
 

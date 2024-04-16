@@ -41,7 +41,26 @@ class ProfilePictureSettings(forms.ModelForm):
 
 class NotificationSettings(forms.ModelForm):
     receive_notifications = forms.ChoiceField(choices=[('Send', 'Send'), ('Do not send', 'Do not send')])
+    new_modules_notifications = forms.ChoiceField(choices=[('Send', 'Send'), ('Do not send', 'Do not send')])
+    quiz_results_notifications = forms.ChoiceField(choices=[('Send', 'Send'), ('Do not send', 'Do not send')])
+    discussion_notifications = forms.ChoiceField(choices=[('Send', 'Send'), ('Do not send', 'Do not send')])
+    new_resources_notifications = forms.ChoiceField(choices=[('Send', 'Send'), ('Do not send', 'Do not send')])
 
     class Meta:
         model = Profile
-        fields = ['receive_notifications']
+        fields = ['receive_notifications', 'new_modules_notifications', 'quiz_results_notifications',
+                  'discussion_notifications', 'new_resources_notifications']
+
+    def save(self, commit=True):
+        instance = super(NotificationSettings, self).save(commit=False)
+
+        if instance.receive_notifications == 'Do not send':
+            instance.new_modules_notifications = 'Do not send'
+            instance.quiz_results_notifications = 'Do not send'
+            instance.discussion_notifications = 'Do not send'
+            instance.new_resources_notifications = 'Do not send'
+
+        if commit:
+            instance.save()
+
+        return instance

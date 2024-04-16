@@ -10,7 +10,7 @@ from modules.models import Lesson
 
 @receiver(post_delete, sender=Comment)
 def send_comment_deletion_notification(sender, instance, **kwargs):
-    if instance.created_by.receive_notifications == "Send":
+    if instance.created_by.discussion_notifications == "Send":
             subject = "Your comment... was..."
             html_message = render_to_string('email_comment_deletion.html', {'comment': instance})
             plain_message = strip_tags(html_message)

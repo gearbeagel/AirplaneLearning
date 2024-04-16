@@ -33,15 +33,30 @@ class LearnerType(models.Model):
     def __str__(self):
         return self.title
 
+
 class Profile(AbstractUser):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     progress = models.FloatField(default=0)
     profile_pic_url = models.ImageField(upload_to='uploads/', default=get_random_profile_pic, unique=False)
     learner_type = models.ForeignKey(LearnerType, on_delete=models.CASCADE, unique=False, default=0)
     chosen_language = models.ForeignKey(Language, on_delete=models.CASCADE, unique=False, default=0)
-    receive_notifications = models.CharField(max_length=50, choices=[('Send', 'Send'), ('Do not send', 'Do not send')], default='Send')
+    receive_notifications = models.CharField(max_length=50, choices=[('Send', 'Send'), ('Do not send', 'Do not send')],
+                                             default='Send')
+    new_modules_notifications = models.CharField(max_length=50,
+                                                 choices=[('Send', 'Send'), ('Do not send', 'Do not send')],
+                                                 default='Send')
+    quiz_results_notifications = models.CharField(max_length=50,
+                                                  choices=[('Send', 'Send'), ('Do not send', 'Do not send')],
+                                                  default='Send')
+    discussion_notifications = models.CharField(max_length=50,
+                                                choices=[('Send', 'Send'), ('Do not send', 'Do not send')],
+                                                default='Send')
+    new_resources_notifications = models.CharField(max_length=50,
+                                                   choices=[('Send', 'Send'), ('Do not send', 'Do not send')],
+                                                   default='Send')
     groups = models.ManyToManyField('auth.Group', related_name='profile_set')
     user_permissions = models.ManyToManyField('auth.Permission', related_name='profile_set')
 
     def __str__(self):
         return self.email
+

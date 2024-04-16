@@ -8,13 +8,30 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js"></script>
     <link rel="icon" type="image/x-icon" href="{% static "favicon.ico" %}">
     <title>Resources</title>
+    <style>
+        .grid-container {
+            margin-left: 325px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 10px;
+}
+
+.grid-item {
+    border-radius: 25px;
+    overflow: hidden;
+}
+    </style>
 </head>
 <body>
 <article class="sidebar">
-    <a class="sniglet" href="{% url "profile_page" username=request.user.username %}"><img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
-    <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
+    <a class="sniglet" href="{% url "profile_page" username=request.user.username %}"><img src="{% static "/leeri_logo.png" %}" style="height: 210px; width: 210px; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
+    <p class="sniglet" style="color: white; font-size: 25px">Airplane Learning</p>
+    <hr style="color: white; width: 100%">
+    <a class="sniglet">Logged in as: {{ request.user.username }}</a>
+    <hr style="color: white; width: 100%">
     <a class="sniglet" href="{% url "profile_page" username=request.user.username %}">Profile</a>
     <br>
     <br>
@@ -46,5 +63,47 @@
     <ul style="list-style-type: none; margin-left: 300px;">
         <li style="border: #d39c3f 3px solid; border-radius: 25px; padding: 20px; width: 1300px"><a href="{% url "dictionary" %}"><button>Dictionary</button></a></li>
     </ul>
+<hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;">
+<h2 class="sniglet" style="color: #d39c3f; text-align: center">Feed</h2>
+<span class="grid-container">
+    <ul style="list-style-type: none">
+{% if resources %}
+    {% for resource in resources %}
+    <li class="grid-item" style="border: #d39c3f 3px solid; border-radius: 25px; padding: 20px; width: fit-content; align-items: center">
+        <a style="justify-content: center" href="{{ resource.source }}"><button>{{ resource.name }}</button></a><br>
+        <p style="text-align: center; color: lightgray;">{{ resource.humanized_added_at }}</p>
+        <p style="{% if resource.type == 'Video' %} 
+                background-color: #578661;
+            {% elif resource.type == 'Article' %}
+                background-color: #637d91;
+            {% elif resource.type == 'Other' %}
+                background-color: #CC6666;
+            {% endif %}; padding: 10px 40px 10px 40px; border-radius: 20px; color: white; width: 40px; text-align: center;">{{ resource.type }}</p>
+    </li>
+    {% endfor %}
+{% else %}
+    <li style="margin-left: 600px">No resources available. :(</li>
+{% endif %}
+</ul>
+</span>
 </body>
+<script>
+var grid = document.querySelector('.grid-container');
+var masonry = new Masonry(grid, {
+    itemSelector: '.grid-item',
+    columnWidth: '.grid-item',
+    gutter: 20 // Adjust this value based on your design
+});
+
+// Adjust width of grid items based on content width
+var gridItems = document.querySelectorAll('.grid-item');
+
+gridItems.forEach(function(item) {
+    var contentWidth = item.querySelector('.type-label').offsetWidth;
+    var padding = 40; // Adjust padding value if needed
+
+    // Set width based on content width and padding
+    item.style.width = (contentWidth + padding) + 'px';
+});
+</script>
 </html>

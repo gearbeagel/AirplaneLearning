@@ -158,17 +158,18 @@ def quiz_result(request, language_id, quiz_id):
         quiz_status.status = "Completed"
         quiz_status.save()
 
-        subject = f"Quiz Result for {quiz.title}"
-        total_questions = quiz.question_set.count()
-        total_correct_answers = QuizUserAnswers.objects.filter(quiz=quiz, profile=profile, is_correct="Correct").count()
-        percentage_correct = (total_correct_answers / total_questions) * 100
-        html_message = render_to_string('email_quiz_result.html', {'quiz': quiz, 'profile': profile,
-                                                              'percentage_correct': percentage_correct,
-                                                              'language_id': language_id})
-        plain_message = strip_tags(html_message)
-        recipient_list = [request.user.email]
+        if request.user.profile.quiz_results_notifications == "Send":
+            subject = f"Quiz Result for {quiz.title}"
+            total_questions = quiz.question_set.count()
+            total_correct_answers = QuizUserAnswers.objects.filter(quiz=quiz, profile=profile, is_correct="Correct").count()
+            percentage_correct = (total_correct_answers / total_questions) * 100
+            html_message = render_to_string('email_quiz_result.html', {'quiz': quiz, 'profile': profile,
+                                                                  'percentage_correct': percentage_correct,
+                                                                  'language_id': language_id})
+            plain_message = strip_tags(html_message)
+            recipient_list = [request.user.email]
 
-        send_mail(subject, plain_message, None, recipient_list, html_message=html_message)
+            send_mail(subject, plain_message, None, recipient_list, html_message=html_message)
 
         return redirect('quiz_result', language_id=language_id, quiz_id=quiz_id)
 

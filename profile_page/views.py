@@ -94,7 +94,7 @@ def get_profile_picture_url(profile_pic_url):
 @login_required
 def profile_settings(request):
     profile = Profile.objects.get(user=request.user)
-    learner_types = LearnerType.objects.all
+    learner_types = LearnerType.objects.all()
 
     if request.method == 'POST':
         if 'learner_type_submit' in request.POST:
@@ -120,11 +120,9 @@ def profile_settings(request):
         elif 'receive_notifications_submit' in request.POST:
             receive_notifications_form = NotificationSettings(request.POST, instance=profile)
             if receive_notifications_form.is_valid():
-                print("Form is valid")
                 receive_notifications_form.save()
                 return redirect('profile_page', username=request.user.username)
             else:
-                print("Form is invalid")
                 print(receive_notifications_form.errors)
 
     learner_type_form = LearnerTypeSettings(instance=profile)
@@ -135,7 +133,7 @@ def profile_settings(request):
         'learner_type_form': learner_type_form,
         'profile_pic_form': profile_pic_form,
         'receive_notifications_form': receive_notifications_form,
-        'leaner_types': learner_types
+        'learner_types': learner_types
     })
 
 

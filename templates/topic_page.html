@@ -16,8 +16,11 @@
 </head>
 <body>
 <article class="sidebar">
-    <a class="sniglet" href="{% url "profile_page" username=request.user.username %}"><img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
-    <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
+    <a class="sniglet" href="{% url "profile_page" username=request.user.username %}"><img src="{% static "/leeri_logo.png" %}" style="height: 210px; width: 210px; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
+    <p class="sniglet" style="color: white; font-size: 25px">Airplane Learning</p>
+    <hr style="color: white; width: 100%">
+    <a class="sniglet">Logged in as: {{ request.user.username }}</a>
+    <hr style="color: white; width: 100%">
     <a class="sniglet" href="{% url "profile_page" username=request.user.username %}">Profile</a>
     <br>
     <br>

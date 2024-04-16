@@ -1,11 +1,17 @@
 import requests
+from django.contrib.humanize.templatetags import humanize
 from django.shortcuts import render
+
+from resource_library.models import Resource
 
 
 # Create your views here.
 
 def resources(request):
-    return render(request, "resource_page.html")
+    all_resources = Resource.objects.all().order_by('-added_at')
+    for resource in all_resources:
+        resource.humanized_added_at = humanize.naturaltime(resource.added_at)
+    return render(request, "resource_page.html", {'resources': all_resources})
 
 
 def dictionary(request):
@@ -17,6 +23,8 @@ def dictionary(request):
         word = word.capitalize()
         print(word)
 
+        if word == "Web" or word == ".net":
+            word = "Bad"
         response = requests.get(f"https://api.dictionaryapi.dev/api/v2/entries/en/{word}")
 
         if response.status_code == 200:
