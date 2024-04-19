@@ -10,6 +10,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from discussion_forums.models import Topic, Comment, CommentDeletionEvent
+from discussion_forums.utils import contains_profanity, PROFANE_WORDS
 from modules.models import Module, Lesson
 
 
@@ -38,6 +39,12 @@ def topic_page(request, topic_id):
 
     if request.method == 'POST':
         comment_text = request.POST.get('comment_text')
+        if contains_profanity(comment_text, PROFANE_WORDS):
+            message = 'Your comment contains something inappropriate.'
+            return render(request, 'topic_page.html',
+                          {'topic': topic, 'all_comments': all_comments,
+                           'profile_pictures': profile_pictures, 'message': message, 'is_admin': is_admin,
+                           'request': request})
         if comment_text:
             if len(comment_text) <= 500:
                 comment = Comment.objects.create(

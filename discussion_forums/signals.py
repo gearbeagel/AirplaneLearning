@@ -29,12 +29,3 @@ def create_discussion_topic(sender, instance, created, **kwargs):
             subject=instance,
             description=content,
         )
-
-
-PROFANE_WORDS = load_profanity_words('profanity.txt')
-
-
-@receiver(post_save, sender=Comment)
-def filter_profanity(sender, instance, **kwargs):
-    if contains_profanity(instance.message, PROFANE_WORDS):
-        instance.delete()
