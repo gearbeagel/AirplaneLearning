@@ -10,6 +10,7 @@ class Resource(models.Model):
     type = models.CharField(max_length=100, choices=[("Article", "Article"), ("Video", "Video"), ("Other", "Other")],
                             default="Other")
     related_lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='related_lesson')
+    description = models.TextField(default="Description is flying to us...")
     source = models.URLField(max_length=500)
     added_at = models.DateTimeField(auto_now_add=True)
 
