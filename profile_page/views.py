@@ -117,8 +117,19 @@ def profile_settings(request):
             profile.save()
             return redirect('profile_page', username=request.user.username)
 
+
         elif 'receive_notifications_submit' in request.POST:
-            receive_notifications_form = NotificationSettings(request.POST, instance=profile)
+            data = request.POST.copy()
+            for field_name in [
+                'receive_notifications',
+                'new_modules_notifications',
+                'quiz_results_notifications',
+                'discussion_notifications',
+                'new_resources_notifications',
+
+            ]:
+                data.setdefault(field_name, 'Do not send')
+            receive_notifications_form = NotificationSettings(data, instance=profile)
             if receive_notifications_form.is_valid():
                 receive_notifications_form.save()
                 return redirect('profile_page', username=request.user.username)

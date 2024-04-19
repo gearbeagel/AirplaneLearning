@@ -75,77 +75,54 @@
     
     <!-- Receive Notifications -->
     <form id="notification-settings-form" method="post" class="sniglet" style="color: #d39c3f; text-align: center; font-size: 24px; max-width: 600px; margin: 0 auto;">
+    <label style="color: #d39c3f; text-align: center; font-size: 40px">Receive Notifications:</label>
     {% csrf_token %}
-    
-    <!-- Receive Notifications -->
-    <label>Receive Notifications:</label>
-<br>
-<select name="receive_notifications" id="receive_notifications" style="width: 300px; height: 35px; font-size: 16px; font-family: Sniglet, sans-serif">
-    <option value="Send" {% if user.profile.receive_notifications == 'Send' %}selected{% endif %}>On</option>
-    <option value="Do not send" {% if user.profile.receive_notifications == 'Do not send' %}selected{% endif %}>Off</option>
-</select>
-<br>
 
 <!-- Other Notification Types -->
-<label>Other Notification Types:</label>
 <br>
 <span style="margin-bottom: 10px;">
-<label style='color: black; font-size: 15px'>New Modules Notifications</label>
-    <select name="new_modules_notifications" style="width: 50px; height: 35px; font-size: 16px; font-family: Sniglet, sans-serif">
-        <option value="Send" {% if user.profile.new_modules_notifications == 'Send' %}selected{% endif %}>On</option>
-        <option value="Do not send" {% if user.profile.new_modules_notifications == 'Do not send' %}selected{% endif %}>Off</option>
-    </select>
+    <label style='color: black; font-size: 15px'>
+        <input type="checkbox" name="new_modules_notifications" value="Send" {% if user.profile.new_modules_notifications == 'Send' %}checked{% endif %}>
+        New Modules Notifications
+    </label>
 </span>
 <br>
 <span style="margin-bottom: 10px;">
-<label style='color: black; font-size: 15px'>Quiz Results Notifications</label>
-    <select name="quiz_results_notifications" style="width: 50px; height: 35px; font-size: 16px; font-family: Sniglet, sans-serif">
-        <option value="Send" {% if user.profile.quiz_results_notifications == 'Send' %}selected{% endif %}>On</option>
-        <option value="Do not send" {% if user.profile.quiz_results_notifications == 'Do not send' %}selected{% endif %}>Off</option>
-    </select>
+    <label style='color: black; font-size: 15px'>
+        <input type="checkbox" name="quiz_results_notifications" value="Send" {% if user.profile.quiz_results_notifications == 'Send' %}checked{% endif %}>
+        Quiz Results Notifications
+    </label>
 </span>
 <br>
 <span style="margin-bottom: 10px;">
-<label style='color: black; font-size: 15px'>Discussion Notifications</label>
-    <select name="discussion_notifications" style="width: 50px; height: 35px; font-size: 16px; font-family: Sniglet, sans-serif">
-        <option value="Send" {% if user.profile.discussion_notifications == 'Send' %}selected{% endif %}>On</option>
-        <option value="Do not send" {% if user.profile.discussion_notifications == 'Do not send' %}selected{% endif %}>Off</option>
-    </select>
+    <label style='color: black; font-size: 15px'>
+        <input type="checkbox" name="discussion_notifications" value="Send" {% if user.profile.discussion_notifications == 'Send' %}checked{% endif %}>
+        Discussion Notifications
+    </label>
 </span>
 <br>
 <span style="margin-bottom: 10px;">
-<label style='color: black; font-size: 15px'>New Resources Notifications</label>
-    <select name="new_resources_notifications" style="width: 50px; height: 35px; font-size: 16px; font-family: Sniglet, sans-serif">
-        <option value="Send" {% if user.profile.new_resources_notifications == 'Send' %}selected{% endif %}>On</option>
-        <option value="Do not send" {% if user.profile.new_resources_notifications == 'Do not send' %}selected{% endif %}>Off</option>
-    </select>
+    <label style='color: black; font-size: 15px'>
+        <input type="checkbox" name="new_resources_notifications" value="Send" {% if user.profile.new_resources_notifications == 'Send' %}checked{% endif %}>
+        New Resources Notifications
+    </label>
 </span>
 <br>
+<span style="margin-bottom: 10px;">
+    <label style='color: black; font-size: 15px'>
+    <input type="checkbox" name="receive_notifications" id="receive_notifications" value="Send" {% if user.profile.receive_notifications == 'Send' %}checked{% endif %}>
+    All Notifications:</label>
+</span>
+<br>
+
 
 <!-- Save Button -->
 <button type="submit" name="receive_notifications_submit" style="height: 50px; width: 100%; font-size: 20px; margin-top: 10px">Save Notification Settings</button>
     </form>
-    </form>
     </div>
 {% endblock %}
 
-<script>
-    function toggleNotifications() {
-    var receiveNotifications = document.getElementById("receive_notifications");
-    var notificationTypes = document.querySelectorAll("#notification-settings-form select");
-
-    if (receiveNotifications.value === "Do not send") {
-        notificationTypes.forEach(function(select) {
-            select.disabled = true;
-            select.value = "Do not send";
-        });
-    } else {
-        notificationTypes.forEach(function(select) {
-            select.disabled = false;
-        });
-    }
-}
-    
+<script> 
     var selectedValue = "<?php echo $learner_type; ?>";
     var selectElement = document.getElementById("learner_type");
 

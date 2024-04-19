@@ -54,13 +54,17 @@ class NotificationSettings(forms.ModelForm):
     def save(self, commit=True):
         instance = super(NotificationSettings, self).save(commit=False)
 
-        if instance.receive_notifications == 'Do not send':
-            instance.new_modules_notifications = 'Do not send'
-            instance.quiz_results_notifications = 'Do not send'
-            instance.discussion_notifications = 'Do not send'
-            instance.new_resources_notifications = 'Do not send'
+        if 'receive_notifications' in self.changed_data:
+            if instance.receive_notifications == 'Do not send':
+                instance.new_modules_notifications = 'Do not send'
+                instance.quiz_results_notifications = 'Do not send'
+                instance.discussion_notifications = 'Do not send'
+                instance.new_resources_notifications = 'Do not send'
+            elif instance.receive_notifications == 'Send':
+                instance.new_modules_notifications = 'Send'
+                instance.quiz_results_notifications = 'Send'
+                instance.discussion_notifications = 'Send'
+                instance.new_resources_notifications = 'Send'
 
         if commit:
             instance.save()
-
-        return instance
