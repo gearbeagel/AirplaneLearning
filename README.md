@@ -31,7 +31,8 @@ Airplane Learning is designed to provide an intuitive platform for beginners to 
 - **Customized Learning Paths**: Users can create personalized learning paths based on their language goals and proficiency levels.
 - **Language Selection**: Option to choose from a wide range of languages for learning.
 - **Notification System**: Notification system to provide updates on new lessons, quizzes, and progress milestones.
-
+- **Community Forums**: Community forums for users to interact, ask questions, and share learning tips and resources.
+- **Resource Library**: Access to a comprehensive resource library with additional learning materials, articles, and videos.
 
 ### Architecture
 The Airplane Learning app follows a client-server architecture. The client-side is built using HTML, CSS, and Jinja, while the server-side is implemented with Django.
