@@ -86,7 +86,7 @@ def lesson_quiz(request, quiz_id, language_id):
 def complete_lesson(request, lesson_id):
     lesson = get_object_or_404(Lesson, pk=lesson_id)
     profile = Profile.objects.get(user=request.user)
-    lesson_status = LessonStatus.objects.get(lesson_id=lesson.id, profile=profile)
+    lesson_status, created = LessonStatus.objects.get_or_create(lesson_id=lesson.id, profile=profile)
     lesson_status.status = "Completed"
     lesson_status.finished_at = datetime.now()
     lesson_status.save()
@@ -95,7 +95,7 @@ def complete_lesson(request, lesson_id):
 def complete_quiz(request, quiz_id):
     quiz = get_object_or_404(Quiz, pk=quiz_id)
     profile = Profile.objects.get(user=request.user)
-    quiz_status = QuizStatus.objects.get(quiz_id=quiz.id, profile=profile)
+    quiz_status, created = QuizStatus.objects.get_or_create(quiz_id=quiz.id, profile=profile)
     quiz_status.status = "Completed"
     quiz_status.finished_at = datetime.now()
     quiz_status.save()

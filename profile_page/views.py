@@ -35,7 +35,6 @@ def calculate_progress(user_profile, chosen_language_id, learner_type):
     else:
         progress_percentage = 0
 
-
     user_profile.progress = progress_percentage
     user_profile.save()
 
@@ -101,7 +100,6 @@ def profile_settings(request):
             learner_type_form = LearnerTypeSettings(request.POST, instance=profile)
             if learner_type_form.is_valid():
                 learner_type_form.save()
-                return redirect('profile_page', username=request.user.username)
             else:
                 print(learner_type_form.errors)
 
@@ -110,12 +108,10 @@ def profile_settings(request):
             if profile_pic_form.is_valid():
                 profile_pic_form.instance.container_name = 'pfpcontainer'
                 profile_pic_form.save()
-                return redirect('profile_page', username=request.user.username)
 
         elif 'default_profile_pic' in request.POST:
             profile.profile_pic_url = get_random_profile_pic()
             profile.save()
-            return redirect('profile_page', username=request.user.username)
 
 
         elif 'receive_notifications_submit' in request.POST:
@@ -132,7 +128,6 @@ def profile_settings(request):
             receive_notifications_form = NotificationSettings(data, instance=profile)
             if receive_notifications_form.is_valid():
                 receive_notifications_form.save()
-                return redirect('profile_page', username=request.user.username)
             else:
                 print(receive_notifications_form.errors)
 

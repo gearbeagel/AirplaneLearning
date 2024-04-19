@@ -2,8 +2,10 @@ import requests
 from django.contrib.humanize.templatetags import humanize
 from django.shortcuts import render
 
+from discussion_forums.utils import load_profanity_words, contains_profanity
 from resource_library.models import Resource
 
+PROFANE_WORDS = load_profanity_words('profanity.txt')
 
 # Create your views here.
 
@@ -24,7 +26,11 @@ def dictionary(request):
         print(word)
 
         if word == "Web" or word == ".net":
-            word = "Bad"
+            meanings.append("Can I get a hundred from this subject, please? :3")
+        if contains_profanity(word, PROFANE_WORDS):
+            word = "..."
+            meanings.append("You can't use this here.")
+
         response = requests.get(f"https://api.dictionaryapi.dev/api/v2/entries/en/{word}")
 
         if response.status_code == 200:

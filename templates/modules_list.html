@@ -63,13 +63,13 @@
             <span style="flex-grow: 1">
             </span>
             <p style="margin-left: 550px; 
-            {% if lesson.difficulty_level == 'Easy' %} 
+            {% if lesson.difficulty_level == 'easy' %}
                 background-color: #578661; /* Easy */
-            {% elif lesson.difficulty_level == 'Medium' %}
+            {% elif lesson.difficulty_level == 'medium' %}
                 background-color: #d39c3f; /* Medium */
-            {% elif lesson.difficulty_level == 'Hard' %}
+            {% elif lesson.difficulty_level == 'hard' %}
                 background-color: #CC6666; /* Hard */
-            {% endif %}; padding: 10px 40px 10px 40px; border-radius: 20px; color: white">{{ lesson.difficulty_level }}</p>
+            {% endif %}; padding: 10px 40px 10px 40px; border-radius: 20px; color: white">{{ lesson.difficulty_level|capfirst }}</p>
             </div>
         {% endfor %}
     {% else %}
@@ -101,7 +101,7 @@
                 background-color: #d39c3f; /* Medium */
             {% elif quiz.difficulty_level == 'Hard' %}
                 background-color: #CC6666; /* Hard */
-            {% endif %}; padding: 10px 40px 10px 40px; border-radius: 20px; color: white">{{ quiz.difficulty_level }}</p>
+            {% endif %}; padding: 10px 40px 10px 40px; border-radius: 20px; color: white">{{ quiz.difficulty_level|capfirst }}</p>
             </div>
         {% endfor %}
     {% else %}
