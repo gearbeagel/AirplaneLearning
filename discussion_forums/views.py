@@ -22,6 +22,7 @@ def main_forum_page(request):
     is_admin = request.user.is_superuser
     return render(request, "main_forum_page.html", {'all_topics': all_topics, 'is_admin': is_admin})
 
+
 def topic_page(request, topic_id):
     topic = get_object_or_404(Topic, pk=topic_id)
     is_admin = True if request.user.is_superuser else False
@@ -102,10 +103,22 @@ def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id)
     if request.method == 'POST':
         if request.user == comment.created_by.user or request.user.is_superuser:
-            com_event = CommentDeletionEvent.objects.create(comment=comment, deleted_by=request.user)
+            com_event = CommentDeletionEvent.objects.create(comment=comment, deleted_by=request.user, deletion_time=datetime.now())
             com_event.save()
+            send_comment_deletion_notification(com_event)
             comment.delete()
             return redirect('topic_page', topic_id=comment.topic_id)
         else:
             pass
     return redirect('topic_page', topic_id=comment.topic_id)
+
+
+def send_comment_deletion_notification(com_ev):
+    if com_ev.comment.created_by.discussion_notifications == "Send":
+        if com_ev.deleted_by.is_superuser:
+            subject = "Your comment... was..."
+            html_message = render_to_string('email_comment_deletion.html', {'comment': com_ev.comment})
+            plain_message = strip_tags(html_message)
+            user_to_notify = com_ev.comment.created_by.email
+
+            send_mail(subject, plain_message, None, [user_to_notify], html_message=html_message)
