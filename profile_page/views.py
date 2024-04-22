@@ -19,8 +19,8 @@ def get_latest_lesson_and_quiz(profile):
     return latest_lesson_status.lesson if latest_lesson_status else None, latest_quiz_status.quiz if latest_quiz_status else None
 
 
-def calculate_progress(user_profile, chosen_language_id, learner_type):
-    total_modules = Module.objects.filter(language_id=chosen_language_id, )
+def calculate_progress(user_profile, chosen_language_id):
+    total_modules = Module.objects.filter(language_id=chosen_language_id)
     total_lessons = Lesson.objects.filter(module__in=total_modules).count()
     total_quizzes = Quiz.objects.filter(module__in=total_modules).count()
 
@@ -46,7 +46,7 @@ def profile_page(request, username):
         if 'setup' not in request.path:
             return redirect("setup")
 
-    calculate_progress(student, student.chosen_language_id, student.learner_type)
+    calculate_progress(student, student.chosen_language_id)
 
     latest_lesson, latest_lesson_language = get_latest_completed_lesson(student)
     latest_quiz, latest_quiz_language = get_latest_completed_quiz(student)
@@ -100,8 +100,6 @@ def profile_settings(request):
             learner_type_form = LearnerTypeSettings(request.POST, instance=profile)
             if learner_type_form.is_valid():
                 learner_type_form.save()
-            else:
-                print(learner_type_form.errors)
 
         elif 'profile_pic_submit' in request.POST:
             profile_pic_form = ProfilePictureSettings(request.POST, request.FILES, instance=profile)
@@ -128,8 +126,6 @@ def profile_settings(request):
             receive_notifications_form = NotificationSettings(data, instance=profile)
             if receive_notifications_form.is_valid():
                 receive_notifications_form.save()
-            else:
-                print(receive_notifications_form.errors)
 
     learner_type_form = LearnerTypeSettings(instance=profile)
     profile_pic_form = ProfilePictureSettings(instance=profile)

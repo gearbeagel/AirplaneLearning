@@ -3,6 +3,7 @@ import re
 from datetime import datetime
 
 from azure.storage.blob import BlobServiceClient
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.humanize.templatetags import humanize
 from django.core.mail import send_mail
@@ -13,7 +14,7 @@ from discussion_forums.models import Topic, Comment, CommentDeletionEvent
 from discussion_forums.utils import contains_profanity, PROFANE_WORDS
 from modules.models import Module, Lesson
 
-
+@login_required
 def main_forum_page(request):
     modules_for_topics = Module.objects.filter(language=request.user.profile.chosen_language)
     lessons_for_topics = Lesson.objects.filter(module__in=modules_for_topics)
@@ -22,7 +23,7 @@ def main_forum_page(request):
     is_admin = request.user.is_superuser
     return render(request, "main_forum_page.html", {'all_topics': all_topics, 'is_admin': is_admin})
 
-
+@login_required
 def topic_page(request, topic_id):
     topic = get_object_or_404(Topic, pk=topic_id)
     is_admin = True if request.user.is_superuser else False

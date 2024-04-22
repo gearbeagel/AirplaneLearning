@@ -1,6 +1,7 @@
 import random
 from datetime import datetime
 
+from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
@@ -12,7 +13,7 @@ from resource_library.models import Resource
 from .models import Language, Lesson, Question, Answer, Quiz
 from .user_progress_models import LessonStatus, QuizStatus, QuizUserAnswers
 
-
+@login_required
 def all_possible_classes(request):
     languages = Language.objects.all()
     context = {
@@ -20,7 +21,7 @@ def all_possible_classes(request):
     }
     return render(request, 'modules_main.html', context)
 
-
+@login_required
 def modules_list(request, language_id):
     user = request.user
     language = get_object_or_404(Language, pk=language_id)
@@ -55,7 +56,7 @@ def modules_list(request, language_id):
     }
     return render(request, 'modules_list.html', context)
 
-
+@login_required
 def lesson_info(request, lesson_id, language_id):
     lesson = get_object_or_404(Lesson, pk=lesson_id)
     language = get_object_or_404(Language, pk=language_id)
@@ -67,6 +68,7 @@ def lesson_info(request, lesson_id, language_id):
 
 
 @csrf_protect
+@login_required
 def lesson_quiz(request, quiz_id, language_id):
     quiz = get_object_or_404(Quiz, pk=quiz_id)
     profile = get_object_or_404(Profile, user=request.user)
@@ -100,7 +102,7 @@ def complete_quiz(request, quiz_id):
     quiz_status.finished_at = datetime.now()
     quiz_status.save()
 
-
+@login_required
 def quiz_result(request, language_id, quiz_id):
     if request.method == 'POST':
         submitted_data = request.POST
