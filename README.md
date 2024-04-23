@@ -101,7 +101,7 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 
 **Week 9 (04/24 - 04/30):**
 1. Implement feature: Feedback Mechanism
-2. Conduct usability testing
+2. [Address user feedback and fix bugs](https://docs.google.com/document/d/1ziUYwNKN42H73Bgy8OVEV4kgQD3KgAL1r0redvjKEoQ/)
 3. Write unit tests for Resource Library
 4. Send feedback confirmation email when user fills feedback form
 5. Allow adding screenshots to user feedback
