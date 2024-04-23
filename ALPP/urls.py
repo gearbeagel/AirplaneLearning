@@ -17,6 +17,8 @@ Including another URLconf
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+
+import feedback.views
 import profile_page.views
 import registration_handle.views
 from ALPP import settings
@@ -35,5 +37,6 @@ urlpatterns = ([
     path('about/', registration_handle.views.about, name='about'),
     path('forums/', include("discussion_forums.urls")),
     path('resources/', include("resource_library.urls")),
+    path('feedback/', feedback.views.feedback, name='feedback'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
   + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))

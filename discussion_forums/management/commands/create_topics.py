@@ -16,7 +16,7 @@ class Command(BaseCommand):
                 content = f"Here, you will discuss your experience on learning {lesson.title}."
                 Topic.objects.create(
                     title=lesson.title,
-                    subject=lesson.subject,
-                    content=content,
+                    subject=lesson,
+                    description=content,
                 )
                 self.stdout.write(self.style.SUCCESS(f"Topic created for lesson '{lesson.title}'"))

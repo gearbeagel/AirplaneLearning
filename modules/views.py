@@ -27,6 +27,8 @@ def modules_list(request, language_id):
     language = get_object_or_404(Language, pk=language_id)
     modules = language.module_set.all()
     profile = Profile.objects.get(user=user)
+    lesson_statuses = []
+    quiz_statuses = []
 
     user_learner_type = user.profile.learner_type
     if user_learner_type.id == 1:

@@ -178,5 +178,21 @@ div, .lesson-content {
 
 div, .row_1 {
     width: 500px;
+}
 
+.notification-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #d39c3f;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    z-index: 1000;
+    font-size: 18px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    opacity: 1;
+    transition: opacity 1s;
 }
