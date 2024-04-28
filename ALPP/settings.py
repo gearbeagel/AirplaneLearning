@@ -32,9 +32,9 @@ SECRET_KEY = secret_key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["airplanelearningpolyglotpro.azurewebsites.net", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["airplanelearningpolyglotpto.azurewebsites.net", "localhost", "127.0.0.1", "airplanelearning-b48ed8dcd6a3.herokuapp.com"]
 
-CSRF_TRUSTED_ORIGINS = ['https://airplanelearningpolyglotbro.azurewebsites.net']
+CSRF_TRUSTED_ORIGINS = ['https://airplanelearningpolyglotpto.azurewebsites.net', 'https://airplanelearning-b48ed8dcd6a3.herokuapp.com']
 
 LOGIN_REDIRECT_URL = 'setup/'
 LOGOUT_REDIRECT_URL = '/'
@@ -91,6 +91,7 @@ SWAGGER_SETTINGS = {
 CORS_ALLOWED_ORIGINS = [
     "https://airplanelearning.azurewebsites.net",
     "http://localhost:8000",
+    "https://airplanelearning-b48ed8dcd6a3.herokuapp.com",
 ]
 
 CORS_ALLOW_METHODS = [
@@ -99,7 +100,7 @@ CORS_ALLOW_METHODS = [
     'PUT',
     'PATCH',
     'DELETE',
-    'OPTIONS'
+    'OPTIONS',
 ]
 
 CORS_ALLOW_HEADERS = [
@@ -238,13 +239,13 @@ STORAGES = {
     },
     "default": {
         'BACKEND': 'storages.backends.azure_storage.AzureStorage',
-        'AZURE_ACCOUNT_NAME': 'alpolyprostorageaccount',
+        'AZURE_ACCOUNT_NAME': 'alpolyprostorage',
         'AZURE_ACCOUNT_KEY': storage_key,
         'AZURE_CONTAINER': 'pfpcontainer',
     }
 }
 
-AZURE_ACCOUNT_NAME = 'alpolyprostorageaccount'
+AZURE_ACCOUNT_NAME = 'alpolyprostorage'
 AZURE_ACCOUNT_KEY = storage_key
 AZURE_CONTAINER = 'pfpcontainer'
 
