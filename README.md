@@ -111,7 +111,7 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 2. Address any remaining bugs and issues
 3. Write unit tests for Feedback Mechanism ✔️
 4. Enhance Social Sharing with user-generated content features
-5. Prepare for production deployment
+5. Prepare for production deployment ✔️
 
 **Week 11 (05/8 - 05/14):**
 1. Conduct final testing and quality assurance

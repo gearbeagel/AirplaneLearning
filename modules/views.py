@@ -163,6 +163,10 @@ def quiz_result(request, language_id, quiz_id):
         quiz_status.status = "Completed"
         quiz_status.save()
 
+        total_questions = quiz.question_set.count()
+        total_correct_answers = QuizUserAnswers.objects.filter(quiz=quiz, profile=profile, is_correct="Correct").count()
+        percentage_correct = (total_correct_answers / total_questions) * 100
+
         if request.user.profile.quiz_results_notifications == "Send":
             subject = f"Quiz Result for {quiz.title}"
             total_questions = quiz.question_set.count()
@@ -183,6 +187,10 @@ def quiz_result(request, language_id, quiz_id):
     language = get_object_or_404(Language, pk=language_id)
     questions = Question.objects.filter(quiz=quiz)
     user_answers = QuizUserAnswers.objects.filter(quiz=quiz, profile=profile)
+
+    total_questions = quiz.question_set.count()
+    total_correct_answers = QuizUserAnswers.objects.filter(quiz=quiz, profile=profile, is_correct="Correct").count()
+    percentage_correct = (total_correct_answers / total_questions) * 100
 
     quiz_data = {}
     for question in questions:
@@ -208,5 +216,5 @@ def quiz_result(request, language_id, quiz_id):
         if quiz.title == resource.name:
             resource_data.append(resource)
 
-    context = {'quiz': quiz, 'language': language, 'questions': questions, 'quiz_data': quiz_data, 'resource_data': resource_data}
+    context = {'quiz': quiz, 'language': language, 'questions': questions, 'quiz_data': quiz_data, 'resource_data': resource_data, 'percentage_correct': percentage_correct}
     return render(request, 'quiz_result.html', context)

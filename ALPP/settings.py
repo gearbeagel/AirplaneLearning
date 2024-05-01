@@ -64,7 +64,8 @@ INSTALLED_APPS = [
     "discussion_forums.apps.DiscussionForumsConfig",
     'corsheaders',
     "resource_library.apps.ResourceLibraryConfig",
-    "feedback.apps.UserFeedbackConfig"
+    "feedback.apps.UserFeedbackConfig",
+    'django_social_share'
 ]
 
 MIDDLEWARE = [

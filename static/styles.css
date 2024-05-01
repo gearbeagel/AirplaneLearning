@@ -196,3 +196,13 @@ div, .row_1 {
     opacity: 1;
     transition: opacity 1s;
 }
+
+.socials {
+    position: relative;
+    color: black;
+    font-family: Sniglet, sans-serif;
+}
+
+a, .socials {
+    color: black;
+}

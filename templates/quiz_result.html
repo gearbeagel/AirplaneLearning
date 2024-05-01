@@ -1,3 +1,4 @@
+{% load social_share %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -9,6 +10,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
+    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
     <link rel="icon" type="image/x-icon" href="{% static "favicon.ico" %}">
 </head>
 <body>
@@ -96,6 +100,23 @@
 <br>
 {% endfor %}
 </ul>
+<h2 class="sniglet" style="margin-left: 300px; margin-bottom: -10px">Share results:</h2>
+<br>
+<span style="display: flex; flex-direction: row">
+    <span style="margin-left: 300px;">
+        <a style="color: #d39c3f" href="https://twitter.com/intent/tweet?text=I%20have%20accomplished%20a%20quiz.%20Try%20it%20out%20yourself%21%20https://airplanelearningpolyglotpto.azurewebsites.net" class="meta-act-link meta-tweet socials" target="_blank">
+            <button style="width: fit-content; height: fit-content; padding: 10px; border-radius: 10px; border: none;">
+                <i class="fab fa-twitter"></i>
+            </button>
+        </a>
+        <a style="margin-left: 10px; color: #0088cc" href="https://telegram.me/share/url?url=https://airplanelearningpolyglotpto.azurewebsites.net&text=I%20have%20accomplished%20a%20quiz.%20Try%20it%20out%20yourself%21" class="meta-act-link meta-telegram socials" target="_blank">
+        <button style="width: fit-content; height: fit-content; padding: 10px; border-radius: 10px">
+            <i class="fab fa-telegram"></i>
+        </button>
+    </a>
+    </span>
+</span>
+<br>
     {% if resource_data %}
     <h2 class="sniglet" style="margin-left: 300px; margin-bottom: -10px">Related Resources:</h2>
     <ul style="margin-left: 250px; list-style-type: none">
