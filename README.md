@@ -103,13 +103,13 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 1. Implement feature: Feedback Mechanism  ✔️
 2. [Address user feedback and fix bugs](https://docs.google.com/document/d/1ziUYwNKN42H73Bgy8OVEV4kgQD3KgAL1r0redvjKEoQ/) ✔️
 3. Write unit tests for Resource Library ✔️
-4. Send feedback confirmation email when user fills feedback form  ✔️
-5. Allow adding screenshots to user feedback  ✔️
+4. Send feedback confirmation email when user fills feedback form ✔️
+5. Allow adding screenshots to user feedback ✔️
 
 **Week 10 (05/1 - 05/7):**
 1. Implement feature: Social Sharing
 2. Address any remaining bugs and issues
-3. Write unit tests for Feedback Mechanism
+3. Write unit tests for Feedback Mechanism ✔️
 4. Enhance Social Sharing with user-generated content features
 5. Prepare for production deployment
 
