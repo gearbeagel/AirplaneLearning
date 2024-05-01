@@ -1,7 +1,7 @@
 import os
 
 from azure.storage.blob import BlobServiceClient
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 
 from ALPP import settings
 from .forms import FeedbackForm

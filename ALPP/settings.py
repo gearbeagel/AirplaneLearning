@@ -32,9 +32,9 @@ SECRET_KEY = secret_key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["airplanelearningpolyglotpto.azurewebsites.net", "localhost", "127.0.0.1", "airplanelearning-b48ed8dcd6a3.herokuapp.com"]
+ALLOWED_HOSTS = ["airplanelearningpolyglotpto.azurewebsites.net", "localhost", "127.0.0.1"]
 
-CSRF_TRUSTED_ORIGINS = ['https://airplanelearningpolyglotpto.azurewebsites.net', 'https://airplanelearning-b48ed8dcd6a3.herokuapp.com']
+CSRF_TRUSTED_ORIGINS = ['https://airplanelearningpolyglotpto.azurewebsites.net']
 
 LOGIN_REDIRECT_URL = 'setup/'
 LOGOUT_REDIRECT_URL = '/'
@@ -89,9 +89,8 @@ SWAGGER_SETTINGS = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "https://airplanelearning.azurewebsites.net",
+    'https://airplanelearningpolyglotpto.azurewebsites.net',
     "http://localhost:8000",
-    "https://airplanelearning-b48ed8dcd6a3.herokuapp.com",
 ]
 
 CORS_ALLOW_METHODS = [
