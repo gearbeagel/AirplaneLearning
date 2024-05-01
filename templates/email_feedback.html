@@ -9,8 +9,10 @@
     <p><strong>Feedback ID:</strong> {{ feedback_id }}</p>
     <p><strong>Feedback Type:</strong> {{ feedback_type }}</p>
     <p><strong>Description:</strong> {{ description }}</p>
-    {% if screenshot_url %}
-    <p><strong>Screenshot URL:</strong> <a href="{{ screenshot_url }}">View Screenshot</a></p>
+    {% if screenshot %}
+    <strong>Screenshot:</strong> 
+        <br>
+        <img src="{{ screenshot }}" alt="{{ screenshot }}">
     {% endif %}
 </body>
 </html>

@@ -21,7 +21,7 @@ def feedback(request):
                 blob_service_client = BlobServiceClient.from_connection_string(os.getenv('connection_str'))
                 container_client = blob_service_client.get_container_client(settings.AZURE_CONTAINER)
 
-                blob_name = f"screenshot_{screenshot.name}"
+                blob_name = f"screenshot_{screenshot}"
 
                 blob_client = container_client.get_blob_client(blob_name)
                 blob_client.upload_blob(screenshot)

@@ -14,11 +14,14 @@ def send_feedback_notification(sender, instance, created, **kwargs):
     if created:
         print("Sending mail...")
         subject = 'New Feedback Submitted'
+        blob_storage_base_url = "https://alpolyprostorage.blob.core.windows.net/"
+        screenshot_blob_url = f"{blob_storage_base_url}{settings.AZURE_CONTAINER}/{instance.screenshot}"
+
         context = {
             'feedback_id': instance.pk,
             'feedback_type': instance.feedback_type,
             'description': instance.description,
-            'screenshot': instance.screenshot,
+            'screenshot': screenshot_blob_url,
         }
         html_message = render_to_string('email_feedback.html', context)
         plain_message = strip_tags(html_message)
