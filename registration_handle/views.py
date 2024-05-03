@@ -16,7 +16,7 @@ def home(request):
     tracer = trace.get_tracer(__name__)
 
     with tracer.start_as_current_span("homepage") as span:
-        span.set_attribute("homepage", request.__dict__)
+        span.set_attribute("homepage", request.user.username)
         return render(request, "homepage.html")
 
 
@@ -27,7 +27,7 @@ def register(request):
         if request.user.is_authenticated:
             user, created = User.objects.get_or_create(user=request.user)
             user.save()
-        span.set_attribute("register", request.__dict__)
+        span.set_attribute("register",request.user.username)
         return render(request, "register.html")
 
 
@@ -35,7 +35,7 @@ def about(request):
     tracer = trace.get_tracer(__name__)
 
     with tracer.start_as_current_span("about") as span:
-        span.set_attribute("about", request.__dict__)
+        span.set_attribute("about", request.user.username)
         return render(request, "about.html")
 
 

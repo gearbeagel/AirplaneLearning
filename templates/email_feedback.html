@@ -7,6 +7,7 @@
 <body>
     <h2>New Feedback Submitted</h2>
     <p><strong>Feedback ID:</strong> {{ feedback_id }}</p>
+    <p><strong>Author:</strong> {{ profile.username }}</p>
     <p><strong>Feedback Type:</strong> {{ feedback_type }}</p>
     <p><strong>Description:</strong> {{ description }}</p>
     {% if screenshot %}

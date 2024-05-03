@@ -1,6 +1,7 @@
 import requests
 from django.contrib.humanize.templatetags import humanize
 from django.shortcuts import render
+from opentelemetry import trace
 
 from discussion_forums.utils import load_profanity_words, contains_profanity
 from resource_library.models import Resource
@@ -10,40 +11,47 @@ PROFANE_WORDS = load_profanity_words('profanity.txt')
 # Create your views here.
 
 def resources(request):
-    all_resources = Resource.objects.all().order_by('-added_at')
-    for resource in all_resources:
-        resource.humanized_added_at = humanize.naturaltime(resource.added_at)
-    return render(request, "resource_page.html", {'resources': all_resources})
+    tracer = trace.get_tracer(__name__)
+
+    with tracer.start_as_current_span("resources") as span:
+        all_resources = Resource.objects.all().order_by('-added_at')
+        for resource in all_resources:
+            resource.humanized_added_at = humanize.naturaltime(resource.added_at)
+        span.set_attribute('resources', request.user.username)
+        return render(request, "resource_page.html", {'resources': all_resources})
 
 
 def dictionary(request):
-    meanings = []
-    word = ""
+    tracer = trace.get_tracer(__name__)
 
-    if request.method == "POST":
-        word = request.POST.get('word', '')
-        word = word.capitalize()
-        print(word)
+    with tracer.start_as_current_span("dictionary") as span:
+        meanings = []
+        word = ""
 
-        if word == "Web" or word == ".net":
-            meanings.append("Can I get a hundred from this subject, please? :3")
-        if contains_profanity(word, PROFANE_WORDS):
-            word = "..."
-            meanings.append("You can't use this here.")
+        if request.method == "POST":
+            word = request.POST.get('word', '')
+            word = word.capitalize()
+            print(word)
 
-        response = requests.get(f"https://api.dictionaryapi.dev/api/v2/entries/en/{word}")
+            if word == "Web" or word == ".net":
+                meanings.append("Can I get a hundred from this subject, please? :3")
+            if contains_profanity(word, PROFANE_WORDS):
+                word = "..."
+                meanings.append("You can't use this here.")
 
-        if response.status_code == 200:
-            data = response.json()
+            response = requests.get(f"https://api.dictionaryapi.dev/api/v2/entries/en/{word}")
 
-            for entry in data:
-                word_data = entry.get('word', '')
+            if response.status_code == 200:
+                data = response.json()
 
-                if word_data:
-                    for meaning in entry.get('meanings', []):
-                        definitions = meaning.get('definitions', [])
+                for entry in data:
+                    word_data = entry.get('word', '')
 
-                        for definition in definitions:
-                            meanings.append(definition.get('definition', ''))
+                    if word_data:
+                        for meaning in entry.get('meanings', []):
+                            definitions = meaning.get('definitions', [])
 
-    return render(request, 'dictionary.html', {'meanings': meanings, 'word': word})
+                            for definition in definitions:
+                                meanings.append(definition.get('definition', ''))
+        span.set_attribute('dictionary', request.user.username)
+        return render(request, 'dictionary.html', {'meanings': meanings, 'word': word})

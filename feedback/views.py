@@ -38,5 +38,5 @@ def feedback(request):
             'form': form,
             'success_message': success_message,
         }
-        span.set_attribute('feedback', context)
+        span.set_attribute('feedback', request.user.username)
         return render(request, 'feedback.html', context)

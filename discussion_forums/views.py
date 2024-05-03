@@ -25,7 +25,7 @@ def main_forum_page(request):
         topics_for_lessons = Topic.objects.filter(subject__in=lessons_for_topics)
         all_topics = topics_for_lessons.order_by('-created_at')
         is_admin = request.user.is_superuser
-        span.set_attribute('main_forum_page', main_forum_page)
+        span.set_attribute('main_forum_page', request.user.username)
         return render(request, "main_forum_page.html", {'all_topics': all_topics, 'is_admin': is_admin})
 
 @login_required
@@ -77,7 +77,7 @@ def topic_page(request, topic_id):
                               {'topic': topic, 'all_comments': all_comments,
                                'profile_pictures': profile_pictures, 'message': message, 'is_admin': is_admin,
                                'request': request})
-        span.set_attribute('topic_page', topic_page)
+        span.set_attribute('topic_page', request.user.username)
         return render(request, 'topic_page.html',
                       {'topic': topic, 'all_comments': all_comments,
                        'profile_pictures': profile_pictures, 'is_admin': is_admin, 'request': request})

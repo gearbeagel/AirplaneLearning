@@ -23,7 +23,7 @@ def all_possible_classes(request):
         context = {
             'languages': languages
         }
-        span.set_attribute('all_possible_classes', context)
+        span.set_attribute('all_possible_classes', request.user.username)
         return render(request, 'modules_main.html', context)
 
 @login_required
@@ -64,7 +64,7 @@ def modules_list(request, language_id):
             'lesson_statuses': lesson_statuses,
             'quiz_statuses': quiz_statuses,
         }
-        span.set_attribute('modules_list', context)
+        span.set_attribute('modules_list', request.user.username)
         return render(request, 'modules_list.html', context)
 
 @login_required
@@ -77,7 +77,7 @@ def lesson_info(request, lesson_id, language_id):
         section_count = sections.count()
         context = {'lesson': lesson, 'language': language, 'sections': sections, 'section_count': section_count}
         complete_lesson(request, lesson_id)
-        span.set_attribute('lesson_info', lesson_info)
+        span.set_attribute('lesson_info', request.user.username)
         return render(request, 'lesson_info.html', context)
 
 
@@ -96,7 +96,7 @@ def lesson_quiz(request, quiz_id, language_id):
         for question in questions:
             answers = list(Answer.objects.filter(question=question))
             answers_dict[question] = answers
-        span.set_attribute('lesson_quiz', lesson_quiz)
+        span.set_attribute('lesson_quiz', request.user.username)
         return render(request, 'lesson_quiz.html',
                       {'quiz': quiz, 'quiz_status': quiz_status, 'language': language, 'questions': questions,
                        'answers_dict': answers_dict})
@@ -234,5 +234,5 @@ def quiz_result(request, language_id, quiz_id):
                     resource_data.append(resource)
 
             context = {'quiz': quiz, 'language': language, 'questions': questions, 'quiz_data': quiz_data, 'resource_data': resource_data, 'percentage_correct': percentage_correct}
-            span.set_attribute('quiz_result', context)
+            span.set_attribute('quiz_result', request.user.username)
             return render(request, 'quiz_result.html', context)
