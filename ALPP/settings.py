@@ -28,15 +28,6 @@ from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from azure.monitor.opentelemetry.exporter import AzureMonitorTraceExporter
 from opentelemetry import trace
 
-exporter = AzureMonitorTraceExporter(connection_string='InstrumentationKey=330deb74-c183-4f37-8a15-7d9c92ac78e7;IngestionEndpoint=https://northeurope-2.in.applicationinsights.azure.com/;LiveEndpoint=https://northeurope.livediagnostics.monitor.azure.com/;ApplicationId=d97b59d8-aaee-4b43-8c3e-2e381810a8ad')
-
-tracer_provider = TracerProvider(resource=Resource.create({}),)
-tracer_provider.add_span_processor(BatchSpanProcessor(exporter))
-
-DjangoInstrumentor().instrument()
-LoggingInstrumentor().instrument()
-trace.set_tracer_provider(tracer_provider)
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -61,6 +52,15 @@ LOGOUT_REDIRECT_URL = '/'
 SITE_ID = 1
 
 # Application definition
+
+exporter = AzureMonitorTraceExporter(connection_string=os.getenv('conn_str_ai'))
+
+tracer_provider = TracerProvider(resource=Resource.create({}),)
+tracer_provider.add_span_processor(BatchSpanProcessor(exporter))
+
+DjangoInstrumentor().instrument()
+LoggingInstrumentor().instrument()
+trace.set_tracer_provider(tracer_provider)
 
 INSTALLED_APPS = [
     'django.contrib.admin',
