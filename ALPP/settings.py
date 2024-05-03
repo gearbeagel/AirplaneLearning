@@ -20,13 +20,13 @@ from dotenv import load_dotenv
 
 import os
 
-from opentelemetry.instrumentation.django import DjangoInstrumentor
-from opentelemetry.instrumentation.logging import LoggingInstrumentor
-from opentelemetry.sdk.resources import Resource
-from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import BatchSpanProcessor
-from azure.monitor.opentelemetry.exporter import AzureMonitorTraceExporter
-from opentelemetry import trace
+# from opentelemetry.instrumentation.django import DjangoInstrumentor
+# from opentelemetry.instrumentation.logging import LoggingInstrumentor
+# from opentelemetry.sdk.resources import Resource
+# from opentelemetry.sdk.trace import TracerProvider
+# from opentelemetry.sdk.trace.export import BatchSpanProcessor
+# from azure.monitor.opentelemetry.exporter import AzureMonitorTraceExporter
+# from opentelemetry import trace
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -53,14 +53,14 @@ SITE_ID = 1
 
 # Application definition
 
-exporter = AzureMonitorTraceExporter(connection_string=os.getenv('conn_str_ai'))
-
-tracer_provider = TracerProvider(resource=Resource.create({}),)
-tracer_provider.add_span_processor(BatchSpanProcessor(exporter))
-
-DjangoInstrumentor().instrument()
-LoggingInstrumentor().instrument()
-trace.set_tracer_provider(tracer_provider)
+# exporter = AzureMonitorTraceExporter(connection_string=os.getenv('conn_str_ai'))
+#
+# tracer_provider = TracerProvider(resource=Resource.create({}),)
+# tracer_provider.add_span_processor(BatchSpanProcessor(exporter))
+#
+# DjangoInstrumentor().instrument()
+# LoggingInstrumentor().instrument()
+# trace.set_tracer_provider(tracer_provider)
 
 INSTALLED_APPS = [
     'django.contrib.admin',

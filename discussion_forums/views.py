@@ -10,77 +10,72 @@ from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-from opentelemetry import trace
 
 from discussion_forums.models import Topic, Comment, CommentDeletionEvent
 from discussion_forums.utils import contains_profanity, PROFANE_WORDS
 from modules.models import Module, Lesson
 
+
 @login_required
 def main_forum_page(request):
-    tracer = trace.get_tracer(__name__)
-    with tracer.start_as_current_span('main_forum_page') as span:
-        modules_for_topics = Module.objects.filter(language=request.user.profile.chosen_language)
-        lessons_for_topics = Lesson.objects.filter(module__in=modules_for_topics)
-        topics_for_lessons = Topic.objects.filter(subject__in=lessons_for_topics)
-        all_topics = topics_for_lessons.order_by('-created_at')
-        is_admin = request.user.is_superuser
-        span.set_attribute('main_forum_page', request.user.username)
-        return render(request, "main_forum_page.html", {'all_topics': all_topics, 'is_admin': is_admin})
+    modules_for_topics = Module.objects.filter(language=request.user.profile.chosen_language)
+    lessons_for_topics = Lesson.objects.filter(module__in=modules_for_topics)
+    topics_for_lessons = Topic.objects.filter(subject__in=lessons_for_topics)
+    all_topics = topics_for_lessons.order_by('-created_at')
+    is_admin = request.user.is_superuser
+    return render(request, "main_forum_page.html", {'all_topics': all_topics, 'is_admin': is_admin})
+
 
 @login_required
 def topic_page(request, topic_id):
-    tracer = trace.get_tracer(__name__)
-    with tracer.start_as_current_span('topic_page') as span:
-        topic = get_object_or_404(Topic, pk=topic_id)
-        is_admin = True if request.user.is_superuser else False
+    topic = get_object_or_404(Topic, pk=topic_id)
+    is_admin = True if request.user.is_superuser else False
 
-        all_comments = Comment.objects.filter(topic_id=topic_id).order_by("-created_at")
+    all_comments = Comment.objects.filter(topic_id=topic_id).order_by("-created_at")
 
-        for comment in all_comments:
-            comment.humanized_created_at = humanize.naturaltime(comment.created_at)
+    for comment in all_comments:
+        comment.humanized_created_at = humanize.naturaltime(comment.created_at)
 
-        profile_pictures = {}
+    profile_pictures = {}
 
-        for comment in all_comments:
-            user_profile = comment.created_by
-            profile_pictures[user_profile.username] = get_profile_pic_url(user_profile)
+    for comment in all_comments:
+        user_profile = comment.created_by
+        profile_pictures[user_profile.username] = get_profile_pic_url(user_profile)
 
-        if request.method == 'POST':
-            comment_text = request.POST.get('comment_text')
-            if contains_profanity(comment_text, PROFANE_WORDS):
-                message = 'Your comment contains something inappropriate.'
-                return render(request, 'topic_page.html',
-                              {'topic': topic, 'all_comments': all_comments,
-                               'profile_pictures': profile_pictures, 'message': message, 'is_admin': is_admin,
-                               'request': request})
-            if comment_text:
-                if len(comment_text) <= 500:
-                    comment = Comment.objects.create(
-                        message=comment_text,
-                        topic=topic,
-                        created_by=request.user.profile,
-                        created_at=datetime.now()
-                    )
-                    comment.save()
-                    send_reply_notification_email(comment, comment_text)
-                    return redirect('topic_page', topic_id=topic_id)
-                else:
-                    message = 'Your comment is too long! Make sure it is less than 500 symbols.'
-                    return render(request, 'topic_page.html',
-                                  {'topic': topic, 'all_comments': all_comments,
-                                   'profile_pictures': profile_pictures, 'message': message, 'is_admin': is_admin,
-                                   'request': request})
+    if request.method == 'POST':
+        comment_text = request.POST.get('comment_text')
+        if contains_profanity(comment_text, PROFANE_WORDS):
+            message = 'Your comment contains something inappropriate.'
+            return render(request, 'topic_page.html',
+                          {'topic': topic, 'all_comments': all_comments,
+                           'profile_pictures': profile_pictures, 'message': message, 'is_admin': is_admin,
+                           'request': request})
+        if comment_text:
+            if len(comment_text) <= 500:
+                comment = Comment.objects.create(
+                    message=comment_text,
+                    topic=topic,
+                    created_by=request.user.profile,
+                    created_at=datetime.now()
+                )
+                comment.save()
+                send_reply_notification_email(comment, comment_text)
+                return redirect('topic_page', topic_id=topic_id)
             else:
-                message = 'Comment cannot be empty.'
+                message = 'Your comment is too long! Make sure it is less than 500 symbols.'
                 return render(request, 'topic_page.html',
                               {'topic': topic, 'all_comments': all_comments,
                                'profile_pictures': profile_pictures, 'message': message, 'is_admin': is_admin,
                                'request': request})
-        span.set_attribute('topic_page', request.user.username)
-        return render(request, 'topic_page.html',
-                      {'topic': topic, 'all_comments': all_comments,
-                       'profile_pictures': profile_pictures, 'is_admin': is_admin, 'request': request})
+        else:
+            message = 'Comment cannot be empty.'
+            return render(request, 'topic_page.html',
+                          {'topic': topic, 'all_comments': all_comments,
+                           'profile_pictures': profile_pictures, 'message': message, 'is_admin': is_admin,
+                           'request': request})
+    return render(request, 'topic_page.html',
+                  {'topic': topic, 'all_comments': all_comments,
+                   'profile_pictures': profile_pictures, 'is_admin': is_admin, 'request': request})
 
 
 def send_reply_notification_email(comment, comment_text):
@@ -112,7 +107,8 @@ def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id)
     if request.method == 'POST':
         if request.user == comment.created_by.user or request.user.is_superuser:
-            com_event = CommentDeletionEvent.objects.create(comment=comment, deleted_by=request.user, deletion_time=datetime.now())
+            com_event = CommentDeletionEvent.objects.create(comment=comment, deleted_by=request.user,
+                                                            deletion_time=datetime.now())
             com_event.save()
             send_comment_deletion_notification(com_event)
             comment.delete()
