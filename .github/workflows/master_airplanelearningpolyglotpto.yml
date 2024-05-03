@@ -66,4 +66,4 @@ jobs:
         with:
           app-name: 'airplanelearningpolyglotpto'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BC97BEBBD14E4A43A44C2A332727594A }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_9ACC653C102241DD898B75E6DAD7C6E3 }}

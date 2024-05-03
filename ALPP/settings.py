@@ -65,7 +65,7 @@ INSTALLED_APPS = [
     'corsheaders',
     "resource_library.apps.ResourceLibraryConfig",
     "feedback.apps.UserFeedbackConfig",
-    'django_social_share'
+    'django_social_share',
 ]
 
 MIDDLEWARE = [

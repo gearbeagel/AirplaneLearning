@@ -19,9 +19,10 @@ def send_feedback_notification(sender, instance, created, **kwargs):
 
         context = {
             'feedback_id': instance.pk,
+            'profile': instance.profile,
             'feedback_type': instance.feedback_type,
             'description': instance.description,
-            'screenshot': screenshot_blob_url,
+            'screenshot': screenshot_blob_url if instance.screenshot else None,
         }
         html_message = render_to_string('email_feedback.html', context)
         plain_message = strip_tags(html_message)

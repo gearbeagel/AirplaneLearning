@@ -7,6 +7,7 @@ from resource_library.models import Resource
 
 PROFANE_WORDS = load_profanity_words('profanity.txt')
 
+
 # Create your views here.
 
 def resources(request):
@@ -45,5 +46,4 @@ def dictionary(request):
 
                         for definition in definitions:
                             meanings.append(definition.get('definition', ''))
-
     return render(request, 'dictionary.html', {'meanings': meanings, 'word': word})
