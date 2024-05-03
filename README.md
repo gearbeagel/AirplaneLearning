@@ -33,6 +33,9 @@ Airplane Learning is designed to provide an intuitive platform for beginners to 
 - **Notification System**: Notification system to provide updates on new lessons, quizzes, and progress milestones.
 - **Community Forums**: Community forums for users to interact, ask questions, and share learning tips and resources.
 - **Resource Library**: Access to a comprehensive resource library with additional learning materials, articles, and videos.
+- **Feedback Mechanism**: Feedback mechanism for users to provide suggestions, report issues, and contribute to ongoing improvements.
+- **Social Sharing**: Integration with social media platforms to share learning achievements and progress with friends and followers.
+
 
 ### Architecture
 The Airplane Learning app follows a client-server architecture. The client-side is built using HTML, CSS, and Jinja, while the server-side is implemented with Django.
