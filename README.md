@@ -117,15 +117,16 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 5. Prepare for production deployment ✔️
 
 **Week 11 (05/8 - 05/14):**
-1. Conduct final testing and quality assurance
-2. Prepare for project launch
-3. Write unit tests for Social Sharing
+1. Conduct final testing and quality assurance ✔️ 
+2. Prepare for project launch ✔️
+3. Created scripts for generating content ✔️
 4. Deploy application to Azure platform ✔️
 5. Monitor application performance and stability ✔️
 
+
 **Week 12 (05/15 - 05/21):**
-1. Launch Polyglot Pro to the public
+1. Launch Polyglot Pro to the public ✔️
 2. Monitor user feedback and engagement ✔️
 3. Conduct post-launch analysis and optimization ✔️
-4. Write unit tests for overall application functionality 
-5. Plan future updates and enhancements based on user feedback
+4. Write unit tests for overall application functionality ✔️
+5. Plan future updates and enhancements based on user feedback ✔️
