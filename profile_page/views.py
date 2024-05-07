@@ -5,6 +5,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
+from django.views.decorators.http import require_http_methods
 from opentelemetry import trace
 
 from profile_page.forms import LearnerTypeSettings, ProfilePictureSettings, NotificationSettings
@@ -57,8 +58,8 @@ def profile_page(request, username):
 
         profile_picture_url = get_profile_picture_url(student.profile_pic_url)
 
-        span.set_attribute("student_username", username)
-        span.set_attribute("profile_picture_url", profile_picture_url)
+        span.set_attribute("user", username)
+        span.set_attribute('http.method', request.method)
 
         print(span)
 
@@ -99,53 +100,56 @@ def get_profile_picture_url(profile_pic_url):
     return profile_picture_url
 
 
+@require_http_methods(["GET", "POST"])
 @login_required
 def profile_settings(request):
     tracer = trace.get_tracer(__name__)
 
-    with tracer.start_as_current_span("profile_page_settings") as span:
-        profile = Profile.objects.get(user=request.user)
-        learner_types = LearnerType.objects.all()
+    with tracer.start_as_current_span("profile_page_settings", attributes={
+        "http.method": request.method,
+        "http.url": request.get_full_path(),
+    }) as span:
+        try:
+            profile = Profile.objects.get(user=request.user)
+            learner_types = LearnerType.objects.all()
 
-        if request.method == 'POST':
-            if 'learner_type_submit' in request.POST:
-                learner_type_form = LearnerTypeSettings(request.POST, instance=profile)
-                if learner_type_form.is_valid():
-                    learner_type_form.save()
+            if request.method == 'POST':
+                if 'learner_type_submit' in request.POST:
+                    learner_type_form = LearnerTypeSettings(request.POST, instance=profile)
+                    if learner_type_form.is_valid():
+                        learner_type_form.save()
 
-            elif 'profile_pic_submit' in request.POST:
-                profile_pic_form = ProfilePictureSettings(request.POST, request.FILES, instance=profile)
-                if profile_pic_form.is_valid():
-                    profile_pic_form.instance.container_name = 'pfpcontainer'
-                    profile_pic_form.save()
+                elif 'profile_pic_submit' in request.POST:
+                    profile_pic_form = ProfilePictureSettings(request.POST, request.FILES, instance=profile)
+                    if profile_pic_form.is_valid():
+                        profile_pic_form.instance.container_name = 'pfpcontainer'
+                        profile_pic_form.save()
 
-            elif 'default_profile_pic' in request.POST:
-                profile.profile_pic_url = get_random_profile_pic()
-                profile.save()
+                elif 'default_profile_pic' in request.POST:
+                    profile.profile_pic_url = get_random_profile_pic()
+                    profile.save()
 
 
-            elif 'receive_notifications_submit' in request.POST:
-                data = request.POST.copy()
-                for field_name in [
-                    'receive_notifications',
-                    'new_modules_notifications',
-                    'quiz_results_notifications',
-                    'discussion_notifications',
-                    'new_resources_notifications',
+                elif 'receive_notifications_submit' in request.POST:
+                    data = request.POST.copy()
+                    for field_name in [
+                        'receive_notifications',
+                        'new_modules_notifications',
+                        'quiz_results_notifications',
+                        'discussion_notifications',
+                        'new_resources_notifications',
 
-                ]:
-                    data.setdefault(field_name, 'Do not send')
-                receive_notifications_form = NotificationSettings(data, instance=profile)
-                if receive_notifications_form.is_valid():
-                    receive_notifications_form.save()
+                    ]:
+                        data.setdefault(field_name, 'Do not send')
+                    receive_notifications_form = NotificationSettings(data, instance=profile)
+                    if receive_notifications_form.is_valid():
+                        receive_notifications_form.save()
+        except Exception as e:
+            span.record_exception()
 
         learner_type_form = LearnerTypeSettings(instance=profile)
         profile_pic_form = ProfilePictureSettings(instance=profile)
         receive_notifications_form = NotificationSettings(instance=profile)
-
-        span.set_attribute("learner_type_form", learner_type_form)
-        span.set_attribute("profile_pic_form", profile_pic_form)
-        span.set_attribute("receive_notifications_form", receive_notifications_form)
 
         return render(request, 'profile_settings.html', {
             'learner_type_form': learner_type_form,

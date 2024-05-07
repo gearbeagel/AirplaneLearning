@@ -1,6 +1,8 @@
 import requests
+from django.contrib.auth.decorators import login_required
 from django.contrib.humanize.templatetags import humanize
 from django.shortcuts import render
+from django.views.decorators.http import require_http_methods
 from opentelemetry import trace
 
 from discussion_forums.utils import load_profanity_words, contains_profanity
@@ -8,23 +10,32 @@ from resource_library.models import Resource
 
 PROFANE_WORDS = load_profanity_words('profanity.txt')
 
-# Create your views here.
 
+@require_http_methods(["GET", "POST"])
+@login_required
 def resources(request):
     tracer = trace.get_tracer(__name__)
 
-    with tracer.start_as_current_span("resources") as span:
+    with tracer.start_as_current_span("resources", attributes={
+        "http.method": request.method,
+        "http.url": request.get_full_path(),
+    }) as span:
         all_resources = Resource.objects.all().order_by('-added_at')
         for resource in all_resources:
             resource.humanized_added_at = humanize.naturaltime(resource.added_at)
-        span.set_attribute('resources', request.user.username)
+
         return render(request, "resource_page.html", {'resources': all_resources})
 
 
+@require_http_methods(["GET", "POST"])
+@login_required
 def dictionary(request):
     tracer = trace.get_tracer(__name__)
 
-    with tracer.start_as_current_span("dictionary") as span:
+    with tracer.start_as_current_span("dictionary", attributes={
+        "http.method": request.method,
+        "http.url": request.get_full_path(),
+    }) as span:
         meanings = []
         word = ""
 
@@ -53,5 +64,5 @@ def dictionary(request):
 
                             for definition in definitions:
                                 meanings.append(definition.get('definition', ''))
-        span.set_attribute('dictionary', request.user.username)
+
         return render(request, 'dictionary.html', {'meanings': meanings, 'word': word})

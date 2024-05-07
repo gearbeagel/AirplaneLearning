@@ -64,7 +64,8 @@ def modules_list(request, language_id):
             'lesson_statuses': lesson_statuses,
             'quiz_statuses': quiz_statuses,
         }
-        span.set_attribute('modules_list', request.user.username)
+        span.set_attribute('user', request.user.username)
+        span.set_attribute('http.method', request.method)
         return render(request, 'modules_list.html', context)
 
 @login_required
@@ -77,7 +78,8 @@ def lesson_info(request, lesson_id, language_id):
         section_count = sections.count()
         context = {'lesson': lesson, 'language': language, 'sections': sections, 'section_count': section_count}
         complete_lesson(request, lesson_id)
-        span.set_attribute('lesson_info', request.user.username)
+        span.set_attribute('user', request.user.username)
+        span.set_attribute('http.method', request.method)
         return render(request, 'lesson_info.html', context)
 
 
@@ -96,7 +98,8 @@ def lesson_quiz(request, quiz_id, language_id):
         for question in questions:
             answers = list(Answer.objects.filter(question=question))
             answers_dict[question] = answers
-        span.set_attribute('lesson_quiz', request.user.username)
+        span.set_attribute('user', request.user.username)
+        span.set_attribute('http.method', request.method)
         return render(request, 'lesson_quiz.html',
                       {'quiz': quiz, 'quiz_status': quiz_status, 'language': language, 'questions': questions,
                        'answers_dict': answers_dict})
@@ -234,5 +237,6 @@ def quiz_result(request, language_id, quiz_id):
                     resource_data.append(resource)
 
             context = {'quiz': quiz, 'language': language, 'questions': questions, 'quiz_data': quiz_data, 'resource_data': resource_data, 'percentage_correct': percentage_correct}
-            span.set_attribute('quiz_result', request.user.username)
+            span.set_attribute('user', request.user.username)
+            span.set_attribute('http.method', request.method)
             return render(request, 'quiz_result.html', context)

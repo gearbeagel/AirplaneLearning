@@ -3,7 +3,6 @@ from django.http import HttpResponseBadRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-from opencensus.trace import tracer
 from opentelemetry import trace
 
 from profile_page.models import Profile, LearnerType
@@ -16,7 +15,8 @@ def home(request):
     tracer = trace.get_tracer(__name__)
 
     with tracer.start_as_current_span("homepage") as span:
-        span.set_attribute("homepage", request.user.username)
+        span.set_attribute("user", request.user.username)
+        span.set_attribute('http.method', request.method)
         return render(request, "homepage.html")
 
 
@@ -27,7 +27,8 @@ def register(request):
         if request.user.is_authenticated:
             user, created = User.objects.get_or_create(user=request.user)
             user.save()
-        span.set_attribute("register",request.user.username)
+        span.set_attribute("user", request.user.username)
+        span.set_attribute('http.method', request.method)
         return render(request, "register.html")
 
 
@@ -35,7 +36,8 @@ def about(request):
     tracer = trace.get_tracer(__name__)
 
     with tracer.start_as_current_span("about") as span:
-        span.set_attribute("about", request.user.username)
+        span.set_attribute("user", request.user.username)
+        span.set_attribute('http.method', request.method)
         return render(request, "about.html")
 
 
@@ -77,5 +79,6 @@ def language_and_learning_path_selection(request):
                 return HttpResponseBadRequest("Form submission failed. Please check your input.")
         else:
             form = ProfileUpdateForm()
-        span.set_attribute('form', form)
+        span.set_attribute('user', request.user.username)
+        span.set_attribute('http.method', request.method)
         return render(request, 'learning_path_choice.html', {'form': form})
