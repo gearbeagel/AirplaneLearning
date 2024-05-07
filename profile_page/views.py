@@ -43,31 +43,23 @@ def calculate_progress(user_profile, chosen_language_id):
 
 @login_required
 def profile_page(request, username):
-    tracer = trace.get_tracer(__name__)
+    student = get_student_profile(username)
+    if not student:
+        if 'setup' not in request.path:
+            return redirect("setup")
 
-    with tracer.start_as_current_span("profile_page") as span:
-        student = get_student_profile(username)
-        if not student:
-            if 'setup' not in request.path:
-                return redirect("setup")
+    calculate_progress(student, student.chosen_language_id)
 
-        calculate_progress(student, student.chosen_language_id)
+    latest_lesson, latest_lesson_language = get_latest_completed_lesson(student)
+    latest_quiz, latest_quiz_language = get_latest_completed_quiz(student)
 
-        latest_lesson, latest_lesson_language = get_latest_completed_lesson(student)
-        latest_quiz, latest_quiz_language = get_latest_completed_quiz(student)
+    profile_picture_url = get_profile_picture_url(student.profile_pic_url)
 
-        profile_picture_url = get_profile_picture_url(student.profile_pic_url)
-
-        span.set_attribute("user", username)
-        span.set_attribute('http.method', request.method)
-
-        print(span)
-
-        return render(request, 'profile_page.html', {'student': student, 'user': request.user,
-                                                     'latest_lesson': latest_lesson, 'latest_quiz': latest_quiz,
-                                                     'latest_lesson_language': latest_lesson_language,
-                                                     'latest_quiz_language': latest_quiz_language,
-                                                     'profile_picture_url': profile_picture_url})
+    return render(request, 'profile_page.html', {'student': student, 'user': request.user,
+                                                 'latest_lesson': latest_lesson, 'latest_quiz': latest_quiz,
+                                                 'latest_lesson_language': latest_lesson_language,
+                                                 'latest_quiz_language': latest_quiz_language,
+                                                 'profile_picture_url': profile_picture_url})
 
 
 def get_student_profile(username):
@@ -100,70 +92,55 @@ def get_profile_picture_url(profile_pic_url):
     return profile_picture_url
 
 
-@require_http_methods(["GET", "POST"])
 @login_required
 def profile_settings(request):
-    tracer = trace.get_tracer(__name__)
+    profile = Profile.objects.get(user=request.user)
+    learner_types = LearnerType.objects.all()
 
-    with tracer.start_as_current_span("profile_page_settings", attributes={
-        "http.method": request.method,
-        "http.url": request.get_full_path(),
-    }) as span:
-        try:
-            profile = Profile.objects.get(user=request.user)
-            learner_types = LearnerType.objects.all()
+    if request.method == 'POST':
+        if 'learner_type_submit' in request.POST:
+            learner_type_form = LearnerTypeSettings(request.POST, instance=profile)
+            if learner_type_form.is_valid():
+                learner_type_form.save()
 
-            if request.method == 'POST':
-                if 'learner_type_submit' in request.POST:
-                    learner_type_form = LearnerTypeSettings(request.POST, instance=profile)
-                    if learner_type_form.is_valid():
-                        learner_type_form.save()
+        elif 'profile_pic_submit' in request.POST:
+            profile_pic_form = ProfilePictureSettings(request.POST, request.FILES, instance=profile)
+            if profile_pic_form.is_valid():
+                profile_pic_form.instance.container_name = 'pfpcontainer'
+                profile_pic_form.save()
 
-                elif 'profile_pic_submit' in request.POST:
-                    profile_pic_form = ProfilePictureSettings(request.POST, request.FILES, instance=profile)
-                    if profile_pic_form.is_valid():
-                        profile_pic_form.instance.container_name = 'pfpcontainer'
-                        profile_pic_form.save()
+        elif 'default_profile_pic' in request.POST:
+            profile.profile_pic_url = get_random_profile_pic()
+            profile.save()
 
-                elif 'default_profile_pic' in request.POST:
-                    profile.profile_pic_url = get_random_profile_pic()
-                    profile.save()
+        elif 'receive_notifications_submit' in request.POST:
+            data = request.POST.copy()
+            for field_name in [
+                'receive_notifications',
+                'new_modules_notifications',
+                'quiz_results_notifications',
+                'discussion_notifications',
+                'new_resources_notifications',
 
+            ]:
+                data.setdefault(field_name, 'Do not send')
+            receive_notifications_form = NotificationSettings(data, instance=profile)
+            if receive_notifications_form.is_valid():
+                receive_notifications_form.save()
 
-                elif 'receive_notifications_submit' in request.POST:
-                    data = request.POST.copy()
-                    for field_name in [
-                        'receive_notifications',
-                        'new_modules_notifications',
-                        'quiz_results_notifications',
-                        'discussion_notifications',
-                        'new_resources_notifications',
+    learner_type_form = LearnerTypeSettings(instance=profile)
+    profile_pic_form = ProfilePictureSettings(instance=profile)
+    receive_notifications_form = NotificationSettings(instance=profile)
 
-                    ]:
-                        data.setdefault(field_name, 'Do not send')
-                    receive_notifications_form = NotificationSettings(data, instance=profile)
-                    if receive_notifications_form.is_valid():
-                        receive_notifications_form.save()
-        except Exception as e:
-            span.record_exception()
-
-        learner_type_form = LearnerTypeSettings(instance=profile)
-        profile_pic_form = ProfilePictureSettings(instance=profile)
-        receive_notifications_form = NotificationSettings(instance=profile)
-
-        return render(request, 'profile_settings.html', {
-            'learner_type_form': learner_type_form,
-            'profile_pic_form': profile_pic_form,
-            'receive_notifications_form': receive_notifications_form,
-            'learner_types': learner_types
-        })
+    return render(request, 'profile_settings.html', {
+        'learner_type_form': learner_type_form,
+        'profile_pic_form': profile_pic_form,
+        'receive_notifications_form': receive_notifications_form,
+        'learner_types': learner_types
+    })
 
 
 @login_required()
 def logout_page(request):
-    tracer = trace.get_tracer(__name__)
-
-    with tracer.start_as_current_span("logout") as span:
-        logout(request)
-        span.set_attribute('logged_out', True)
-        return redirect('/')
+    logout(request)
+    return redirect('/')
