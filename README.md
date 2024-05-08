@@ -3,7 +3,7 @@
 ## About
 "Airplane Learning" is an app for learning different languages for starters and advanced learners. Accompanied by its mascot, Leari, one can easily understand the basics of English in a couple of clicks.
 
-You can view the website [here](http://airplanelearning.azurewebsites.net)
+You can view the website [here](http://airplanelearningpolyglotpto.azurewebsites.net)
 
 ## Author
 Victoria "Vitya" Kondratska
@@ -122,7 +122,6 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 3. Created scripts for generating content ✔️
 4. Deploy application to Azure platform ✔️
 5. Monitor application performance and stability ✔️
-
 
 **Week 12 (05/15 - 05/21):**
 1. Launch Polyglot Pro to the public ✔️

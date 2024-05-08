@@ -1,8 +1,11 @@
+import json
+
+from django.http import HttpResponse, JsonResponse
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
-from rest_framework import permissions
-from rest_framework.response import Response
+from rest_framework import permissions, status
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
 
 from .models import Profile
 
@@ -16,38 +19,31 @@ schema_view = get_schema_view(
         license=openapi.License(name="BSD License"),
     ),
     public=True,
-    permission_classes=(permissions.AllowAny,)
+    permission_classes=([permissions.IsAuthenticated])
 )
 
 
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
 def get_user_info(request):
-    """
-    Get information about the currently authenticated user.
+    try:
+        user = request.user
+        profile = Profile.objects.get(user=user)
 
-    This endpoint requires the user to be authenticated. It returns a JSON response
-    containing the following information about the user:
+        learner_type_name = str(profile.learner_type)
+        chosen_language_name = str(profile.chosen_language)
 
-    - username
-    - their progress
-    - profile_pic_url
-    - learner_type
-    - chosen_language
-    """
+        user_info = {
+            'username': user.username,
+            'progress': profile.progress,
+            'profile_pic_url': profile.profile_pic_url.url if profile.profile_pic_url else None,
+            'learner_type': learner_type_name,
+            'chosen_language': chosen_language_name,
+        }
 
-    user = request.user
-    profile = Profile.objects.get(user=user)
+        prettified_json = json.dumps(user_info, indent=4)
 
-    learner_type_name = str(profile.learner_type)
-    chosen_language_name = str(profile.chosen_language)
-
-    user_info = {
-        'username': user.username,
-        'progress': profile.progress,
-        'profile_pic_url': profile.profile_pic_url.url if profile.profile_pic_url else None,
-        'learner_type': learner_type_name,
-        'chosen_language': chosen_language_name,
-    }
-
-    return Response(user_info)
+        return JsonResponse(json.loads(prettified_json), safe=False)
+    except Profile.DoesNotExist:
+        return Response({'error': 'Profile not found'}, status=status.HTTP_404_NOT_FOUND,
+                        content_type='application/json')
