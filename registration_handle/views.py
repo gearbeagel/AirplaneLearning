@@ -10,6 +10,10 @@ from registration_handle.forms import ProfileUpdateForm
 from django.core.mail import send_mail
 from django.conf import settings
 
+from django.http import JsonResponse
+from django.views import View
+from django.middleware.csrf import get_token
+
 
 def home(request):
     return render(request, "homepage.html")
@@ -62,3 +66,9 @@ def language_and_learning_path_selection(request):
     else:
         form = ProfileUpdateForm()
     return render(request, 'learning_path_choice.html', {'form': form})
+
+
+class CSRFView(View):
+    def get(self, request):
+        csrf_token = get_token(request)
+        return JsonResponse({"token": csrf_token})
