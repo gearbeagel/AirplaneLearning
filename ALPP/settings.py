@@ -107,11 +107,6 @@ SWAGGER_SETTINGS = {
     }
 }
 
-CORS_ALLOWED_ORIGINS = [
-    'https://airplanelearningpolyglotpto.azurewebsites.net',
-    "http://localhost:8000",
-]
-
 CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_METHODS = [
