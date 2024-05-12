@@ -18,14 +18,15 @@ def create_modules(num_modules=10, languages=None):
         languages = Language.objects.all()
     for i in range(1, num_modules + 1):
         for language in languages:
+            module_order = i
             module = Module.objects.create(
                 title=f"Module #{i}",
                 language=language,
                 description=fake.paragraph(),
-                order=i
+                order=module_order
             )
             modules.append(module)
-        return modules
+    return modules
 
 
 def create_lessons(num_lessons=10, modules=None):
@@ -34,11 +35,13 @@ def create_lessons(num_lessons=10, modules=None):
         modules = Module.objects.all()
     for module in modules:
         for i in range(1, num_lessons + 1):
+            lesson_order = i
             lesson = Lesson.objects.create(
                 title=f"Lesson #{i} of {module.title}",
                 module=module,
                 description=fake.paragraph(),
-                difficulty_level=fake.random_element(['Easy', 'Medium', 'Hard'])
+                difficulty_level=fake.random_element(['Easy', 'Medium', 'Hard']),
+                order=lesson_order
             )
             lessons.append(lesson)
     return lessons
@@ -53,7 +56,7 @@ def create_sections(num_sections=5, lessons=None):
             section = Section.objects.create(
                 lesson=lesson,
                 title=f"Section #{i} of {lesson.title}",
-                contents=fake.paragraphs(nb=3)
+                contents=fake.paragraphs(nb=3),
             )
             sections.append(section)
     return sections
@@ -65,11 +68,13 @@ def create_quizzes(num_quizzes=10, modules=None):
         modules = Module.objects.all()
     for module in modules:
         for i in range(1, num_quizzes + 1):
+            quiz_order = i
             quiz = Quiz.objects.create(
                 title=f"Quiz #{i} of {module.title}",
                 module=module,
                 description=fake.paragraph(),
-                difficulty_level=fake.random_element(['Easy', 'Medium', 'Hard'])
+                difficulty_level=fake.random_element(['Easy', 'Medium', 'Hard']),
+                order=quiz_order,
             )
             quizzes.append(quiz)
     return quizzes

@@ -44,8 +44,9 @@ ALLOWED_HOSTS = ["airplanelearningpolyglotpto.azurewebsites.net", "localhost", "
 
 CSRF_TRUSTED_ORIGINS = ['https://airplanelearningpolyglotpto.azurewebsites.net']
 
-LOGIN_REDIRECT_URL = 'setup/'
+LOGIN_REDIRECT_URL = '/profile/'
 LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = "setup/"
 
 SITE_ID = 1
 

@@ -24,7 +24,7 @@ class Lesson(models.Model):
         ],
         default='easy'
     )
-
+    order = models.IntegerField(default=1)
     sections = models.ManyToManyField('Section', related_name='lessons')
 
     def __str__(self):
@@ -44,7 +44,7 @@ class Quiz(models.Model):
         ],
         default='Easy'
     )
-
+    order = models.IntegerField(default=1)
     questions = models.ManyToManyField('Question', related_name='quizzes')
 
     def __str__(self):

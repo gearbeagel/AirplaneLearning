@@ -9,6 +9,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
+    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
     <title>{% block title %}Forums{% endblock %}</title>
 </head>
 <body>
@@ -49,23 +52,51 @@
     </footer>
 </article>
 {% endblock %}
-<h1 class="sniglet" style="margin-left:300px; text-align: center">Twe-e-etscussion forums!</h1>
+<h1 class="sniglet" style="margin-left:300px; text-align: center; margin-bottom: 30px">Twe-e-etscussion forums!</h1>
+
+<!-- Search input field -->
+<span style="margin-left: 350px; margin-bottom: 40px; margin-top: 50px;">
+    <i class="fas fa-search" style="margin-right: 10px;"></i>
+    <input style="font-family: Sniglet, sans-serif; border: solid 3px #d39c3f; border-radius: 25px; width: 1270px; padding: 10px" type="text" id="searchInput" onkeyup="filterTopics()" placeholder="Search topics...">
+</span>
+
 {% block content %}
+<ul id="topicList" style="margin-left: 300px; list-style-type: none; margin-top: 30px">
 {% if all_topics %}
-    <ul style="margin-left: 300px; list-style-type: none">
     {% for topic in all_topics %}
         <li style="border: solid 3px #d39c3f; border-radius: 25px; width: 1300px; margin: 10px; padding: 10px">
             <span style="display: flex; align-items: center"><h2 class="sniglet">{{ topic.title }}</h2><span style="flex-grow: 1;"></span><a href="{% url 'topic_page' topic_id=topic.id %}"><button>Start Discussing</button></a></span>
             <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;">
-        <h3 class="sniglet" ><span style="color: #d39c3f">Lesson:</span>  {{ topic.subject }}</h3>
-        <h3 class="sniglet" style="margin-top: -10px"><span style="color: #d39c3f">Description:</span>  {{ topic.description }}</h3>
+            <h3 class="sniglet" ><span style="color: #d39c3f">Lesson:</span>  {{ topic.subject }}</h3>
+            <h3 class="sniglet" style="margin-top: -10px"><span style="color: #d39c3f">Description:</span>  {{ topic.description }}</h3>
         </li>
-{% endfor %}
-    </ul>
+    {% endfor %}
 {% else %}
     <h2 class="sniglet-bold" style="text-align: center;">Start a discussion here.</h2>
-<p class="sniglet" style="text-align: center">Sorry, no topics available. :c</p>
+    <p class="sniglet" style="text-align: center">Sorry, no topics available. :c</p>
 {% endif %}
+</ul>
 {% endblock %}
+
+<script>
+function filterTopics() {
+    var input, filter, ul, li, a, i, txtValue;
+    input = document.getElementById('searchInput');
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("topicList");
+    li = ul.getElementsByTagName('li');
+
+    for (i = 0; i < li.length; i++) {
+        a = li[i].getElementsByTagName("h2")[0];
+        txtValue = a.textContent || a.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
+</script>
+
 </body>
 </html>

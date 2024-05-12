@@ -13,7 +13,7 @@ from resource_library.models import Resource
 fake = Faker()
 
 
-def create_resources(num_resources=50, lessons=None):
+def create_resources(num_resources=30, lessons=None):
     resources = []
     if not lessons:
         lessons = Lesson.objects.all()
