@@ -7,11 +7,15 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
 from opentelemetry import trace
+from rest_framework import permissions, status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
 
 from profile_page.forms import LearnerTypeSettings, ProfilePictureSettings, NotificationSettings
 from profile_page.models import Profile, get_random_profile_pic, LearnerType
 from modules.models import Lesson, Quiz, Module
 from modules.user_progress_models import LessonStatus, QuizStatus, QuizUserAnswers
+from profile_page.swagger import StudentSerializer
 
 
 def get_latest_lesson_and_quiz(profile):
@@ -42,6 +46,8 @@ def calculate_progress(user_profile, chosen_language_id):
 
 
 @login_required
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
 def profile_page(request, username):
     student = get_student_profile(username)
     if not student:
@@ -55,11 +61,20 @@ def profile_page(request, username):
 
     profile_picture_url = get_profile_picture_url(student.profile_pic_url)
 
-    return render(request, 'profile_page.html', {'student': student, 'user': request.user,
-                                                 'latest_lesson': latest_lesson, 'latest_quiz': latest_quiz,
-                                                 'latest_lesson_language': latest_lesson_language,
-                                                 'latest_quiz_language': latest_quiz_language,
-                                                 'profile_picture_url': profile_picture_url})
+    serializer = StudentSerializer(student)
+
+    data = {
+        'student': serializer.data
+    }
+
+    if 'application/json' in request.META.get('HTTP_ACCEPT', ''):
+        return Response(data, status=status.HTTP_200_OK)
+    else:
+        return render(request, 'profile_page.html', {'student': student, 'user': request.user,
+                                                     'latest_lesson': latest_lesson, 'latest_quiz': latest_quiz,
+                                                     'latest_lesson_language': latest_lesson_language,
+                                                     'latest_quiz_language': latest_quiz_language,
+                                                     'profile_picture_url': profile_picture_url})
 
 
 def get_student_profile(username):
