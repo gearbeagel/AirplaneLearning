@@ -12,7 +12,7 @@ from .models import Profile
 schema_view = get_schema_view(
     openapi.Info(
         title="Airplane Learning API",
-        default_version='v1',
+        default_version='v2',
         description="How did you fly in here?",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="kondratskayavictoria@gmail.com"),
@@ -21,6 +21,7 @@ schema_view = get_schema_view(
     public=True,
     permission_classes=([permissions.IsAuthenticated])
 )
+
 
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
