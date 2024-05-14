@@ -15,7 +15,7 @@ schema_view = get_schema_view(
     ),
     public=True,
     permission_classes=([permissions.IsAuthenticated]),
-    url='https'
+    url='https://localhost:8000/swagger/',
 )
 
 

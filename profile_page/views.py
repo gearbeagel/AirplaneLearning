@@ -67,7 +67,7 @@ def profile_page(request, username):
         'student': serializer.data
     }
 
-    if 'application/json' in request.META.get('HTTP_ACCEPT', ''):
+    if 'application/json' in request.META.get('HTTPS_ACCEPT', ''):
         return Response(data, status=status.HTTP_200_OK)
     else:
         return render(request, 'profile_page.html', {'student': student, 'user': request.user,
