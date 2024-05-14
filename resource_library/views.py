@@ -11,11 +11,12 @@ from resource_library.models import Resource
 PROFANE_WORDS = load_profanity_words('profanity.txt')
 
 
+tracer = trace.get_tracer(__name__)
+
+
 @require_http_methods(["GET", "POST"])
 @login_required
 def resources(request):
-    tracer = trace.get_tracer(__name__)
-
     with tracer.start_as_current_span("resources", attributes={
         "http.method": request.method,
         "http.url": request.get_full_path(),
@@ -30,8 +31,6 @@ def resources(request):
 @require_http_methods(["GET", "POST"])
 @login_required
 def dictionary(request):
-    tracer = trace.get_tracer(__name__)
-
     with tracer.start_as_current_span("dictionary", attributes={
         "http.method": request.method,
         "http.url": request.get_full_path(),
