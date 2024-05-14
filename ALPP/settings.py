@@ -97,6 +97,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    'ALPP.middleware.TracingMiddleware'
 ]
 
 SECURE_SSL_REDIRECT = False
