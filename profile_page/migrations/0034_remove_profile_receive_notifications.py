@@ -4,7 +4,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('profile_page', '0033_profile_discussion_notifications_and_more'),
     ]

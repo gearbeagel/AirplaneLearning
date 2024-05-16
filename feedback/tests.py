@@ -1,13 +1,8 @@
-import os
-from unittest.mock import Mock, patch, mock_open
-
-from django.conf import settings
 from django.contrib.auth.models import User
 from django.test import TestCase
 
 from modules.models import Language
 from profile_page.models import LearnerType, Profile
-from .views import feedback
 
 
 class FeedbackViewTest(TestCase):

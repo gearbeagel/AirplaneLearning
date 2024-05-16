@@ -16,7 +16,9 @@
 </head>
 <body>
 <article class="sidebar">
-    <a class="sniglet" href="{% url "profile_page" username=request.user.username %}"><img src="{% static "/leeri_logo.png" %}" style="height: 210px; width: 210px; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
+    <a class="sniglet" href="{% url "profile_page" username=request.user.username %}"><img
+            src="{% static "/leeri_logo.png" %}"
+            style="height: 210px; width: 210px; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
     <p class="sniglet" style="color: white; font-size: 25px">Airplane Learning</p>
     <hr style="color: white; width: 100%">
     <a class="sniglet">Logged in as: {{ request.user.username }}</a>
@@ -24,7 +26,8 @@
     <a class="sniglet" href="{% url "profile_page" username=request.user.username %}">Profile</a>
     <br>
     <br>
-    <a class="sniglet" style="font-size: 15px" href="{% url "modules_list" language_id=user.profile.chosen_language.id %}">Modules</a>
+    <a class="sniglet" style="font-size: 15px"
+       href="{% url "modules_list" language_id=user.profile.chosen_language.id %}">Modules</a>
     <br>
     <br>
     <a class="sniglet" style="font-size: 15px" href="/forums">Discussion Forums</a>
@@ -57,7 +60,8 @@
         <h3 class="sniglet"><span style="color: #d39c3f">Lesson:</span> {{ topic.subject }}</h3>
         <hr style="border: none; border-top: 3px solid #d39c3f; width: 100%; margin-top: 20px;">
         <br>
-        <h3 class="sniglet" style="margin-top: -10px"><span style="color: #d39c3f">Discussion:</span> {{ topic.description }}</h3>
+        <h3 class="sniglet" style="margin-top: -10px"><span
+                style="color: #d39c3f">Discussion:</span> {{ topic.description }}</h3>
     </li>
 </ul>
 <h2 class="sniglet" style="margin-left: 300px">Comments:</h2>
@@ -65,48 +69,59 @@
 <form method="post" style="margin-left: 300px;">
     {% csrf_token %}
     <label style="position: relative;">
-    <textarea class="comment_text" name="comment_text" rows="4" cols="200" placeholder="Enter your comment here" style="font-family: Sniglet, sans-serif; resize: none"></textarea>
-    <span class="character-count" style="font-family: Sniglet, sans-serif; position: absolute; bottom: 3px; right: 5px; color: lightgray;"></span>
-</label>
-<br>
+        <textarea class="comment_text" name="comment_text" rows="4" cols="200" placeholder="Enter your comment here"
+                  style="font-family: Sniglet, sans-serif; resize: none"></textarea>
+        <span class="character-count"
+              style="font-family: Sniglet, sans-serif; position: absolute; bottom: 3px; right: 5px; color: lightgray;"></span>
+    </label>
+    <br>
     {% if message %}
-    <p>{{ message }}</p>
+        <p>{{ message }}</p>
     {% endif %}
-    <button type="submit" value="Add Comment" style="height: 50px; width: 300px; font-size: 20px; margin-top: 5px;">Add comment</button>
+    <button type="submit" value="Add Comment" style="height: 50px; width: 300px; font-size: 20px; margin-top: 5px;">Add
+        comment
+    </button>
 </form>
 
 <ul style="margin-left: 300px; list-style-type: none">
-{% if all_comments %}
-    {% for comment in all_comments %}
-    <li style="border: solid 3px #d39c3f; border-radius: 10px; width: 1300px; margin: 10px; padding: 10px; display: flex; flex-direction: row; align-items: start">
-        <a href="{% url "profile_page" username=comment.created_by.username %}"><img src="{{ comment.created_by|get_profile_picture_url}}" style="height: 50px; width: 50px; border-radius: 50%; object-fit: cover; overflow: hidden; margin-right: 10px;" alt="{{ comment.created_by.username }}'s profile picture"></a>
-        <span><span style="display: flex; flex-direction: column"><span onclick="insertUsername('{{ comment.created_by.username }}')" style="cursor: pointer; color: #637d91;">{{ comment.created_by.username }} • <span style="color: lightgray">{{ comment.humanized_created_at }}</span></span> {{ comment.message }}</span></span>
-        <span style="flex-grow: 1"></span>
-        {% if is_admin or request.user.profile == comment.created_by %}
-        <form action="{% url 'delete_comment' comment_id=comment.id %}" method="post">
-            {% csrf_token %}
-            <button type="submit" style="background: none; border: none; cursor: pointer; height: fit-content; width: fit-content">
-                <i class="fa fa-trash" aria-hidden="true" style="color: black; font-size: 20px"></i>
-            </button>
-        </form>
+    {% if all_comments %}
+        {% for comment in all_comments %}
+            <li style="border: solid 3px #d39c3f; border-radius: 10px; width: 1300px; margin: 10px; padding: 10px; display: flex; flex-direction: row; align-items: start">
+                <a href="{% url "profile_page" username=comment.created_by.username %}"><img
+                        src="{{ comment.created_by|get_profile_picture_url }}"
+                        style="height: 50px; width: 50px; border-radius: 50%; object-fit: cover; overflow: hidden; margin-right: 10px;"
+                        alt="{{ comment.created_by.username }}'s profile picture"></a>
+                <span><span style="display: flex; flex-direction: column"><span
+                        onclick="insertUsername('{{ comment.created_by.username }}')"
+                        style="cursor: pointer; color: #637d91;">{{ comment.created_by.username }} • <span
+                        style="color: lightgray">{{ comment.humanized_created_at }}</span></span> {{ comment.message }}</span></span>
+                <span style="flex-grow: 1"></span>
+                {% if is_admin or request.user.profile == comment.created_by %}
+                    <form action="{% url 'delete_comment' comment_id=comment.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit"
+                                style="background: none; border: none; cursor: pointer; height: fit-content; width: fit-content">
+                            <i class="fa fa-trash" aria-hidden="true" style="color: black; font-size: 20px"></i>
+                        </button>
+                    </form>
+                {% endif %}
+            </li>
+        {% endfor %}
+    {% else %}
+        <p style="text-align: center">No comments available. :(</p>
     {% endif %}
-    </li>
-    {% endfor %}
-{% else %}
-    <p style="text-align: center">No comments available. :(</p>
-{% endif %}
 </ul>
 </body>
 <script>
     function insertUsername(username) {
         var textarea = document.querySelector('.comment_text');
         textarea.value = '@' + username + ' ';
-        textarea.focus(); 
+        textarea.focus();
     }
-    
+
     function countChars() {
         var commentTextAreas = document.querySelectorAll(".comment_text");
-        
+
         for (var i = 0; i < commentTextAreas.length; i++) {
             commentTextAreas[i].onkeyup = function () {
                 var text_max = 500;
@@ -122,9 +137,9 @@
                     characterCountLabel.style.color = "lightgray"; // Reset color if not maxed out
                 }
             };
-        }   
+        }
     }
-    
+
     countChars();
 </script>
 </html>

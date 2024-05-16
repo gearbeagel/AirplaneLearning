@@ -1,6 +1,5 @@
-
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
 from modules.models import Lesson
 from profile_page.models import Profile

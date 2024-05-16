@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('profile_page', '0013_learningpath_remove_profile_learner_type_and_more'),
     ]
@@ -24,6 +23,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='profile',
             name='learner_type',
-            field=models.CharField(choices=[('A rookie! (Beginner)', 'Beginner'), ('A smart cookie! (Skilled)', 'Skilled'), ('A very smart cookie! (Advanced)', 'Advanced')], default='An avid learner!', max_length=50),
+            field=models.CharField(
+                choices=[('A rookie! (Beginner)', 'Beginner'), ('A smart cookie! (Skilled)', 'Skilled'),
+                         ('A very smart cookie! (Advanced)', 'Advanced')], default='An avid learner!', max_length=50),
         ),
     ]

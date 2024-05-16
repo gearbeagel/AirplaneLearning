@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('modules', '0015_alter_quizstatus_status'),
     ]
@@ -26,6 +25,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='lessonstatus',
             name='status',
-            field=models.CharField(choices=[('Not Started', 'Not Started'), ('In Progress', 'In Progress'), ('Completed', 'Completed')], default='not_started', max_length=20),
+            field=models.CharField(
+                choices=[('Not Started', 'Not Started'), ('In Progress', 'In Progress'), ('Completed', 'Completed')],
+                default='not_started', max_length=20),
         ),
     ]

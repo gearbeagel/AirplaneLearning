@@ -15,11 +15,10 @@ schema_view = get_schema_view(
     ),
     public=True,
     permission_classes=([permissions.IsAuthenticated]),
-    url='https://localhost:8000/swagger/',
 )
 
 
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ['id', 'username', 'email', 'chosen_language_id', 'profile_pic_url']
+        fields = ['id', 'username', 'email', 'chosen_language', 'profile_pic_url']

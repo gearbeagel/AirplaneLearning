@@ -9,6 +9,7 @@ from .forms import FeedbackForm
 
 tracer = trace.get_tracer(__name__)
 
+
 def feedback(request):
     with tracer.start_as_current_span("feedback") as span:
         success_message = ''
@@ -38,4 +39,4 @@ def feedback(request):
             'form': form,
             'success_message': success_message,
         }
-        return render(request, 'feedback.html', context)
+        return render(request, 'misc/feedback.html', context)

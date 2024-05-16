@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('modules', '0005_remove_lesson_lesson_type'),
     ]

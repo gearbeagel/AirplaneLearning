@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('modules', '0021_alter_quiz_difficulty_level'),
     ]
@@ -13,6 +12,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='answer',
             name='is_correct',
-            field=models.CharField(choices=[('Correct', 'Correct'), ('Incorrect', 'Incorrect')], default='Incorrect', max_length=15),
+            field=models.CharField(choices=[('Correct', 'Correct'), ('Incorrect', 'Incorrect')], default='Incorrect',
+                                   max_length=15),
         ),
     ]

@@ -5,17 +5,16 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from django.views.decorators.http import require_http_methods
 from opentelemetry import trace
 from rest_framework import permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
 from discussion_forums.utils import load_profanity_words
+from modules.models import Lesson, Quiz, Module
+from modules.user_progress_models import LessonStatus, QuizStatus
 from profile_page.forms import LearnerTypeSettings, ProfilePictureSettings, NotificationSettings
 from profile_page.models import Profile, get_random_profile_pic, LearnerType
-from modules.models import Lesson, Quiz, Module
-from modules.user_progress_models import LessonStatus, QuizStatus, QuizUserAnswers
 from profile_page.swagger import StudentSerializer
 
 PROFANE_WORDS = load_profanity_words('profanity.txt')
@@ -72,14 +71,15 @@ def profile_page(request, username):
             'student': serializer.data
         }
 
-        if 'application/json' in request.META.get('HTTPS_ACCEPT', ''):
+        if 'application/json' in request.META.get('HTTP_ACCEPT', ''):
             return Response(data, status=status.HTTP_200_OK)
         else:
-            return render(request, 'profile_page.html', {'student': student, 'user': request.user,
-                                                         'latest_lesson': latest_lesson, 'latest_quiz': latest_quiz,
-                                                         'latest_lesson_language': latest_lesson_language,
-                                                         'latest_quiz_language': latest_quiz_language,
-                                                         'profile_picture_url': profile_picture_url})
+            return render(request, 'profile/profile_page.html', {'student': student, 'user': request.user,
+                                                                 'latest_lesson': latest_lesson,
+                                                                 'latest_quiz': latest_quiz,
+                                                                 'latest_lesson_language': latest_lesson_language,
+                                                                 'latest_quiz_language': latest_quiz_language,
+                                                                 'profile_picture_url': profile_picture_url})
 
 
 def get_student_profile(username):
@@ -153,7 +153,7 @@ def profile_settings(request):
         profile_pic_form = ProfilePictureSettings(instance=profile)
         receive_notifications_form = NotificationSettings(instance=profile)
 
-        return render(request, 'profile_settings.html', {
+        return render(request, 'profile/profile_settings.html', {
             'learner_type_form': learner_type_form,
             'profile_pic_form': profile_pic_form,
             'receive_notifications_form': receive_notifications_form,

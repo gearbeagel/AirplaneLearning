@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('profile_page', '0014_remove_profile_learner_type_and_more'),
     ]
@@ -13,7 +12,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='profile',
             name='chosen_lamguage',
-            field=models.CharField(choices=[('English', 'English'), ('German', 'German'), ('Spanish', 'Spanish')], default=7, max_length=30),
+            field=models.CharField(choices=[('English', 'English'), ('German', 'German'), ('Spanish', 'Spanish')],
+                                   default=7, max_length=30),
             preserve_default=False,
         ),
     ]

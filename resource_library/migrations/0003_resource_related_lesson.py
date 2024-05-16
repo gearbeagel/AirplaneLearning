@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('modules', '0022_alter_answer_is_correct'),
         ('resource_library', '0002_resource_added_at'),
@@ -15,7 +14,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='resource',
             name='related_lesson',
-            field=models.OneToOneField(default=None, on_delete=django.db.models.deletion.CASCADE, related_name='related_lesson', to='modules.lesson'),
+            field=models.OneToOneField(default=None, on_delete=django.db.models.deletion.CASCADE,
+                                       related_name='related_lesson', to='modules.lesson'),
             preserve_default=False,
         ),
     ]

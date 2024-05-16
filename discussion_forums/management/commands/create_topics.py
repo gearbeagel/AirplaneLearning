@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
-from modules.models import Lesson
+
 from discussion_forums.models import Topic
+from modules.models import Lesson
 
 
 class Command(BaseCommand):

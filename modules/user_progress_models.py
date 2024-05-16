@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
 from modules.models import Lesson, Quiz, Question
 from profile_page.models import Profile
 

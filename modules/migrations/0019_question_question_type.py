@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('modules', '0018_remove_quizuseranswers_answer'),
     ]
@@ -13,7 +12,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='question',
             name='question_type',
-            field=models.CharField(choices=[('Single Choice', 'Single Choice'), ('Multiple Choice', 'Multiple Choice'), ('Open Text', 'Open Text')], default=1, max_length=50),
+            field=models.CharField(choices=[('Single Choice', 'Single Choice'), ('Multiple Choice', 'Multiple Choice'),
+                                            ('Open Text', 'Open Text')], default=1, max_length=50),
             preserve_default=False,
         ),
     ]

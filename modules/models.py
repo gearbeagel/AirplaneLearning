@@ -87,7 +87,8 @@ class Question(models.Model):
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     text = models.CharField(max_length=255)
-    is_correct = models.CharField(max_length=15, choices=[("Correct", "Correct"), ("Incorrect", "Incorrect")], default="Incorrect")
+    is_correct = models.CharField(max_length=15, choices=[("Correct", "Correct"), ("Incorrect", "Incorrect")],
+                                  default="Incorrect")
 
     def __str__(self):
         return self.text

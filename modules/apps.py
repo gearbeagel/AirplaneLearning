@@ -6,4 +6,4 @@ class ModulesConfig(AppConfig):
     name = 'modules'
 
     def ready(self):
-        from . import signals
+        pass

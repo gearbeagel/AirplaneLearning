@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('profile_page', '0011_alter_profile_learner_type_alter_profile_progress'),
     ]
@@ -13,11 +12,14 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='profile',
             name='chosen_language',
-            field=models.CharField(choices=[('English', 'E'), ('German', 'Ge'), ('Spanish', 'Es')], default='English', max_length=30),
+            field=models.CharField(choices=[('English', 'E'), ('German', 'Ge'), ('Spanish', 'Es')], default='English',
+                                   max_length=30),
         ),
         migrations.AlterField(
             model_name='profile',
             name='learner_type',
-            field=models.CharField(choices=[('A rookie! (Beginner)', 'Beginner'), ('A smart cookie! (Skilled)', 'Skilled'), ('A very smart cookie! (Advanced)', 'Advanced')], default='An avid learner!', max_length=50),
+            field=models.CharField(
+                choices=[('A rookie! (Beginner)', 'Beginner'), ('A smart cookie! (Skilled)', 'Skilled'),
+                         ('A very smart cookie! (Advanced)', 'Advanced')], default='An avid learner!', max_length=50),
         ),
     ]

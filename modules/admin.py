@@ -1,6 +1,8 @@
 from django.contrib import admin
+
 from .models import Language, Lesson, Quiz, Module, Section, Question, Answer
 from .user_progress_models import LessonStatus, QuizStatus, QuizUserAnswers
+
 # Register your models here
 
 admin.site.register(Language)

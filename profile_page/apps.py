@@ -6,4 +6,4 @@ class ProfilePageConfig(AppConfig):
     name = 'profile_page'
 
     def ready(self):
-        from . import signals
+        pass

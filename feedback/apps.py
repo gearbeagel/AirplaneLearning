@@ -6,4 +6,4 @@ class UserFeedbackConfig(AppConfig):
     name = 'feedback'
 
     def ready(self):
-        from . import signals
+        pass

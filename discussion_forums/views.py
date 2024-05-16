@@ -27,7 +27,7 @@ def main_forum_page(request):
         topics_for_lessons = Topic.objects.filter(subject__in=lessons_for_topics)
         all_topics = topics_for_lessons.order_by('-created_at')
         is_admin = request.user.is_superuser
-        return render(request, "main_forum_page.html", {'all_topics': all_topics, 'is_admin': is_admin})
+        return render(request, "forums/main_forum_page.html", {'all_topics': all_topics, 'is_admin': is_admin})
 
 
 @login_required
@@ -51,34 +51,36 @@ def topic_page(request, topic_id):
             comment_text = request.POST.get('comment_text')
             if contains_profanity(comment_text, PROFANE_WORDS):
                 message = 'Your comment contains something inappropriate.'
-                return render(request, 'topic_page.html',
+                return render(request, 'forums/topic_page.html',
                               {'topic': topic, 'all_comments': all_comments,
                                'profile_pictures': profile_pictures, 'message': message, 'is_admin': is_admin,
                                'request': request})
-            if comment_text:
-                if len(comment_text) <= 500:
-                    comment = Comment.objects.create(
-                        message=comment_text,
-                        topic=topic,
-                        created_by=request.user.profile,
-                        created_at=datetime.now()
-                    )
-                    comment.save()
-                    send_reply_notification_email(comment, comment_text)
-                    return redirect('topic_page', topic_id=topic_id)
-                else:
-                    message = 'Your comment is too long! Make sure it is less than 500 symbols.'
-                    return render(request, 'topic_page.html',
-                                  {'topic': topic, 'all_comments': all_comments,
-                                   'profile_pictures': profile_pictures, 'message': message, 'is_admin': is_admin,
-                                   'request': request})
-            else:
+
+            if not comment_text:
                 message = 'Comment cannot be empty.'
-                return render(request, 'topic_page.html',
+                return render(request, 'forums/topic_page.html',
                               {'topic': topic, 'all_comments': all_comments,
                                'profile_pictures': profile_pictures, 'message': message, 'is_admin': is_admin,
                                'request': request})
-        return render(request, 'topic_page.html',
+
+            if not (len(comment_text) <= 500):
+                message = 'Your comment is too long! Make sure it is less than 500 symbols.'
+                return render(request, 'forums/topic_page.html',
+                              {'topic': topic, 'all_comments': all_comments,
+                               'profile_pictures': profile_pictures, 'message': message, 'is_admin': is_admin,
+                               'request': request})
+
+            comment = Comment.objects.create(
+                message=comment_text,
+                topic=topic,
+                created_by=request.user.profile,
+                created_at=datetime.now()
+            )
+            comment.save()
+            send_reply_notification_email(comment, comment_text)
+            return redirect('topic_page', topic_id=topic_id)
+
+        return render(request, 'forums/topic_page.html',
                       {'topic': topic, 'all_comments': all_comments,
                        'profile_pictures': profile_pictures, 'is_admin': is_admin, 'request': request})
 
@@ -92,7 +94,7 @@ def send_reply_notification_email(comment, comment_text):
                 recipient_email = user.email
                 subject = 'You have been mentioned in a comment'
                 context = {'user': user, 'comment': comment}
-                html_message = render_to_string('email_mention_notification.html', context)
+                html_message = render_to_string('emails/email_mention_notification.html', context)
                 plain_message = strip_tags(html_message)
                 send_mail(subject, plain_message, None, [recipient_email], html_message=html_message)
         except User.DoesNotExist:
@@ -128,7 +130,7 @@ def send_comment_deletion_notification(com_ev):
         if com_ev.comment.created_by.discussion_notifications == "Send":
             if com_ev.deleted_by.is_superuser:
                 subject = "Your comment... was..."
-                html_message = render_to_string('email_comment_deletion.html', {'comment': com_ev.comment})
+                html_message = render_to_string('emails/email_comment_deletion.html', {'comment': com_ev.comment})
                 plain_message = strip_tags(html_message)
                 user_to_notify = com_ev.comment.created_by.email
 

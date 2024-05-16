@@ -4,7 +4,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('discussion_forums', '0006_alter_comment_message'),
     ]

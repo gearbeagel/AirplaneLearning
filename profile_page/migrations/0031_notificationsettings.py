@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('profile_page', '0030_alter_profile_receive_notifications'),
     ]
@@ -19,7 +18,8 @@ class Migration(migrations.Migration):
                 ('quiz_results_notifications', models.BooleanField(default=True)),
                 ('discussion_notifications', models.BooleanField(default=True)),
                 ('new_resources_notifications', models.BooleanField(default=True)),
-                ('profile', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='profile_page.profile')),
+                ('profile',
+                 models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='profile_page.profile')),
             ],
         ),
     ]

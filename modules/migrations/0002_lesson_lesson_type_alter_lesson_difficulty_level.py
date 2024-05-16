@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('modules', '0001_initial'),
     ]
@@ -18,6 +17,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='lesson',
             name='difficulty_level',
-            field=models.CharField(choices=[('easy', 'Easy'), ('medium', 'Medium'), ('hard', 'Hard')], default='easy', max_length=20),
+            field=models.CharField(choices=[('easy', 'Easy'), ('medium', 'Medium'), ('hard', 'Hard')], default='easy',
+                                   max_length=20),
         ),
     ]

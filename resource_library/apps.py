@@ -6,4 +6,4 @@ class ResourceLibraryConfig(AppConfig):
     name = 'resource_library'
 
     def ready(self):
-        from . import signals
+        pass

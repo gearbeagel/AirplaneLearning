@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('modules', '0022_alter_answer_is_correct'),
         ('resource_library', '0003_resource_related_lesson'),
@@ -15,6 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='resource',
             name='related_lesson',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='related_lesson', to='modules.lesson'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='related_lesson',
+                                    to='modules.lesson'),
         ),
     ]

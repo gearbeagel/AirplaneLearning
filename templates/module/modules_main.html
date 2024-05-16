@@ -12,8 +12,10 @@
 </head>
 <body>
 <article class="sidebar">
-    
-    <a href="/profile"><img src="{% static "/leeri_logo.png" %}" style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane"></a>
+
+    <a href="/profile"><img src="{% static "/leeri_logo.png" %}"
+                            style="height: 30%; width: 115%; margin-left: -10px; margin-bottom: -50px"
+                            alt="leari on a plane"></a>
     <p class="sniglet" style="color: white; font-size: 30px">Airplane Learning</p>
     <a class="sniglet" style="font-size: 15px" href="/langs">Go to all languages</a>
     <br>
@@ -32,16 +34,16 @@
     <br>
     <a class="sniglet" style="font-size: 15px" href="{% url 'schema-swagger-ui' %}">Swagger</a>
     <footer class="sniglet" style="bottom: 45px; left: 75px">
-    <p>© gearbeagel</p>
+        <p>© gearbeagel</p>
     </footer>
-    
+
 </article>
-    
+
 <h1 class="sniglet-extrabold" style="text-align: center">Choose a language to learn</h1>
 <div class="column">
     {% for language in languages %}
-            <button class="modules sniglet"><a href="{% url 'modules_list' language.id %}">{{ language.name }}</a></button>
-            <p>{{ language.joke }}</p>
+        <button class="modules sniglet"><a href="{% url 'modules_list' language.id %}">{{ language.name }}</a></button>
+        <p>{{ language.joke }}</p>
         <br>
     {% endfor %}
 </div>

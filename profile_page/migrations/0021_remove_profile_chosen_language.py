@@ -4,7 +4,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('profile_page', '0020_alter_profile_chosen_language'),
     ]

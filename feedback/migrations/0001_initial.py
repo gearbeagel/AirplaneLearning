@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -17,7 +16,8 @@ class Migration(migrations.Migration):
             name='Feedback',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('feedback_type', models.CharField(choices=[('Positive', 'Positive'), ('Negative', 'Negative')], max_length=50)),
+                ('feedback_type',
+                 models.CharField(choices=[('Positive', 'Positive'), ('Negative', 'Negative')], max_length=50)),
                 ('description', models.TextField()),
                 ('screenshot', models.ImageField(upload_to='feedback/screenshots')),
                 ('profile', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='profile_page.profile')),

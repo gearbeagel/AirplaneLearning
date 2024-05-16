@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('modules', '0011_delete_quizanswer'),
         ('profile_page', '0011_alter_profile_learner_type_alter_profile_progress'),
@@ -20,7 +19,9 @@ class Migration(migrations.Migration):
             name='LessonStatus',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('status', models.CharField(choices=[('not_started', 'Not Started'), ('in_progress', 'In Progress'), ('completed', 'Completed')], default='not_started', max_length=20)),
+                ('status', models.CharField(choices=[('not_started', 'Not Started'), ('in_progress', 'In Progress'),
+                                                     ('completed', 'Completed')], default='not_started',
+                                            max_length=20)),
                 ('lesson', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='modules.lesson')),
                 ('profile', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='profile_page.profile')),
                 ('quiz', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='modules.quiz')),

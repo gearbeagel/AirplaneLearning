@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('discussion_forums', '0004_remove_comment_post_comment_topic_delete_post'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
@@ -18,8 +17,10 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('deletion_time', models.DateTimeField(auto_now_add=True)),
-                ('comment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='discussion_forums.comment')),
-                ('deleted_by', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
+                ('comment',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='discussion_forums.comment')),
+                ('deleted_by', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                                 to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

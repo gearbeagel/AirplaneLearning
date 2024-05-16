@@ -12,6 +12,7 @@ class LearnerTypeSettings(forms.ModelForm):
 
     learner_type = forms.ModelChoiceField(queryset=LearnerType.objects.all())
 
+
 class UsernameSettings(forms.ModelForm):
     class Meta:
         model = Profile

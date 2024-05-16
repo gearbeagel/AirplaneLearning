@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('profile_page', '0015_profile_chosen_lamguage'),
     ]
@@ -13,6 +12,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='profile',
             name='chosen_lamguage',
-            field=models.CharField(choices=[('English', 'English'), ('German', 'German'), ('Spanish', 'Spanish')], default='English', max_length=30),
+            field=models.CharField(choices=[('English', 'English'), ('German', 'German'), ('Spanish', 'Spanish')],
+                                   default='English', max_length=30),
         ),
     ]

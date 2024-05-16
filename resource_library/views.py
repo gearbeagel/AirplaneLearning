@@ -10,7 +10,6 @@ from resource_library.models import Resource
 
 PROFANE_WORDS = load_profanity_words('profanity.txt')
 
-
 tracer = trace.get_tracer(__name__)
 
 
@@ -25,7 +24,7 @@ def resources(request):
         for resource in all_resources:
             resource.humanized_added_at = humanize.naturaltime(resource.added_at)
 
-        return render(request, "resource_page.html", {'resources': all_resources})
+        return render(request, "resources/resource_page.html", {'resources': all_resources})
 
 
 @require_http_methods(["GET", "POST"])
@@ -64,4 +63,4 @@ def dictionary(request):
                             for definition in definitions:
                                 meanings.append(definition.get('definition', ''))
 
-        return render(request, 'dictionary.html', {'meanings': meanings, 'word': word})
+        return render(request, 'resources/dictionary.html', {'meanings': meanings, 'word': word})

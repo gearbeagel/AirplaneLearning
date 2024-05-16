@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('modules', '0018_remove_quizuseranswers_answer'),
         ('profile_page', '0019_alter_profile_profile_pic_url'),

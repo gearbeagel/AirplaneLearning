@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('profile_page', '0012_profile_chosen_language_alter_profile_learner_type'),
     ]
@@ -14,7 +13,10 @@ class Migration(migrations.Migration):
             name='LearningPath',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(choices=[('A rookie! (Beginner)', 'Beginner'), ('A smart cookie! (Skilled)', 'Skilled'), ('A very smart cookie! (Advanced)', 'Advanced')], default='An avid learner!', max_length=50)),
+                ('name', models.CharField(
+                    choices=[('A rookie! (Beginner)', 'Beginner'), ('A smart cookie! (Skilled)', 'Skilled'),
+                             ('A very smart cookie! (Advanced)', 'Advanced')], default='An avid learner!',
+                    max_length=50)),
                 ('description', models.TextField()),
             ],
         ),

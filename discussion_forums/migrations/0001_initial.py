@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -20,7 +19,8 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('message', models.TextField()),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('created_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='profile_page.profile')),
+                ('created_by',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='profile_page.profile')),
             ],
         ),
         migrations.CreateModel(
@@ -29,7 +29,8 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('message', models.TextField()),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('created_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='profile_page.profile')),
+                ('created_by',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='profile_page.profile')),
                 ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='discussion_forums.post')),
             ],
         ),

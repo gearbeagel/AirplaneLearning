@@ -5,9 +5,9 @@ from django.contrib.auth.models import User
 from django.test import RequestFactory, TestCase
 
 from modules.signals import send_module_notification
-from modules.views import complete_lesson, complete_quiz, quiz_result
+from modules.views import complete_lesson, complete_quiz
 from profile_page.models import Profile
-from .models import Language, Module, Lesson, Quiz, Question, Answer
+from .models import Language, Module, Lesson, Quiz
 from .user_progress_models import LessonStatus, QuizStatus
 
 

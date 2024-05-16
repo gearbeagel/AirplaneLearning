@@ -23,7 +23,7 @@ def all_possible_classes(request):
     context = {
         'languages': languages
     }
-    return render(request, 'modules_main.html', context)
+    return render(request, 'module/modules_main.html', context)
 
 
 @login_required
@@ -62,7 +62,7 @@ def modules_list(request, language_id):
             'lesson_statuses': lesson_statuses,
             'quiz_statuses': quiz_statuses,
         }
-        return render(request, 'modules_list.html', context)
+        return render(request, 'module/modules_list.html', context)
 
 
 @login_required
@@ -74,7 +74,7 @@ def lesson_info(request, lesson_id, language_id):
         section_count = sections.count()
         context = {'lesson': lesson, 'language': language, 'sections': sections, 'section_count': section_count}
         complete_lesson(request, lesson_id)
-        return render(request, 'lesson_info.html', context)
+        return render(request, 'module/lesson_info.html', context)
 
 
 @csrf_protect
@@ -91,7 +91,7 @@ def lesson_quiz(request, quiz_id, language_id):
         for question in questions:
             answers = list(Answer.objects.filter(question=question))
             answers_dict[question] = answers
-        return render(request, 'lesson_quiz.html',
+        return render(request, 'module/lesson_quiz.html',
                       {'quiz': quiz, 'quiz_status': quiz_status, 'language': language, 'questions': questions,
                        'answers_dict': answers_dict})
 
@@ -188,9 +188,9 @@ def handle_quiz_post(request, language_id, quiz_id):
 
         if request.user.profile.quiz_results_notifications == "Send":
             subject = f"Quiz Result for {quiz.title}"
-            html_message = render_to_string('email_quiz_result.html', {'quiz': quiz, 'profile': profile,
-                                                                       'percentage_correct': percentage_correct,
-                                                                       'language_id': language_id})
+            html_message = render_to_string('emails/email_quiz_result.html', {'quiz': quiz, 'profile': profile,
+                                                                              'percentage_correct': percentage_correct,
+                                                                              'language_id': language_id})
             plain_message = strip_tags(html_message)
             recipient_list = [request.user.email]
 
@@ -239,4 +239,4 @@ def show_quiz_result(request, language_id, quiz_id):
 
         context = {'quiz': quiz, 'language': language, 'questions': questions, 'quiz_data': quiz_data,
                    'resource_data': resource_data, 'percentage_correct': percentage_correct}
-        return render(request, 'quiz_result.html', context)
+        return render(request, 'module/quiz_result.html', context)

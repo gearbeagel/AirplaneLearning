@@ -1,6 +1,5 @@
-from django.http import HttpResponseBadRequest, HttpResponseRedirect
-from django.test import TestCase, RequestFactory
 from django.contrib.auth.models import User, AnonymousUser
+from django.test import TestCase, RequestFactory
 from django.urls import reverse
 
 from modules.models import Language

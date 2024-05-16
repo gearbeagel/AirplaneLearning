@@ -9,6 +9,7 @@ def load_profanity_words(file_path):
 
 PROFANE_WORDS = load_profanity_words('profanity.txt')
 
+
 def contains_profanity(text, profane_words):
     for word in profane_words:
         if re.search(rf'\b{word}\b', text, re.IGNORECASE):

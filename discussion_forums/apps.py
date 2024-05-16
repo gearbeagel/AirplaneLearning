@@ -6,4 +6,4 @@ class DiscussionForumsConfig(AppConfig):
     name = 'discussion_forums'
 
     def ready(self):
-        from . import signals
+        pass

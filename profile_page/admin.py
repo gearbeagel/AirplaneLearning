@@ -1,14 +1,6 @@
 from django.contrib import admin
-from .models import Profile, LearnerType  # Import your Profile model
 
+from .models import Profile, LearnerType
 
-class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'username', 'progress')
-
-
-class LearnerTypeAdmin(admin.ModelAdmin):
-    list_display = ('title', 'alternate_title', 'description')
-
-
-admin.site.register(Profile, ProfileAdmin)
-admin.site.register(LearnerType, LearnerTypeAdmin)
+admin.site.register(Profile)
+admin.site.register(LearnerType)

@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('modules', '0003_question_answer_lesson_questions'),
     ]
@@ -43,9 +42,14 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=100)),
                 ('description', models.TextField()),
-                ('difficulty_level', models.CharField(choices=[('easy', 'Easy'), ('medium', 'Medium'), ('hard', 'Hard')], default='easy', max_length=20)),
-                ('status', models.CharField(choices=[('not_started', 'Not Started'), ('in_progress', 'In Progress'), ('completed', 'Completed')], default='not_started', max_length=20)),
-                ('module', models.ForeignKey(default='1', on_delete=django.db.models.deletion.CASCADE, to='modules.module')),
+                ('difficulty_level',
+                 models.CharField(choices=[('easy', 'Easy'), ('medium', 'Medium'), ('hard', 'Hard')], default='easy',
+                                  max_length=20)),
+                ('status', models.CharField(choices=[('not_started', 'Not Started'), ('in_progress', 'In Progress'),
+                                                     ('completed', 'Completed')], default='not_started',
+                                            max_length=20)),
+                ('module',
+                 models.ForeignKey(default='1', on_delete=django.db.models.deletion.CASCADE, to='modules.module')),
                 ('questions', models.ManyToManyField(related_name='quizzes', to='modules.question')),
             ],
         ),

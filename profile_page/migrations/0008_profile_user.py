@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('profile_page', '0007_remove_profile_user'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
@@ -16,7 +15,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='profile',
             name='user',
-            field=models.OneToOneField(default=1, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            field=models.OneToOneField(default=1, on_delete=django.db.models.deletion.CASCADE,
+                                       to=settings.AUTH_USER_MODEL),
             preserve_default=False,
         ),
     ]

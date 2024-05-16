@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('profile_page', '0031_notificationsettings'),
     ]
@@ -13,21 +12,25 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='notificationsettings',
             name='discussion_notifications',
-            field=models.CharField(choices=[('Send', 'Send'), ('Do not send', 'Do not send')], default='Send', max_length=50),
+            field=models.CharField(choices=[('Send', 'Send'), ('Do not send', 'Do not send')], default='Send',
+                                   max_length=50),
         ),
         migrations.AlterField(
             model_name='notificationsettings',
             name='new_modules_notifications',
-            field=models.CharField(choices=[('Send', 'Send'), ('Do not send', 'Do not send')], default='Send', max_length=50),
+            field=models.CharField(choices=[('Send', 'Send'), ('Do not send', 'Do not send')], default='Send',
+                                   max_length=50),
         ),
         migrations.AlterField(
             model_name='notificationsettings',
             name='new_resources_notifications',
-            field=models.CharField(choices=[('Send', 'Send'), ('Do not send', 'Do not send')], default='Send', max_length=50),
+            field=models.CharField(choices=[('Send', 'Send'), ('Do not send', 'Do not send')], default='Send',
+                                   max_length=50),
         ),
         migrations.AlterField(
             model_name='notificationsettings',
             name='quiz_results_notifications',
-            field=models.CharField(choices=[('Send', 'Send'), ('Do not send', 'Do not send')], default='Send', max_length=50),
+            field=models.CharField(choices=[('Send', 'Send'), ('Do not send', 'Do not send')], default='Send',
+                                   max_length=50),
         ),
     ]

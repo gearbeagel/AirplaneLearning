@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('profile_page', '0029_profile_receive_notifications'),
     ]
@@ -13,6 +12,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='profile',
             name='receive_notifications',
-            field=models.CharField(choices=[('Send', 'Send'), ('Do not send', 'Do not send')], default='Send', max_length=50),
+            field=models.CharField(choices=[('Send', 'Send'), ('Do not send', 'Do not send')], default='Send',
+                                   max_length=50),
         ),
     ]

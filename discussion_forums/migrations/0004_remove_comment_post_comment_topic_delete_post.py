@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('discussion_forums', '0003_topic_title'),
     ]
@@ -18,7 +17,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='comment',
             name='topic',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='discussion_forums.topic'),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE,
+                                    to='discussion_forums.topic'),
             preserve_default=False,
         ),
         migrations.DeleteModel(

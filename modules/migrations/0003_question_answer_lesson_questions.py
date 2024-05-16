@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('modules', '0002_lesson_lesson_type_alter_lesson_difficulty_level'),
     ]

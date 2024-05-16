@@ -1,10 +1,7 @@
-from django.test import TestCase
 from unittest.mock import MagicMock, patch
+
 from django.shortcuts import reverse
-from .views import profile_page, get_student_profile, get_latest_completed_lesson, get_latest_completed_quiz, \
-    get_profile_picture_url
-from .models import Profile
-from modules.user_progress_models import LessonStatus, QuizStatus
+from django.test import TestCase
 
 
 class ProfilePageTestCase(TestCase):
