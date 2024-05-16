@@ -100,10 +100,6 @@ MIDDLEWARE = [
     'ALPP.middleware.TracingMiddleware'
 ]
 
-SECURE_SSL_REDIRECT = False
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
-
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
         'Basic': {
@@ -113,6 +109,8 @@ SWAGGER_SETTINGS = {
     "VALIDATOR_URL": None,
     'DEFAULT_API_URL': 'https://airplanelearningpolyglotpto.azurewebsites.net/swagger/',
 }
+
+SECURE_SSL_REDIRECT = True
 
 CORS_ALLOW_ALL_ORIGINS = True
 

@@ -25,8 +25,14 @@
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
     <option name="TEMPLATE_FOLDERS">
       <list>
-        <option value="$MODULE_DIR$/../ALPP/templates" />
         <option value="$MODULE_DIR$/templates" />
+        <option value="$MODULE_DIR$/templates/emails" />
+        <option value="$MODULE_DIR$/templates/misc" />
+        <option value="$MODULE_DIR$/templates/module" />
+        <option value="$MODULE_DIR$/templates/profile" />
+        <option value="$MODULE_DIR$/templates/resources" />
+        <option value="$MODULE_DIR$/templates/forums" />
+        <option value="$MODULE_DIR$/templates/home_registration" />
       </list>
     </option>
   </component>
