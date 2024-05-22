@@ -105,9 +105,7 @@ SWAGGER_SETTINGS = {
         'Basic': {
             'type': 'basic'
         }
-    },
-    "VALIDATOR_URL": None,
-    'DEFAULT_API_URL': 'https://airplanelearningpolyglotpto.azurewebsites.net/swagger/',
+    }
 }
 
 CORS_ALLOW_ALL_ORIGINS = True

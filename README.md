@@ -1,9 +1,9 @@
 # Airplane Learning: Polyglot Pro (Project №13)
 
 ## About
-"Airplane Learning" is an app for learning different languages for starters and advanced learners. Accompanied by its mascot, Leari, one can easily understand the basics of English in a couple of clicks.
+"Airplane Learning" is an app for learning different languages for starters and advanced learners. Accompanied by its mascot, Leari, one can easily understand the basics of any language in a couple of clicks.
 
-You can view the website [here](http://airplanelearningpolyglotpto.azurewebsites.net)
+You can view the website [here](https://airplanelearningpolyglotpto.azurewebsites.net).
 
 ## Author
 Victoria "Vitya" Kondratska
@@ -38,10 +38,10 @@ Airplane Learning is designed to provide an intuitive platform for beginners to 
 
 
 ### Architecture
-The Airplane Learning app follows a client-server architecture. The client-side is built using HTML, CSS, and Jinja, while the server-side is implemented with Django.
+The Airplane Learning app follows a client-server architecture. The client-side is built using HTML, CSS, and JS, while the server-side is implemented with Django.
 
 ### Usage
-To use Airplane Learning, simply register or sign in with your Google account. Then, you can access lessons, quizzes and many different activities to improve your English skills.
+To use Airplane Learning, simply register or sign in with your Google account. Then, you can access lessons, quizzes and many different activities to improve your language skills.
 
 *You can see more regarding technologies and functionality [here](https://miro.com/app/board/uXjVNnt7ngw=/)*
 
