@@ -104,14 +104,17 @@ SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
         'Basic': {
             'type': 'basic'
-        }
+        },
+    },
+    'DEFAULT_AUTO_SCHEMA': {
+        'schemes': ['https'],
     },
     'DEFAULT_API_URL': 'https://airplanelearningpolyglotpto.azurewebsites.net/swagger/',
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False
 
 CORS_ALLOW_METHODS = [
     'GET',
