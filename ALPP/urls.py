@@ -19,10 +19,9 @@ from django.contrib import admin
 from django.urls import path, include
 
 import feedback.views
-import profile_page.views
 import registration_handle.views
 from ALPP import settings
-from profile_page.swagger import schema_view
+from ALPP.swagger import schema_view
 
 urlpatterns = ([
     path('admin/', admin.site.urls),

@@ -11,6 +11,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from opentelemetry import trace
+from rest_framework import permissions, status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
 
 from discussion_forums.models import Topic, Comment, CommentDeletionEvent
 from discussion_forums.utils import contains_profanity, PROFANE_WORDS
@@ -29,58 +32,64 @@ def main_forum_page(request):
         is_admin = request.user.is_superuser
         return render(request, "forums/main_forum_page.html", {'all_topics': all_topics, 'is_admin': is_admin})
 
-
 @login_required
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
 def topic_page(request, topic_id):
     with tracer.start_as_current_span("topic_page") as span:
         topic = get_object_or_404(Topic, pk=topic_id)
-        is_admin = True if request.user.is_superuser else False
+        is_admin = request.user.is_superuser
 
         all_comments = Comment.objects.filter(topic_id=topic_id).order_by("-created_at")
+        profile_pictures = {comment.created_by.username: get_profile_pic_url(comment.created_by) for comment in all_comments}
 
         for comment in all_comments:
             comment.humanized_created_at = humanize.naturaltime(comment.created_at)
 
-        profile_pictures = {}
-
-        for comment in all_comments:
-            user_profile = comment.created_by
-            profile_pictures[user_profile.username] = get_profile_pic_url(user_profile)
-
         if request.method == 'POST':
             comment_text = request.POST.get('comment_text')
-            if contains_profanity(comment_text, PROFANE_WORDS):
-                message = 'Your comment contains something inappropriate.'
-                return render(request, 'forums/topic_page.html',
-                              {'topic': topic, 'all_comments': all_comments,
-                               'profile_pictures': profile_pictures, 'message': message, 'is_admin': is_admin,
-                               'request': request})
+            message = None
 
             if not comment_text:
                 message = 'Comment cannot be empty.'
-                return render(request, 'forums/topic_page.html',
-                              {'topic': topic, 'all_comments': all_comments,
-                               'profile_pictures': profile_pictures, 'message': message, 'is_admin': is_admin,
-                               'request': request})
-
-            if not (len(comment_text) <= 500):
+            elif contains_profanity(comment_text, PROFANE_WORDS):
+                message = 'Your comment contains something inappropriate.'
+            elif len(comment_text) > 500:
                 message = 'Your comment is too long! Make sure it is less than 500 symbols.'
+
+            if message:
                 return render(request, 'forums/topic_page.html',
                               {'topic': topic, 'all_comments': all_comments,
-                               'profile_pictures': profile_pictures, 'message': message, 'is_admin': is_admin,
-                               'request': request})
+                               'profile_pictures': profile_pictures, 'is_admin': is_admin, 'request': request})
 
-            comment = Comment.objects.create(
+            Comment.objects.create(
                 message=comment_text,
                 topic=topic,
                 created_by=request.user.profile,
                 created_at=datetime.now()
             )
-            comment.save()
-            send_reply_notification_email(comment, comment_text)
+            send_reply_notification_email(request.user.profile, comment_text)
             return redirect('topic_page', topic_id=topic_id)
 
-        return render(request, 'forums/topic_page.html',
+        if 'application/json' in request.META.get('HTTP_ACCEPT', ''):
+            data = {
+                'topic': {
+                    'id': topic.id,
+                    'title': topic.title,
+                    'description': topic.description,
+                    'created_at': topic.created_at,
+                },
+                'comments': [{
+                    'message': comment.message,
+                    'created_by': comment.created_by.username,
+                    'created_at': comment.humanized_created_at
+                } for comment in all_comments],
+                'profile_pictures': profile_pictures,
+                'is_admin': is_admin
+            }
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            return render(request, 'forums/topic_page.html',
                       {'topic': topic, 'all_comments': all_comments,
                        'profile_pictures': profile_pictures, 'is_admin': is_admin, 'request': request})
 

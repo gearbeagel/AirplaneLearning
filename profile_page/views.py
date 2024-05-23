@@ -15,7 +15,7 @@ from modules.models import Lesson, Quiz, Module
 from modules.user_progress_models import LessonStatus, QuizStatus
 from profile_page.forms import LearnerTypeSettings, ProfilePictureSettings, NotificationSettings
 from profile_page.models import Profile, get_random_profile_pic, LearnerType
-from profile_page.swagger import StudentSerializer
+from ALPP.swagger import StudentSerializer
 
 PROFANE_WORDS = load_profanity_words('profanity.txt')
 tracer = trace.get_tracer(__name__)
