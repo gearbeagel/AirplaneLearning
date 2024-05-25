@@ -209,9 +209,6 @@ else:
         'default': env.db('DJANGO_DATABASE_URL', default=DEFAULT_DATABASE_URL)
     }
 
-MEDIA_URL = 'uploads/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
-
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 

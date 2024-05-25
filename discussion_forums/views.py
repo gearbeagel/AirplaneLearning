@@ -32,6 +32,7 @@ def main_forum_page(request):
         is_admin = request.user.is_superuser
         return render(request, "forums/main_forum_page.html", {'all_topics': all_topics, 'is_admin': is_admin})
 
+
 @login_required
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
@@ -41,7 +42,8 @@ def topic_page(request, topic_id):
         is_admin = request.user.is_superuser
 
         all_comments = Comment.objects.filter(topic_id=topic_id).order_by("-created_at")
-        profile_pictures = {comment.created_by.username: get_profile_pic_url(comment.created_by) for comment in all_comments}
+        profile_pictures = {comment.created_by.username: get_profile_pic_url(comment.created_by) for comment in
+                            all_comments}
 
         for comment in all_comments:
             comment.humanized_created_at = humanize.naturaltime(comment.created_at)
@@ -90,8 +92,8 @@ def topic_page(request, topic_id):
             return Response(data, status=status.HTTP_200_OK)
         else:
             return render(request, 'forums/topic_page.html',
-                      {'topic': topic, 'all_comments': all_comments,
-                       'profile_pictures': profile_pictures, 'is_admin': is_admin, 'request': request})
+                          {'topic': topic, 'all_comments': all_comments,
+                           'profile_pictures': profile_pictures, 'is_admin': is_admin, 'request': request})
 
 
 def send_reply_notification_email(comment, comment_text):

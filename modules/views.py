@@ -1,7 +1,7 @@
 import random
 from datetime import datetime
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
@@ -26,33 +26,33 @@ def all_possible_classes(request):
     return render(request, 'module/modules_main.html', context)
 
 
+def lang_check(request, language_id):
+    return request.user.profile.chosen_language.id == language_id
+
+
 @login_required
+@user_passes_test(lang_check, login_url='/')
 def modules_list(request, language_id):
-    with tracer.start_as_current_span("modules_list") as span:
+    with tracer.start_as_current_span("modules_list"):
         user = request.user
         language = get_object_or_404(Language, pk=language_id)
         modules = language.module_set.all()
         profile = Profile.objects.get(user=user)
-        lesson_statuses = []
-        quiz_statuses = []
 
-        user_learner_type = user.profile.learner_type
-        if user_learner_type.id == 1:
-            difficulty_level = "Easy"
-        elif user_learner_type.id == 2:
-            difficulty_level = "Medium"
-        elif user_learner_type.id == 3:
-            difficulty_level = "Hard"
-        else:
-            difficulty_level = "Easy"
+        learner_type_to_difficulty = {
+            1: "Easy",
+            2: "Medium",
+            3: "Hard"
+        }
+
+        user_learner_type_id = user.profile.learner_type.id
+        difficulty_level = learner_type_to_difficulty.get(user_learner_type_id, "Easy")
 
         lessons = Lesson.objects.filter(module__language=language, difficulty_level=difficulty_level)
-        for lesson in lessons:
-            lesson_statuses = LessonStatus.objects.filter(profile=profile, lesson=lesson)
-
         quizzes = Quiz.objects.filter(module__language=language, difficulty_level=difficulty_level)
-        for quiz in quizzes:
-            quiz_statuses = QuizStatus.objects.filter(profile=profile, quiz=quiz)
+
+        lesson_statuses = LessonStatus.objects.filter(profile=profile, lesson__in=lessons)
+        quiz_statuses = QuizStatus.objects.filter(profile=profile, quiz__in=quizzes)
 
         context = {
             'language': language,
