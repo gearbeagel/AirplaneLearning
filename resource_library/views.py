@@ -27,7 +27,6 @@ def resources(request):
         return render(request, "resources/resource_page.html", {'resources': all_resources})
 
 
-@api_view(["GET"])
 @login_required
 def dictionary(request):
     with tracer.start_as_current_span("dictionary", attributes={
