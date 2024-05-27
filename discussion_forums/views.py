@@ -34,82 +34,104 @@ def main_forum_page(request):
 
 
 @login_required
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 @permission_classes([permissions.IsAuthenticated])
 def topic_page(request, topic_id):
     with tracer.start_as_current_span("topic_page") as span:
         topic = get_object_or_404(Topic, pk=topic_id)
         is_admin = request.user.is_superuser
-
         all_comments = Comment.objects.filter(topic_id=topic_id).order_by("-created_at")
-        profile_pictures = {comment.created_by.username: get_profile_pic_url(comment.created_by) for comment in
-                            all_comments}
 
+        profile_pictures = {comment.created_by.username: get_profile_pic_url(comment.created_by) for comment in all_comments}
         for comment in all_comments:
             comment.humanized_created_at = humanize.naturaltime(comment.created_at)
 
         if request.method == 'POST':
-            comment_text = request.POST.get('comment_text')
-            message = None
+            return handle_post_request(request, topic, all_comments, profile_pictures, is_admin)
 
-            if not comment_text:
-                message = 'Comment cannot be empty.'
-            elif contains_profanity(comment_text, PROFANE_WORDS):
-                message = 'Your comment contains something inappropriate.'
-            elif len(comment_text) > 500:
-                message = 'Your comment is too long! Make sure it is less than 500 symbols.'
+        if is_json_request(request):
+            return json_response(topic, all_comments, profile_pictures)
 
-            if message:
-                return render(request, 'forums/topic_page.html',
-                              {'topic': topic, 'all_comments': all_comments,
-                               'profile_pictures': profile_pictures, 'is_admin': is_admin, 'request': request})
+        return render_topic_page(request, topic, all_comments, profile_pictures, is_admin)
 
-            Comment.objects.create(
-                message=comment_text,
-                topic=topic,
-                created_by=request.user.profile,
-                created_at=datetime.now()
-            )
-            send_reply_notification_email(request.user.profile, comment_text)
-            return redirect('topic_page', topic_id=topic_id)
 
-        if 'application/json' in request.META.get('HTTP_ACCEPT', ''):
-            data = {
-                'topic': {
-                    'id': topic.id,
-                    'title': topic.title,
-                    'description': topic.description,
-                    'created_at': topic.created_at,
-                },
-                'comments': [{
-                    'message': comment.message,
-                    'created_by': comment.created_by.username,
-                    'created_at': comment.humanized_created_at
-                } for comment in all_comments],
-                'profile_pictures': profile_pictures,
-                'is_admin': is_admin
-            }
-            return Response(data, status=status.HTTP_200_OK)
-        else:
-            return render(request, 'forums/topic_page.html',
-                          {'topic': topic, 'all_comments': all_comments,
-                           'profile_pictures': profile_pictures, 'is_admin': is_admin, 'request': request})
+def handle_post_request(request, topic, all_comments, profile_pictures, is_admin):
+    comment_text = request.POST.get('comment_text')
+    message = validate_comment(comment_text)
+
+    if message:
+        return render(request, 'forums/topic_page.html', {
+            'topic': topic,
+            'all_comments': all_comments,
+            'profile_pictures': profile_pictures,
+            'is_admin': is_admin,
+            'message': message
+        })
+
+    comment = Comment.objects.create(
+        message=comment_text,
+        topic=topic,
+        created_by=request.user.profile,
+        created_at=datetime.now()
+    )
+    send_reply_notification_email(comment, comment_text)
+    return redirect('topic_page', topic_id=topic.id)
+
+
+def validate_comment(comment_text):
+    if not comment_text:
+        return 'Comment cannot be empty.'
+    if contains_profanity(comment_text, PROFANE_WORDS):
+        return 'Your comment contains something inappropriate.'
+    if len(comment_text) > 500:
+        return 'Your comment is too long! Make sure it is less than 500 symbols.'
+    return None
+
+
+def is_json_request(request):
+    return 'application/json' in request.META.get('HTTP_ACCEPT', '')
+
+
+def json_response(topic, comments, profile_pictures):
+    data = {
+        'topic': {
+            'id': topic.id,
+            'title': topic.title,
+            'description': topic.description,
+            'created_at': topic.created_at,
+        },
+        'comments': [{
+            'message': comment.message,
+            'created_by': comment.created_by.username,
+            'created_at': comment.humanized_created_at
+        } for comment in comments],
+        'profile_pictures': profile_pictures
+    }
+    return Response(data, status=status.HTTP_200_OK)
+
+
+def render_topic_page(request, topic, comments, profile_pictures, is_admin):
+    context = {
+        'topic': topic,
+        'all_comments': comments,
+        'profile_pictures': profile_pictures,
+        'is_admin': is_admin
+    }
+    return render(request, 'forums/topic_page.html', context)
 
 
 def send_reply_notification_email(comment, comment_text):
     mentioned_usernames = re.findall(r'@(\w+)', comment_text)
     for username in mentioned_usernames:
-        try:
-            user = User.objects.get(username=username)
-            if user.profile.discussion_notifications == "Send":
-                recipient_email = user.email
-                subject = 'You have been mentioned in a comment'
-                context = {'user': user, 'comment': comment}
-                html_message = render_to_string('emails/email_mention_notification.html', context)
-                plain_message = strip_tags(html_message)
-                send_mail(subject, plain_message, None, [recipient_email], html_message=html_message)
-        except User.DoesNotExist:
+        user = User.objects.get(username=username)
+        if not user and user.profile.discussion_notifications != "Send":
             pass
+        recipient_email = user.email
+        subject = 'You have been mentioned in a comment'
+        context = {'user': user, 'comment': comment}
+        html_message = render_to_string('emails/email_mention_notification.html', context)
+        plain_message = strip_tags(html_message)
+        send_mail(subject, plain_message, None, [recipient_email], html_message=html_message)
 
 
 def get_profile_pic_url(student):

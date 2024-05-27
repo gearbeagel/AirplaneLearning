@@ -25,13 +25,7 @@ def all_possible_classes(request):
     }
     return render(request, 'module/modules_main.html', context)
 
-
-def lang_check(request, language_id):
-    return request.user.profile.chosen_language.id == language_id
-
-
 @login_required
-@user_passes_test(lang_check, login_url='/')
 def modules_list(request, language_id):
     with tracer.start_as_current_span("modules_list"):
         user = request.user
@@ -129,74 +123,98 @@ def handle_quiz_post(request, language_id, quiz_id):
         quiz = get_object_or_404(Quiz, pk=quiz_id)
         profile = get_object_or_404(Profile, user=request.user)
 
-        for question_id, answer_id in submitted_data.items():
-            if question_id.startswith('question_'):
-                question_id = question_id.split('_')[1]
-                question = get_object_or_404(Question, pk=question_id)
+        process_submitted_answers(submitted_data, quiz, profile)
 
-                if question.question_type == "Single Choice":
-                    user_answer = get_object_or_404(Answer, pk=answer_id)
-                    is_correct = "Correct" if user_answer.is_correct == "Correct" else "Incorrect"
-                    new_answer = QuizUserAnswers.objects.create(
-                        quiz=quiz,
-                        question=question,
-                        profile=profile,
-                        user_answer=user_answer.text,
-                        is_correct=is_correct
-                    )
-                    new_answer.save()
+        complete_quiz(request, quiz_id)
 
-                elif question.question_type == "Multiple Choice":
-                    answer_ids = submitted_data.getlist(f"question_{question.id}")
-                    correct_answer = question.answer_set.filter(is_correct="Correct").values_list('text', flat=True)
-                    correct_answers = list(correct_answer) if correct_answer else None
-                    answer_objects = Answer.objects.filter(pk__in=answer_ids)
-                    user_answers = [answer.text for answer in answer_objects]
-                    is_correct = "Correct" if user_answers == correct_answers else "Incorrect"
-                    new_answer = QuizUserAnswers.objects.create(
-                        quiz=quiz,
-                        question=question,
-                        profile=profile,
-                        user_answer=user_answers,
-                        is_correct=is_correct
-                    )
-                    new_answer.save()
-
-                elif question.question_type == "Open Text":
-                    user_answer_text = answer_id.strip().lower()
-                    correct_answer = question.answer_set.filter(is_correct="Correct").first()
-                    correct_answer_text = correct_answer.text.strip().lower() if correct_answer else ''
-                    is_correct = "Correct" if user_answer_text == correct_answer_text else "Incorrect"
-                    if user_answer_text:
-                        new_answer = QuizUserAnswers.objects.create(
-                            quiz=quiz,
-                            question=question,
-                            profile=request.user.profile,
-                            user_answer=user_answer_text,
-                            is_correct=is_correct
-                        )
-                        new_answer.save()
-
-        quiz_status, created = QuizStatus.objects.get_or_create(quiz_id=quiz_id, profile=profile)
-        quiz_status.status = "Completed"
-        quiz_status.save()
-
-        total_questions = quiz.question_set.count()
-        total_correct_answers = QuizUserAnswers.objects.filter(quiz=quiz, profile=profile,
-                                                               is_correct="Correct").count()
-        percentage_correct = (total_correct_answers / total_questions) * 100
+        percentage_correct = calculate_percentage_correct(quiz, profile)
 
         if request.user.profile.quiz_results_notifications == "Send":
-            subject = f"Quiz Result for {quiz.title}"
-            html_message = render_to_string('emails/email_quiz_result.html', {'quiz': quiz, 'profile': profile,
-                                                                              'percentage_correct': percentage_correct,
-                                                                              'language_id': language_id})
-            plain_message = strip_tags(html_message)
-            recipient_list = [request.user.email]
-
-            send_mail(subject, plain_message, None, recipient_list, html_message=html_message)
+            send_quiz_results_email(request.user, quiz, profile, percentage_correct, language_id)
 
         return redirect('quiz_result', language_id=language_id, quiz_id=quiz_id)
+
+
+def process_submitted_answers(submitted_data, quiz, profile):
+    for question_id, answer_id in submitted_data.items():
+        if question_id.startswith('question_'):
+            question_id = question_id.split('_')[1]
+            question = get_object_or_404(Question, pk=question_id)
+
+            if question.question_type == "Single Choice":
+                process_single_choice_answer(quiz, question, profile, answer_id)
+
+            elif question.question_type == "Multiple Choice":
+                process_multiple_choice_answer(submitted_data, quiz, question, profile)
+
+            elif question.question_type == "Open Text":
+                process_open_text_answer(quiz, question, profile, answer_id)
+
+
+def process_single_choice_answer(quiz, question, profile, answer_id):
+    user_answer = get_object_or_404(Answer, pk=answer_id)
+    is_correct = "Correct" if user_answer.is_correct == "Correct" else "Incorrect"
+    new_answer = QuizUserAnswers.objects.create(
+        quiz=quiz,
+        question=question,
+        profile=profile,
+        user_answer=user_answer.text,
+        is_correct=is_correct
+    )
+    new_answer.save()
+
+
+def process_multiple_choice_answer(submitted_data, quiz, question, profile):
+    answer_ids = submitted_data.getlist(f"question_{question.id}")
+    correct_answer = question.answer_set.filter(is_correct="Correct").values_list('text', flat=True)
+    correct_answers = list(correct_answer) if correct_answer else None
+    answer_objects = Answer.objects.filter(pk__in=answer_ids)
+    user_answers = [answer.text for answer in answer_objects]
+    is_correct = "Correct" if user_answers == correct_answers else "Incorrect"
+    new_answer = QuizUserAnswers.objects.create(
+        quiz=quiz,
+        question=question,
+        profile=profile,
+        user_answer=user_answers,
+        is_correct=is_correct
+    )
+    new_answer.save()
+
+
+def process_open_text_answer(quiz, question, profile, answer_id):
+    user_answer_text = answer_id.strip().lower()
+    correct_answer = question.answer_set.filter(is_correct="Correct").first()
+    correct_answer_text = correct_answer.text.strip().lower() if correct_answer else ''
+    is_correct = "Correct" if user_answer_text == correct_answer_text else "Incorrect"
+    if user_answer_text:
+        new_answer = QuizUserAnswers.objects.create(
+            quiz=quiz,
+            question=question,
+            profile=profile,
+            user_answer=user_answer_text,
+            is_correct=is_correct
+        )
+        new_answer.save()
+
+
+def calculate_percentage_correct(quiz, profile):
+    total_questions = quiz.question_set.count()
+    total_correct_answers = QuizUserAnswers.objects.filter(quiz=quiz, profile=profile, is_correct="Correct").count()
+    return (total_correct_answers / total_questions) * 100
+
+
+def send_quiz_results_email(user, quiz, profile, percentage_correct, language_id):
+    subject = f"Quiz Result for {quiz.title}"
+    html_message = render_to_string('emails/email_quiz_result.html', {
+        'quiz': quiz,
+        'profile': profile,
+        'percentage_correct': percentage_correct,
+        'language_id': language_id
+    })
+    plain_message = strip_tags(html_message)
+    recipient_list = [user.email]
+
+    send_mail(subject, plain_message, None, recipient_list, html_message=html_message)
 
 
 def show_quiz_result(request, language_id, quiz_id):
@@ -204,39 +222,45 @@ def show_quiz_result(request, language_id, quiz_id):
         quiz = get_object_or_404(Quiz, pk=quiz_id)
         profile = get_object_or_404(Profile, user=request.user)
         language = get_object_or_404(Language, pk=language_id)
-        questions = Question.objects.filter(quiz=quiz)
+
+        questions = quiz.question_set.all()
         user_answers = QuizUserAnswers.objects.filter(quiz=quiz, profile=profile)
 
-        total_questions = quiz.question_set.count()
-        total_correct_answers = QuizUserAnswers.objects.filter(quiz=quiz, profile=profile,
-                                                               is_correct="Correct").count()
-        percentage_correct = (total_correct_answers / total_questions) * 100
+        percentage_correct = calculate_percentage_correct(quiz, profile)
+        quiz_data = get_quiz_data(questions, user_answers)
 
-        quiz_data = {}
-        for question in questions:
-            user_answer = user_answers.filter(question=question).first()
-            correct_answer = question.answer_set.filter(is_correct="Correct").values_list('text', flat=True)
-            correct_answer = list(correct_answer) if correct_answer else None
+        resources = Resource.objects.filter(name=quiz.title)
 
-            user_answer_text = user_answer.user_answer if user_answer else None
-
-            if isinstance(user_answer_text, str) and user_answer_text.startswith('[') and user_answer_text.endswith(
-                    ']'):
-                user_answer_list = user_answer_text[1:-1].split(',')
-                user_answer_text = [answer.strip().strip("'") for answer in user_answer_list if answer.strip()]
-
-            quiz_data[question] = {
-                'correct_answer': correct_answer,
-                'user_answer': user_answer_text,
-                'is_correct': user_answer.is_correct if user_answer else None
-            }
-
-        resources = Resource.objects.all()
-        resource_data = []
-        for resource in resources:
-            if quiz.title == resource.name:
-                resource_data.append(resource)
-
-        context = {'quiz': quiz, 'language': language, 'questions': questions, 'quiz_data': quiz_data,
-                   'resource_data': resource_data, 'percentage_correct': percentage_correct}
+        context = {
+            'quiz': quiz,
+            'language': language,
+            'questions': questions,
+            'quiz_data': quiz_data,
+            'resource_data': resources,
+            'percentage_correct': percentage_correct
+        }
         return render(request, 'module/quiz_result.html', context)
+
+
+def get_quiz_data(questions, user_answers):
+    quiz_data = {}
+    for question in questions:
+        user_answer = user_answers.filter(question=question).first()
+        correct_answer = list(question.answer_set.filter(is_correct="Correct").values_list('text', flat=True))
+
+        user_answer_text = user_answer.user_answer if user_answer else None
+        user_answer_text = parse_user_answer(user_answer_text)
+
+        quiz_data[question] = {
+            'correct_answer': correct_answer,
+            'user_answer': user_answer_text,
+            'is_correct': user_answer.is_correct if user_answer else None
+        }
+    return quiz_data
+
+
+def parse_user_answer(user_answer_text):
+    if isinstance(user_answer_text, str) and user_answer_text.startswith('[') and user_answer_text.endswith(']'):
+        user_answer_list = user_answer_text[1:-1].split(',')
+        return [answer.strip().strip("'") for answer in user_answer_list if answer.strip()]
+    return user_answer_text

@@ -1,18 +1,16 @@
 import os
+from faker import Faker
+from modules.models import Language, Module, Lesson, Section, Quiz, Question, Answer
+import django
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ALPP.settings")
 
-import django
-
 django.setup()
-
-from faker import Faker
-from modules.models import Language, Module, Lesson, Section, Quiz, Question, Answer
 
 fake = Faker()
 
 
-def create_modules(num_modules=10, languages=None):
+def create_modules(num_modules=5, languages=None):
     modules = []
     if not languages:
         languages = Language.objects.all()
@@ -29,7 +27,7 @@ def create_modules(num_modules=10, languages=None):
     return modules
 
 
-def create_lessons(num_lessons=10, modules=None):
+def create_lessons(num_lessons=3, modules=None):
     lessons = []
     if not modules:
         modules = Module.objects.all()
@@ -47,7 +45,7 @@ def create_lessons(num_lessons=10, modules=None):
     return lessons
 
 
-def create_sections(num_sections=5, lessons=None):
+def create_sections(num_sections=3, lessons=None):
     sections = []
     if not lessons:
         lessons = Lesson.objects.all()
@@ -62,7 +60,7 @@ def create_sections(num_sections=5, lessons=None):
     return sections
 
 
-def create_quizzes(num_quizzes=10, modules=None):
+def create_quizzes(num_quizzes=5, modules=None):
     quizzes = []
     if not modules:
         modules = Module.objects.all()
@@ -80,7 +78,7 @@ def create_quizzes(num_quizzes=10, modules=None):
     return quizzes
 
 
-def create_questions(num_questions=5, quizzes=None):
+def create_questions(num_questions=3, quizzes=None):
     questions = []
     if not quizzes:
         quizzes = Quiz.objects.all()

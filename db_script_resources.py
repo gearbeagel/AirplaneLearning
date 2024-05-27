@@ -1,19 +1,17 @@
 import os
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ALPP.settings")
-
-import django
-
-django.setup()
-
 from faker import Faker
 from modules.models import Lesson
 from resource_library.models import Resource
+import django
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ALPP.settings")
+
+django.setup()
 
 fake = Faker()
 
 
-def create_resources(num_resources=30, lessons=None):
+def create_resources(num_resources=10, lessons=None):
     resources = []
     if not lessons:
         lessons = Lesson.objects.all()
