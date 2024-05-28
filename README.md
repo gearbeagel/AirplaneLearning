@@ -129,3 +129,10 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 3. Conduct post-launch analysis and optimization ✔️
 4. Write unit tests for overall application functionality ✔️
 5. Plan future updates and enhancements based on user feedback ✔️
+
+## Anti-Lab 2
+- Victoria Kondratska
+- [My project](https://github.com/gearbeagel/Kondratska.University.AirplaneLearning)
+- [My fork for Nikita Pashchuk](https://github.com/gearbeagel/Pashchuk.University.CityVotingPlatform)
+- [My fork for Vitaliy Zhuravskyi](https://github.com/gearbeagel/webproject)
+
