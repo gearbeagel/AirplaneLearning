@@ -4,6 +4,7 @@ from django.contrib.humanize.templatetags import humanize
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from opentelemetry import trace
+from rest_framework.decorators import api_view
 
 from discussion_forums.utils import load_profanity_words, contains_profanity
 from resource_library.models import Resource
@@ -13,7 +14,6 @@ PROFANE_WORDS = load_profanity_words('profanity.txt')
 tracer = trace.get_tracer(__name__)
 
 
-@require_http_methods(["GET", "POST"])
 @login_required
 def resources(request):
     with tracer.start_as_current_span("resources", attributes={
@@ -27,7 +27,6 @@ def resources(request):
         return render(request, "resources/resource_page.html", {'resources': all_resources})
 
 
-@require_http_methods(["GET", "POST"])
 @login_required
 def dictionary(request):
     with tracer.start_as_current_span("dictionary", attributes={
