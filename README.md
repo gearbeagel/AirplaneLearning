@@ -131,8 +131,7 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 5. Plan future updates and enhancements based on user feedback ✔️
 
 ## Anti-Lab 2
-- Victoria Kondratska
-- [My project](https://github.com/gearbeagel/Kondratska.University.AirplaneLearning)
-- [My fork for Nikita Pashchuk](https://github.com/gearbeagel/Pashchuk.University.CityVotingPlatform)
-- [My fork for Vitaliy Zhuravskyi](https://github.com/gearbeagel/webproject)
+- Nikita Pashchuk
+- [My project](https://github.com/NikitaPash/Pashchuk.University.CityVotingPlatform)
+- [My fork](https://github.com/NikitaPash/Kondratska.University.AirplaneLearning)
 
