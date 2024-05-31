@@ -55,12 +55,16 @@
                 {% endfor %}
             </ul>
             <h2 class="sniglet">Share your results:</h2>
-            <div class="d-flex">
-                <a id="twitterLink" href="#" class="meta-act-link meta-tweet socials mr-2" target="_blank">
-                    <button class="btn btn-primary"><i class="fab fa-twitter"></i></button>
+            <div>
+                <a id="twitterLink" href="#" class="meta-act-link meta-tweet socials" target="_blank">
+                    <button style="width: fit-content; padding: 10px; border-radius: 10px; border: none; background-color: #1DA1F2; color: white;">
+                        <i class="fab fa-twitter"></i> Twitter
+                    </button>
                 </a>
-                <a id="telegramLink" href="#" class="meta-act-link meta-telegram socials" target="_blank">
-                    <button class="btn btn-primary"><i class="fab fa-telegram"></i></button>
+                <a id="telegramLink" href="#" class="meta-act-link meta-telegram socials" target="_blank" style="margin-left: 10px;">
+                    <button style="width: fit-content; padding: 10px; border-radius: 10px; border: none; background-color: #0088cc; color: white;">
+                        <i class="fab fa-telegram"></i> Telegram
+                    </button>
                 </a>
             </div>
             {% if resource_data %}

@@ -43,7 +43,7 @@
                 </form>
             {% elif quiz_status.status == "Completed" %}
                 <div class="alert alert-info mt-3" role="alert">
-                    <h3>You have already passed the quiz. You can view the results <a href="{% url "quiz_result" language_id=language.id quiz_id=quiz.id %}" class="alert-link" style="font-family: Sniglet, system-ui"><h3>here.</h3></a><h3>
+                    <h3>You have already passed the quiz. You can view the results <a href="{% url "quiz_result" language_id=language.id quiz_id=quiz.id %}" class="alert-link" style="font-family: Sniglet, system-ui"><h3>here.</h3></a></h3>
                 </div>
             {% endif %}
         </div>
