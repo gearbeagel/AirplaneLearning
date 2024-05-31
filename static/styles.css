@@ -1,60 +1,84 @@
+html,
 body {
-    background-color: white;
+    height: 100%;
+    font-family: Sniglet, system-ui;
 }
 
-section, .main {
+body {
     display: flex;
-    position: absolute;
-    flex-direction: column;
-    top: 50%;
-    left: 50%;
-    width: auto;
     align-items: center;
-    margin: -300px 0 0 -600px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #f5f5f5;
 }
 
-button {
+.cover-container {
+    max-width: 42em;
+}
+
+.cover {
+    padding: 0 1.5rem;
+}
+
+.masthead {
+    margin-bottom: 2rem;
+}
+
+.masthead-brand {
+    margin-bottom: 0;
+}
+
+.nav-masthead .nav-link {
+    padding: .25rem 0;
+    font-weight: 700;
+    color: rgba(0, 0, 0, .5);
+    background-color: transparent;
+    border-bottom: .25rem solid transparent;
+}
+
+.nav-masthead .nav-link:hover,
+.nav-masthead .nav-link:focus {
+    border-bottom-color: rgba(0, 0, 0, .25);
+}
+
+.nav-masthead .nav-link + .nav-link {
+    margin-left: 1rem;
+}
+
+.nav-masthead .nav-link.active {
+    color: #000;
+    border-bottom-color: #000;
+}
+
+.cover-heading {
+    font-weight: 300;
+}
+
+.lead {
+    font-weight: 300;
+}
+
+.btn-secondary {
+    background-color: #333;
+    border-color: #333;
+}
+
+.btn-primary {
+    background-color: #d39c3f;
+    border: none
+}
+
+.btn-primary:hover {
     cursor: pointer;
     background-color: #d39c3f;
-    font-family: "Sniglet", sans-serif;
-    font-size: 35px;
-    color: white;
-    border-radius: 25px;
-    height: 100px;
-    width: 400px;
-    border-style: none;
 }
 
 h1 {
     color: #d39c3f;
-    font-size: 80px;
-    margin-bottom: -10px;
 }
 
-h2 {
-    color: #d39c3f;
-    font-size: 50px;
-}
-
-div, .registration {
-    display: flex;
-    position: absolute;
-    flex-direction: column;
-    top: 50%;
-    left: 50%;
-    width: auto;
-    align-items: center;
-    margin: -150px 0 0 -50px;
-    border: solid 3px #d39c3f;
-    border-radius: 25px;
-    padding: 25px;
-    z-index: 1;
-}
-
-.sniglet-extrabold {
-  font-family: "Sniglet", system-ui;
-  font-weight: 800;
-  font-style: normal;
+h3 {
+    font-size: 20px
 }
 
 .sniglet {
@@ -63,146 +87,72 @@ div, .registration {
   font-style: normal;
 }
 
-.sniglet-bold {
-  font-family: "Sniglet", system-ui;
-  font-weight: 600;
-  font-style: normal;
+.scrollable-list {
+    max-height: 600px; /* Adjust the max height according to your preference */
+    overflow-y: auto;
 }
 
-
-footer {
-    color: white;
-    position: absolute;
-    bottom: 25px;
-    z-index: 1;
-    font-size: 15px;
-}
-
-a, a:hover {
-    text-decoration: none !important;
-    color: white;
-    /* font-size: 25px; */
-}
-
-img {
-    height: 25%;
-    width: 25%;
-}
-
-.reg-button {
+.modules-container {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
 }
 
-.reg-button img {
-    height: 30%;
-    width: 30%;
-}
-
-.reg-button {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    background-color: #d39c3f;
-    font-family: "Sniglet", sans-serif;
-    font-size: 35px;
-    color: white;
-    border-radius: 25px;
-    height: 100px;
-    width: 400px;
-    border-style: none;
-    z-index: 1;
-    position: relative;
-}
-
-section, .row {
-    margin: -160px 0 0 -500px;
-    display: flex;
-    flex-direction: row;
-}
-
-section, .row_1 {
-    margin: -150px 0 0 -600px;
-    display: flex;
-    flex-direction: row;
-}
-
-div, .column {
-    margin: -250px 0 0 -200px;
+.lessons-column,
+.quizzes-column {
     flex: 1;
-    top: 50%;
-    left: 50%;
-    position: fixed;
-    flex-direction: column;
+    margin: 10px;
 }
 
-p, ul {
-    font-family: "Sniglet", sans-serif;
+.column-title {
+    font-size: 24px;
+    margin-bottom: 10px;
 }
 
-div, .lesson-content {
+.module-item {
+    background-color: #f8f9fa;
+    border: 2px solid #d39c3f;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
     display: flex;
-    position: fixed;
-    flex-direction: column;
+    align-items: center;
 }
 
-.next-section-btn {
-    position: absolute;
-    top: 300px;
-    left: 300px;
-    z-index: 1;
+.module-link {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    margin-right: 10px;
 }
 
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 200px;
-    height: 100%;
-    background-color: #d39c3f;
-    padding: 20px;
-    text-align: center;
-    z-index: 1;
-}
-
-.sidebar a {
-    color: white;
-}
-
-.stylised_select {
-    font-family: 'Sniglet', sans-serif;
-    height: 40px;
-    width: 250px;
-}
-
-div, .row_1 {
-    width: 500px;
-}
-
-.notification-container {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #d39c3f;
-    color: white;
-    padding: 15px;
+.difficulty {
+    padding: 5px 10px;
     border-radius: 5px;
-    z-index: 1000;
-    font-size: 18px;
+    font-weight: bold;
+}
+
+.Easy {
+    background-color: #578661; /* Easy */
+    color: white;
+}
+
+.Medium {
+    background-color: #d39c3f; /* Medium */
+    color: white;
+}
+
+.Hard {
+    background-color: #CC6666; /* Hard */
+    color: white;
+}
+
+.module-list {
+    height: 400px; /* Adjust as needed */
+    overflow-y: auto;
+}
+footer {
     text-align: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    opacity: 1;
-    transition: opacity 1s;
-}
-
-.socials {
-    position: relative;
-    color: black;
-    font-family: Sniglet, sans-serif;
-}
-
-a, .socials {
-    color: black;
+    background-color: #d39c3f;
+    color: white;
+    padding: 10px 0;
 }
