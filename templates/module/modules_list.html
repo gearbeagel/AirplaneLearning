@@ -1,131 +1,43 @@
+{% extends 'base.html' %}
 {% load static %}
-{% load quiz_extras %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="{% static "favicon.ico" %}">
-    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
-    <title>{{ language.name }} Modules</title>
-</head>
-<body>
-<article class="sidebar">
-    <a class="sniglet" href="{% url "profile_page" username=request.user.username %}">
-        <img src="{% static "/leeri_logo.png" %}" style="height: 210px; width: 210px; margin-left: -10px; margin-bottom: -50px" alt="leari on a plane">
-    </a>
-    <p class="sniglet" style="color: white; font-size: 25px">Airplane Learning</p>
-    <hr style="color: white; width: 100%">
-    <a class="sniglet">Logged in as: {{ request.user.username }}</a>
-    <hr style="color: white; width: 100%">
-    <a class="sniglet" href="{% url "profile_page" username=request.user.username %}">Profile</a>
-    <br><br>
-    <a class="sniglet" style="font-size: 15px"><u>Modules</u></a>
-    <br><br>
-    <a class="sniglet" style="font-size: 15px" href="/forums">Discussion Forums</a>
-    <br><br>
-    <a class="sniglet" style="font-size: 15px" href="/resources">Resource Library</a>
-    <br><br>
-    <a class="sniglet" style="font-size: 15px" href="/feedback">Feedback Form</a>
-    <br><br>
-    <a href="{% url 'profile_settings' %}" class="sniglet" style="font-size: 15px;">Settings</a>
-    <br><br>
-    <a class="sniglet" style="font-size: 15px" href="{% url 'schema-swagger-ui' %}">Swagger</a>
-    <br><br>
-    <a class="sniglet" style="font-size: 15px" href="{% url 'logout' %}">Log out</a>
-    <br><br>
-    <a class="sniglet" style="font-size: 15px" href="{% url 'about' %}">About</a>
-    <footer class="sniglet" style="bottom: 45px; left: 75px">
-        <p>© gearbeagel</p>
-    </footer>
-</article>
 
-<h1 class="sniglet" style="text-align: center">{{ language.name }} Modules</h1>
+{% block title %}{{ language.name }} Modules{% endblock %}
 
-<section>
-<h2 class="sniglet" style="padding-left: 20px; margin-top: -1400px">Lessons</h2>
-    {% if lessons %}
-        <span class="lessons-container" style="display: flex; flex-direction: column; padding-left: 20px; margin-bottom: 100px; margin-top: -50px">
-            {% for lesson in lessons %}
-                <span class="lesson-item" style="display: flex; padding: 20px; align-items: center; margin-bottom: 20px; width: 1200px; z-index: 0; border: #d39c3f 3px solid; border-radius: 25px;">
-                    <button style='width: 250px; height: 100px; font-size: 30px; margin-right: 20px;'>
-                        <a href="{% url 'lesson_info' language_id=language.id lesson_id=lesson.id %}" class="sniglet" style="color: white">{{ lesson.title }}</a>
-                    </button>
-                    {% for ls in lesson_statuses %}
-                        {% if ls.lesson == lesson and ls.status == "Completed" %}
-                            <i class="fa fa-check" aria-hidden="true" style="color: #578661; margin-left: 20px;"></i>
-                        {% endif %}
+{% block content %}
+    <h1 style="text-align: center">{{ language.name }} Modules</h1>
+    <section class="modules-container">
+        <div class="lessons-column">
+            <h2 class="column-title">Lessons</h2>
+            <div class="lessons module-list">
+                {% if lessons %}
+                    {% for lesson in lessons %}
+                        <div class="module-item">
+                            <a href="{% url 'lesson_info' language_id=language.id lesson_id=lesson.id %}" class="module-link sniglet"><button class="btn btn-primary">{{ lesson.title }}</button></a>
+                            <span style="flex-grow: 1"></span>
+                            <span class="difficulty {{ lesson.difficulty_level }} sniglet"><h3>{{ lesson.difficulty_level|capfirst }}</h3></span>
+                        </div>
                     {% endfor %}
-                    <span style="flex-grow: 1;"></span>
-                    <p style="
-                        {% if lesson.difficulty_level == 'easy' %}
-                            background-color: #578661; /* Easy */
-                        {% elif lesson.difficulty_level == 'medium' %}
-                            background-color: #d39c3f; /* Medium */
-                        {% elif lesson.difficulty_level == 'hard' %}
-                            background-color: #CC6666; /* Hard */
-                        {% endif %};
-                        padding: 10px 40px;
-                        border-radius: 20px;
-                        color: white;
-                        margin-left: auto;">
-                        {{ lesson.difficulty_level|capfirst }}
-                    </p>
-                </span>
-            {% endfor %}
-        </span>
-    {% else %}
-        <h2 class="sniglet" style="padding-left: 20px">Lessons</h2>
-        <div class="row" style="padding-left: 20px;">
-            <p>No lessons available yet. Sorry. :(</p>
+                {% else %}
+                    <p>No lessons available yet. Sorry. :(</p>
+                {% endif %}
+            </div>
         </div>
-    {% endif %}
-</section>
-<br>
-<section style="margin-top: 200px">
-<h2 class="sniglet" style="padding-left: 20px; margin-bottom: 1150px;">Quizzes</h2>
-    {% if quizzes %}
-        <span class="quizzes-container" style="display: flex; flex-direction: column; padding-left: 20px; margin-top: 1000px;">
-            {% for quiz in quizzes %}
-                <span class="quiz-item" style="display: flex; padding: 20px; align-items: center; margin-bottom: 20px; width: 1200px; z-index: 0; border: #d39c3f 3px solid; border-radius: 25px;">
-                    <button style='width: 250px; height: 100px; font-size: 30px; margin-right: 20px;'>
-                        <a href="{% url 'lesson_quiz' language_id=language.id quiz_id=quiz.id %}" class="sniglet" style="color: white">{{ quiz.title }}</a>
-                    </button>
-                    {% for qz in quiz_statuses %}
-                        {% if qz.quiz == quiz and qz.status == "Completed" %}
-                            <i class="fa fa-check" aria-hidden="true" style="color: #578661; margin-left: 20px;"></i>
-                        {% endif %}
+        
+        <div class="quizzes-column">
+            <h2 class="column-title">Quizzes</h2>
+            <div class="quizzes module-list">
+                {% if quizzes %}
+                    {% for quiz in quizzes %}
+                        <div class="module-item">
+                            <a href="{% url 'lesson_quiz' language_id=language.id quiz_id=quiz.id %}" class="module-link"><button class="btn btn-primary">{{ quiz.title }}</button></a>
+                            <span style="flex-grow: 1"></span>
+                            <span class="difficulty {{ quiz.difficulty_level }} sniglet"><h3>{{ quiz.difficulty_level|capfirst }}</h3></span>
+                        </div>
                     {% endfor %}
-                    <span style="flex-grow: 1;"></span>
-                    <p style="
-                        {% if quiz.difficulty_level == 'Easy' %}
-                            background-color: #578661; /* Easy */
-                        {% elif quiz.difficulty_level == 'Medium' %}
-                            background-color: #d39c3f; /* Medium */
-                        {% elif quiz.difficulty_level == 'Hard' %}
-                            background-color: #CC6666; /* Hard */
-                        {% endif %};
-                        padding: 10px 40px;
-                        border-radius: 20px;
-                        color: white;
-                        margin-left: auto;">
-                        {{ quiz.difficulty_level|capfirst }}
-                    </p>
-                </span>
-            {% endfor %}
-        </span>
-    {% else %}
-        <h2 class="sniglet" style="padding-left: 20px; margin-top: 50px;">Quizzes</h2>
-        <div class="row" style="padding-left: 20px;">
-            <p>No quizzes available yet. Sorry. :(</p>
+                {% else %}
+                    <p>No quizzes available yet. Sorry. :(</p>
+                {% endif %}
+            </div>
         </div>
-    {% endif %}
-</section>
-
-</body>
-</html>
+    </section>
+{% endblock %}
