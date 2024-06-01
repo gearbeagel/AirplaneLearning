@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-md-9">
             <h1 class="sniglet">Quiz Result</h1>
-            <ul class="list-unstyled">
+            <ul class="list-unstyled scrollable-list">
                 {% for question, data in quiz_data.items %}
                 <li class="sniglet mb-3 p-3 border rounded">
                     <strong>Question:</strong> {{ question.text }}<br>
@@ -100,4 +100,3 @@
     telegramLink.href = telegramUrlWithParams;
 </script>
 {% endblock %}
-</html>

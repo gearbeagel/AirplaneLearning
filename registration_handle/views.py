@@ -42,12 +42,14 @@ def language_and_learning_path_selection(request):
     if Profile.objects.filter(user=request.user).exists():
         return redirect('profile_page', username=request.user.username)
 
+    form = ProfileUpdateForm()
+
     if request.method == 'POST':
         form = ProfileUpdateForm(request.POST)
         if form.is_valid():
             form_data = form.cleaned_data
             try:
-                Profile.objects.create(
+                profile = Profile.objects.create(
                     user=request.user,
                     email=request.user.email,
                     username=request.user.username,
@@ -55,6 +57,7 @@ def language_and_learning_path_selection(request):
                     chosen_language=form_data['chosen_language'],
                     learner_type=form_data['learner_type']
                 )
+                profile.save()
                 welcome_email(request)
                 return redirect('home')
             except Exception as e:
@@ -62,8 +65,6 @@ def language_and_learning_path_selection(request):
                 return HttpResponseBadRequest("Error occurred while creating profile. Please try again.")
         else:
             return HttpResponseBadRequest("Form submission failed. Please check your input.")
-    else:
-        form = ProfileUpdateForm()
 
     return render(request, 'home_registration/learning_path_choice.html', {'form': form})
 

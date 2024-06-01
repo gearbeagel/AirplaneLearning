@@ -12,10 +12,10 @@
         <li class="grid-item" style="margin: 10px;">
             <div class="card" style="width: 20rem; border: #d39c3f 3px solid; border-radius: 25px;">
                 <div class="card-body">
-                    <a href="{% url "dictionary" %}" class="btn btn-primary btn-lg btn-block">Dictionary</a>
+                    <a href="{% url "dictionary" %}" class="btn btn-primary btn-lg btn-block" style="width: 280px;"><h2>Dictionary</h2></a>
                     <br>
                     <br>
-                    <p class="card-text" style="background-color: #CC6666; color: white; padding: 10px 20px; border-radius: 20px; text-align: center;">Other</p>
+                    <p class="card-text" style="background-color: #CC6666; color: white; padding: 10px 20px; border-radius: 20px; text-align: center; width: max-content">Other</p>
                 </div>
             </div>
         </li>
@@ -24,10 +24,10 @@
                 <li class="grid-item" style="margin: 10px;">
                     <div class="card" style="width: 20rem; border: #d39c3f 3px solid; border-radius: 25px;">
                         <div class="card-body">
-                            <a href="{{ resource.source }}" class="btn btn-primary btn-lg btn-block">{{ resource.name }}</a>
+                            <a href="{{ resource.source }}" class="btn btn-primary btn-lg btn-block" style="width: 280px;"><h2>{{ resource.name }}</h2></a>
                         <br>
                     <br>
-                            <p class="card-text" style="background-color: {% if resource.type == 'Video' %}#578661{% elif resource.type == 'Article' %}#637d91{% elif resource.type == 'Other' %}#CC6666{% endif %}; color: white; padding: 10px 20px; border-radius: 20px; text-align: center;">{{ resource.type }}</p>
+                            <p class="card-text" style="background-color: {% if resource.type == 'Video' %}#578661{% elif resource.type == 'Article' %}#637d91{% elif resource.type == 'Other' %}#CC6666{% endif %}; color: white; padding: 10px 20px; border-radius: 20px; text-align: center; width: max-content">{{ resource.type }}</p>
                         </div>
                     </div>
                 </li>

@@ -5,10 +5,13 @@
 
 {% block content %}
     <h1 style="text-align: center">{{ language.name }} Modules</h1>
+    <input type="hidden" id="modules-list-url" value="{% url 'modules_list' language_id=user.profile.chosen_language.id %}">
     <section class="modules-container">
-        <div class="lessons-column">
-            <h2 class="column-title">Lessons</h2>
-            <div class="lessons module-list">
+        
+        <!-- Lessons Section -->
+        <div class="module-section scrollable-list lesson-section">
+            <h2 class="section-title">Lessons</h2>
+            <div id="lessonsCarousel" class="carousel-inner">
                 {% if lessons %}
                     {% for lesson in lessons %}
                         <div class="module-item">
@@ -22,10 +25,11 @@
                 {% endif %}
             </div>
         </div>
-        
-        <div class="quizzes-column">
-            <h2 class="column-title">Quizzes</h2>
-            <div class="quizzes module-list">
+
+        <!-- Quizzes Section -->
+        <div class="module-section scrollable-list lesson-section">
+            <h2 class="section-title">Quizzes</h2>
+            <div id="quizzesCarousel" class="carousel-inner">
                 {% if quizzes %}
                     {% for quiz in quizzes %}
                         <div class="module-item">
@@ -39,5 +43,95 @@
                 {% endif %}
             </div>
         </div>
+
+        <!-- Navigation Buttons -->
+        <div class="d-flex justify-content-between mt-3">
+            <button class="prev-section-btn btn btn-secondary" style="width: 40px;" disabled>&lt;</button>
+            <button class="next-section-btn btn btn-secondary" style="width: 40px;">&gt;</button>
+        </div>
     </section>
+
+<style>
+    .modules-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .module-section {
+        width: 80%;
+        margin-bottom: 20px;
+        max-height: 400px;
+        
+    }
+    .section-title {
+        text-align: center;
+        font-size: 1.5em;
+        margin-bottom: 10px;
+    }
+    .module-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid #ddd;
+        margin-bottom: 10px;
+        border-radius: 5px;
+    }
+    .module-link {
+        flex-grow: 1;
+    }
+    .difficulty {
+        flex-grow: 0;
+    }
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const sectionDivs = document.querySelectorAll('.lesson-section');
+        const nextBtn = document.querySelector('.next-section-btn');
+        const prevBtn = document.querySelector('.prev-section-btn');
+        const modulesListUrl = document.getElementById('modules-list-url').value;
+        let currentIndex = 0;
+
+        nextBtn.addEventListener('click', () => {
+            navigateSection(1);
+        });
+
+        prevBtn.addEventListener('click', () => {
+            navigateSection(-1);
+        });
+
+        function navigateSection(step) {
+            sectionDivs[currentIndex].style.display = 'none';
+            currentIndex += step;
+            if (currentIndex >= 0 && currentIndex < sectionDivs.length) {
+                sectionDivs[currentIndex].style.display = 'block';
+                prevBtn.disabled = false;
+            } else if (currentIndex === sectionDivs.length) {
+                window.location.href = modulesListUrl;
+            }
+            if (currentIndex <= 0) {
+                prevBtn.disabled = true;
+            } else {
+                prevBtn.disabled = false;
+            }
+            if (currentIndex >= sectionDivs.length - 1) {
+                nextBtn.disabled = true;
+            } else {
+                nextBtn.disabled = false;
+            }
+        }
+
+        sectionDivs.forEach((div, index) => {
+            if (index !== 0) {
+                div.style.display = 'none';
+            }
+        });
+
+        // Initialize button states
+        prevBtn.disabled = true;
+        if (sectionDivs.length <= 1) {
+            nextBtn.disabled = true;
+        }
+    });
+</script>
 {% endblock %}

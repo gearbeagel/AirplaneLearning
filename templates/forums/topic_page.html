@@ -11,27 +11,28 @@
         <h1 class="text-center">{{ topic.title }}</h1>
         <ul class="list-unstyled">
             <li class="border rounded p-3 mb-3">
-                <h3 class="text-primary">Lesson: {{ topic.subject }}</h3>
+                <h3>Lesson: {{ topic.subject }}</h3>
                 <hr>
-                <h3 class="text-primary">Discussion: {{ topic.description }}</h3>
+                <h3>Discussion: {{ topic.description }}</h3>
             </li>
         </ul>
         <h2 class="text-center mb-3">Comments:</h2>
         <form method="post">
             {% csrf_token %}
-            <div class="mb-3">
-                <label for="comment_text" class="form-label">Enter your comment here:</label>
-                <textarea class="form-control comment_text" id="comment_text" name="comment_text" rows="4"
-                          cols="200"></textarea>
-                <span class="character-count"
-                      style="font-family: Sniglet, sans-serif; position: absolute; bottom: 3px; right: 5px; color: darkblue;"></span>
-                {% if message %}
-                    <p class="text-danger">{{ message }}</p>
+            {% if message %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 {% endif %}
+            <div class="mb-3 position-relative">
+                <label for="comment_text" class="form-label">Enter your comment here:</label>
+                <textarea class="form-control comment_text" id="comment_text" name="comment_text" rows="4" cols="200"></textarea>
+                <span class="position-absolute bottom-0 end-0 p-1 character-count" style="font-family: Sniglet, sans-serif; color: darkblue;"></span>
             </div>
             <button type="submit" class="btn btn-primary">Add comment</button>
         </form>
-        <div class="overflow-auto" style="max-height: 400px;"> <!-- Adjust max-height as needed -->
+        <div class="overflow-auto" style="max-height: 400px;">
             <ul class="list-unstyled mt-3">
                 {% if all_comments %}
                     {% for comment in all_comments %}
@@ -43,7 +44,7 @@
                                          alt="{{ comment.created_by.username }}'s profile picture">
                                 </a>
                                 <div>
-                                    <p class="text-primary mb-1"><a
+                                    <p class="mb-1" style="cursor: pointer; color: #637d91;"><a
                                             onclick="insertUsername('{{ comment.created_by.username }}')">{{ comment.created_by.username }}</a>
                                         • <span class="text-secondary">{{ comment.humanized_created_at }}</span></p>
                                     <p>{{ comment.message }}</p>
