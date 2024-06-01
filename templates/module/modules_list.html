@@ -5,19 +5,32 @@
 
 {% block content %}
     <h1 style="text-align: center">{{ language.name }} Modules</h1>
-    <input type="hidden" id="modules-list-url" value="{% url 'modules_list' language_id=user.profile.chosen_language.id %}">
+    <input type="hidden" id="modules-list-url"
+           value="{% url 'modules_list' language_id=user.profile.chosen_language.id %}">
     <section class="modules-container">
-        
+
         <!-- Lessons Section -->
         <div class="module-section scrollable-list lesson-section">
             <h2 class="section-title">Lessons</h2>
             <div id="lessonsCarousel" class="carousel-inner">
                 {% if lessons %}
                     {% for lesson in lessons %}
-                        <div class="module-item">
-                            <a href="{% url 'lesson_info' language_id=language.id lesson_id=lesson.id %}" class="module-link sniglet"><button class="btn btn-primary">{{ lesson.title }}</button></a>
-                            <span style="flex-grow: 1"></span>
-                            <span class="difficulty {{ lesson.difficulty_level }} sniglet"><h3>{{ lesson.difficulty_level|capfirst }}</h3></span>
+                        <div class="module-item d-flex align-items-center">
+                            <a href="{% url 'lesson_info' language_id=language.id lesson_id=lesson.id %}"
+                               class="module-link sniglet"
+                               style="max-width: fit-content; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                <button class="btn btn-primary">{{ lesson.title }}</button>
+                            </a>
+                            {% for ls in lesson_statuses %}
+                                {% if ls.lesson == lesson and ls.status == "Completed" %}
+                                    <i class="fa fa-check" aria-hidden="true"
+                                       style="color: #578661; margin-left: 5px;"></i>
+                                {% endif %}
+                            {% endfor %}
+                            <span class="flex-grow-1"></span>
+                            <span class="difficulty {{ lesson.difficulty_level }} sniglet">
+                        <h3>{{ lesson.difficulty_level|capfirst }}</h3>
+                    </span>
                         </div>
                     {% endfor %}
                 {% else %}
@@ -26,6 +39,7 @@
             </div>
         </div>
 
+
         <!-- Quizzes Section -->
         <div class="module-section scrollable-list lesson-section">
             <h2 class="section-title">Quizzes</h2>
@@ -33,7 +47,15 @@
                 {% if quizzes %}
                     {% for quiz in quizzes %}
                         <div class="module-item">
-                            <a href="{% url 'lesson_quiz' language_id=language.id quiz_id=quiz.id %}" class="module-link"><button class="btn btn-primary">{{ quiz.title }}</button></a>
+                            <a href="{% url 'lesson_quiz' language_id=language.id quiz_id=quiz.id %}"
+                               class="module-link" style="max-width: fit-content; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                <button class="btn btn-primary">{{ quiz.title }}</button>
+                            </a>
+                            {% for qz in quiz_statuses %}
+                                {% if qz.quiz == quiz and qz.status == "Completed" %}
+                                    <i class="fa fa-check" aria-hidden="true" style="color: #578661;"></i>
+                                {% endif %}
+                            {% endfor %}
                             <span style="flex-grow: 1"></span>
                             <span class="difficulty {{ quiz.difficulty_level }} sniglet"><h3>{{ quiz.difficulty_level|capfirst }}</h3></span>
                         </div>
@@ -51,87 +73,92 @@
         </div>
     </section>
 
-<style>
-    .modules-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .module-section {
-        width: 80%;
-        margin-bottom: 20px;
-        max-height: 400px;
-        
-    }
-    .section-title {
-        text-align: center;
-        font-size: 1.5em;
-        margin-bottom: 10px;
-    }
-    .module-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-        border: 1px solid #ddd;
-        margin-bottom: 10px;
-        border-radius: 5px;
-    }
-    .module-link {
-        flex-grow: 1;
-    }
-    .difficulty {
-        flex-grow: 0;
-    }
-</style>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const sectionDivs = document.querySelectorAll('.lesson-section');
-        const nextBtn = document.querySelector('.next-section-btn');
-        const prevBtn = document.querySelector('.prev-section-btn');
-        const modulesListUrl = document.getElementById('modules-list-url').value;
-        let currentIndex = 0;
+    <style>
+        .modules-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-        nextBtn.addEventListener('click', () => {
-            navigateSection(1);
-        });
+        .module-section {
+            width: 80%;
+            margin-bottom: 20px;
+            max-height: 400px;
 
-        prevBtn.addEventListener('click', () => {
-            navigateSection(-1);
-        });
+        }
 
-        function navigateSection(step) {
-            sectionDivs[currentIndex].style.display = 'none';
-            currentIndex += step;
-            if (currentIndex >= 0 && currentIndex < sectionDivs.length) {
-                sectionDivs[currentIndex].style.display = 'block';
-                prevBtn.disabled = false;
-            } else if (currentIndex === sectionDivs.length) {
-                window.location.href = modulesListUrl;
+        .section-title {
+            text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .module-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .module-link {
+            flex-grow: 1;
+        }
+
+        .difficulty {
+            flex-grow: 0;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sectionDivs = document.querySelectorAll('.lesson-section');
+            const nextBtn = document.querySelector('.next-section-btn');
+            const prevBtn = document.querySelector('.prev-section-btn');
+            const modulesListUrl = document.getElementById('modules-list-url').value;
+            let currentIndex = 0;
+
+            nextBtn.addEventListener('click', () => {
+                navigateSection(1);
+            });
+
+            prevBtn.addEventListener('click', () => {
+                navigateSection(-1);
+            });
+
+            function navigateSection(step) {
+                sectionDivs[currentIndex].style.display = 'none';
+                currentIndex += step;
+                if (currentIndex >= 0 && currentIndex < sectionDivs.length) {
+                    sectionDivs[currentIndex].style.display = 'block';
+                    prevBtn.disabled = false;
+                } else if (currentIndex === sectionDivs.length) {
+                    window.location.href = modulesListUrl;
+                }
+                if (currentIndex <= 0) {
+                    prevBtn.disabled = true;
+                } else {
+                    prevBtn.disabled = false;
+                }
+                if (currentIndex >= sectionDivs.length - 1) {
+                    nextBtn.disabled = true;
+                } else {
+                    nextBtn.disabled = false;
+                }
             }
-            if (currentIndex <= 0) {
-                prevBtn.disabled = true;
-            } else {
-                prevBtn.disabled = false;
-            }
-            if (currentIndex >= sectionDivs.length - 1) {
+
+            sectionDivs.forEach((div, index) => {
+                if (index !== 0) {
+                    div.style.display = 'none';
+                }
+            });
+
+            // Initialize button states
+            prevBtn.disabled = true;
+            if (sectionDivs.length <= 1) {
                 nextBtn.disabled = true;
-            } else {
-                nextBtn.disabled = false;
-            }
-        }
-
-        sectionDivs.forEach((div, index) => {
-            if (index !== 0) {
-                div.style.display = 'none';
             }
         });
-
-        // Initialize button states
-        prevBtn.disabled = true;
-        if (sectionDivs.length <= 1) {
-            nextBtn.disabled = true;
-        }
-    });
-</script>
+    </script>
 {% endblock %}
