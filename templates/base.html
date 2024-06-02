@@ -87,9 +87,9 @@
             align-items: center;
         }
         /* You may need to adjust the size and position of the video */
-        video {
-            width: 500px; /* Adjust the width as needed */
-            height: 500px; /* Adjust the height as needed */
+        .loader {
+            width: 600px; /* Adjust the width as needed */
+            height: 500px;
         }
     </style>
 </head>
@@ -98,10 +98,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 mx-auto text-center">
-                <video autoplay loop muted playsinline>
-                    <source src="{% static 'loading.mp4' %}" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
+                <img class='loader' src="{% static 'loading.gif' %}" alt="Loading...">
                 <h1>Loading...</h1>
             </div>
         </div>
