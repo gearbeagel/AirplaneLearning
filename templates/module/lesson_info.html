@@ -6,13 +6,11 @@
     <div class="row">
         <div class="col-md-12">
             <h1 class="sniglet text-center">{{ lesson.title }}</h1>
-            <p class="ml-5 p-3 rounded" style="{% if lesson.difficulty_level == 'Easy' %}background-color: #578661;
-                                                   {% elif lesson.difficulty_level == 'Medium' %}background-color: #d39c3f;
-                                                   {% elif lesson.difficulty_level == 'Hard' %}background-color: #CC6666;
-                                                   {% endif %} color: white; width: fit-content;">{{ lesson.difficulty_level }}</p>
+            <p class="ml-5 difficulty {{ lesson.difficulty_level }}" style="width: max-content; height: max-content; font-weight: normal; border-radius: 25px">{{ lesson.difficulty_level|capfirst }}</p>
+        <p>{{ lesson.description }}</p>
             <div id="lesson-content">
                 {% for section in sections %}
-                    <div class="lesson-section ml-5" style="display: {% if forloop.first %}block{% else %}none{% endif %};">
+                    <div class="lesson-section ml-5" style="display: {% if forloop.first %}block{% else %}none{% endif %}; border: #d39c3f 3px solid; border-radius: 25px; padding: 25px">
                         <h3 class="sniglet">{{ section.title }}</h3>
                         <p>{{ section.contents | safe }}</p>
                     </div>

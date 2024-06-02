@@ -7,6 +7,9 @@
     <div class="row">
         <div class="col-md-9">
             <h1 class="sniglet">{{ quiz.title }}</h1>
+                <span class="difficulty {{ quiz.difficulty_level }} sniglet" style="font-weight: normal; border-radius: 25px">{{ quiz.difficulty_level|capfirst }}</span>
+                                </div>
+            <br>
             <p>{{ quiz.description }}</p>
             <p class="badge {% if quiz.difficulty_level == 'Easy' %}badge-success{% elif quiz.difficulty_level == 'Medium' or quiz.difficulty_level == 'medium' %}badge-warning{% elif quiz.difficulty_level == 'Hard' %}badge-danger{% endif %}">{{ quiz.difficulty_level }}</p>
             <br>

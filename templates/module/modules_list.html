@@ -28,8 +28,8 @@
                                 {% endif %}
                             {% endfor %}
                             <span class="flex-grow-1"></span>
-                            <span class="difficulty {{ lesson.difficulty_level }} sniglet">
-                        <h3>{{ lesson.difficulty_level|capfirst }}</h3>
+                            <span class="difficulty {{ lesson.difficulty_level }} sniglet" style="font-weight: normal; border-radius: 25px">
+                        {{ lesson.difficulty_level|capfirst }}
                     </span>
                         </div>
                     {% endfor %}
@@ -57,7 +57,7 @@
                                 {% endif %}
                             {% endfor %}
                             <span style="flex-grow: 1"></span>
-                            <span class="difficulty {{ quiz.difficulty_level }} sniglet"><h3>{{ quiz.difficulty_level|capfirst }}</h3></span>
+                            <span class="difficulty {{ quiz.difficulty_level }} sniglet" style="font-weight: normal; border-radius: 25px">{{ quiz.difficulty_level|capfirst }}</span>
                         </div>
                     {% endfor %}
                 {% else %}

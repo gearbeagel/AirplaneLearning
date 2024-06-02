@@ -3,9 +3,9 @@
 {% block title %}Feedback Form{% endblock %}
 
 {% block content %}
-    <h2 class="sniglet mt-5" style="text-align: center;">Feedback Form</h2>
-    <div class="container border"
-         style="display: flex; justify-content: center; width: max-content; border-radius: 25px; padding: 25px">
+    <h1 class="sniglet mt-5" style="text-align: center;">Feedback Form</h1>
+    <div class="container"
+         style="display: flex; justify-content: center; width: max-content; border-radius: 25px; padding: 25px; border: #d39c3f 3px solid; color: #d39c3f">
         <hr class="mt-3 mb-4" style="border-top: 3px solid #d39c3f;">
         <form class="sniglet" method="post" enctype="multipart/form-data">
             {% csrf_token %}

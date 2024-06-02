@@ -20,7 +20,6 @@
             font-family: 'Sniglet', cursive;
             display: flex;
         }
-
         .sidebar {
             width: 250px;
             background-color: #d39c3f;
@@ -32,60 +31,82 @@
             left: 0;
             text-align: center;
         }
-
         .sidebar a {
             color: white;
             text-decoration: none;
             display: block;
             padding: 10px 0;
         }
-
         .sidebar img {
             height: 210px;
             width: 210px;
             display: block;
             margin: 0 auto 20px;
         }
-
         .sidebar p {
             text-align: center;
             font-size: 20px;
         }
-
         .sidebar hr {
             border-top: 1px solid white;
             margin: 15px 0;
         }
-
         .content {
             margin-left: 300px;
             padding: 20px;
             width: calc(100% - 300px);
         }
-
-        .active-link {
+        span.active-link {
             text-decoration: underline;
+            color: white;
         }
-
         @media (max-width: 768px) {
             .sidebar {
                 width: 100%;
                 height: auto;
                 position: relative;
             }
-
             .content {
                 margin-left: 0;
                 width: 100%;
             }
         }
-
         h3 {
             font-family: Sniglet, system-ui;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff; /* Background color to match your page background */
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /* You may need to adjust the size and position of the video */
+        video {
+            width: 500px; /* Adjust the width as needed */
+            height: 500px; /* Adjust the height as needed */
         }
     </style>
 </head>
 <body style="background-color: #ffffff;">
+<div class="overlay" id="overlay">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mx-auto text-center">
+                <video autoplay loop muted playsinline>
+                    <source src="{% static 'loading.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <h1>Loading...</h1>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="sidebar">
     {% if request.user.is_authenticated %}
         <a href="{% url 'profile_page' username=request.user.username %}">
@@ -100,26 +121,39 @@
         <p>Logged in as: {{ request.user.username }}</p>
         <hr>
         {% if user.profile %}
-            <a class="{% if request.path == '/profile_page' %}active-link{% endif %}"
-               href="{% url 'profile_page' username=request.user.username %}">Profile</a>
-            <a class="{% if request.path == '/modules_list' %}active-link{% endif %}"
-               href="{% url 'modules_list' language_id=user.profile.chosen_language.id %}">Modules</a>
-            <a class="{% if request.path == '/forums' %}active-link{% endif %}" href="/forums">Discussion Forums</a>
-            <a class="{% if request.path == '/resources' %}active-link{% endif %}" href="/resources">Resource
-                Library</a>
-            <a class="{% if request.path == '/feedback' %}active-link{% endif %}" href="/feedback">Feedback Form</a>
-            <a class="{% if request.path == 'profile_settings' %}active-link{% endif %}"
-               href="{% url 'profile_settings' %}">Settings</a>
-            <a class="{% if request.path == 'schema-swagger-ui' %}active-link{% endif %}"
-               href="{% url 'schema-swagger-ui' %}">Swagger</a>
+            {% url 'profile_page' username=user.username as profile %}
+            {% url 'modules_list' language_id=user.profile.chosen_language.id as modules %}
+            {% url 'main_forum_page' as forums %}
+            {% url 'resources' as resources_page %}
+            {% url 'feedback' as feedback %}
+            {% url 'profile_settings' as settings %}
+            {% url 'about' as about %}
+            <span class="{% if request.path == profile %} active-link {% endif %}"><a href="{% url 'profile_page' username=request.user.username %}">Profile</a></span>
+            <span class="{% if request.path == modules %}active-link{% endif %}"><a href="{% url 'modules_list' language_id=user.profile.chosen_language.id %}">Modules</a></span>
+            <span class="{% if request.path == forums %}active-link{% endif %}"><a href="/forums/">Discussion Forums</a></span>
+            <span class="{% if request.path == resources_page %}active-link{% endif %}"><a href="/resources/">Resource Library</a></span>
+            <span class="{% if request.path == feedback %}active-link{% endif %}"><a href="/feedback/">Feedback Form</a></span>
+            <span class="{% if request.path == settings %}active-link{% endif %}"><a href="{% url 'profile_settings' %}">Settings</a></span>
+            <a class="{% if request.path == '/schema-swagger-ui/' %}active-link{% endif %}" href="{% url 'schema-swagger-ui' %}">Swagger</a>
         {% endif %}
-        <a class="{% if request.path == 'logout' %}active-link{% endif %}" href="{% url 'logout' %}">Log out</a>
+        <span class="{% if request.path == '/logout/' %}active-link{% endif %}"> <a href="{% url 'logout' %}">Log out</a></span>
     {% endif %}
-    <a class="{% if request.path == 'about' %}active-link{% endif %}" href="{% url 'about' %}">About</a>
+    <span class="{% if request.path == about %}active-link{% endif %}"> <a href="{% url 'about' %}">About</a></span>
 </div>
 <div class="content">
     {% block content %}{% endblock %}
 </div>
-</body>
 {% bootstrap_javascript %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("a[href*='" + location.pathname + "']").addClass("active-link");
+    });
+    $(window).on('load', function() {
+        setTimeout(function() {
+            $("#overlay").fadeOut();
+        }, 2000);
+    });
+</script>
+</body>
 </html>
