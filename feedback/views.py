@@ -27,18 +27,17 @@ def feedback(request):
             feedback_form.profile = request.user.profile
 
             screenshot = request.FILES.get('screenshot')
-            if not screenshot:
-                feedback_form.save()
+            if screenshot:  # Check if screenshot is not None
+                blob_service_client = BlobServiceClient.from_connection_string(os.getenv('connection_str'))
+                container_client = blob_service_client.get_container_client(settings.AZURE_CONTAINER)
 
-            blob_service_client = BlobServiceClient.from_connection_string(os.getenv('connection_str'))
-            container_client = blob_service_client.get_container_client(settings.AZURE_CONTAINER)
+                blob_name = f"screenshot_{screenshot.name}"  # Use screenshot name
 
-            blob_name = f"screenshot_{screenshot}"
+                blob_client = container_client.get_blob_client(blob_name)
+                blob_client.upload_blob(screenshot)
 
-            blob_client = container_client.get_blob_client(blob_name)
-            blob_client.upload_blob(screenshot)
+                feedback_form.screenshot = blob_client.url  # Set screenshot URL in feedback_form
 
-            feedback.screenshot = blob_client.url
             feedback_form.save()
 
         context = {

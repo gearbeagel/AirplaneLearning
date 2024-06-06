@@ -84,6 +84,7 @@ INSTALLED_APPS = [
     "resource_library.apps.ResourceLibraryConfig",
     "feedback.apps.UserFeedbackConfig",
     'django_social_share',
+    'django_bootstrap5',
 ]
 
 MIDDLEWARE = [

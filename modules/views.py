@@ -42,8 +42,8 @@ def modules_list(request, language_id):
         user_learner_type_id = user.profile.learner_type.id
         difficulty_level = learner_type_to_difficulty.get(user_learner_type_id, "Easy")
 
-        lessons = Lesson.objects.filter(module__language=language, difficulty_level=difficulty_level)
-        quizzes = Quiz.objects.filter(module__language=language, difficulty_level=difficulty_level)
+        lessons = Lesson.objects.filter(module__language=language, difficulty_level=difficulty_level).order_by('module')
+        quizzes = Quiz.objects.filter(module__language=language, difficulty_level=difficulty_level).order_by('module')
 
         lesson_statuses = LessonStatus.objects.filter(profile=profile, lesson__in=lessons)
         quiz_statuses = QuizStatus.objects.filter(profile=profile, quiz__in=quizzes)

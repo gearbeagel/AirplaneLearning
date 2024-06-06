@@ -130,7 +130,11 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 4. Write unit tests for overall application functionality ✔️
 5. Plan future updates and enhancements based on user feedback ✔️
 
-Anti Lab 2
-- Viataliy Zhuravskyi
-- https://github.com/TwoUfo/crowdcausify
-- https://github.com/TwoUfo/Kondratska.University.AirplaneLearning
+## Anti-Lab 2
+- Nikita Pashchuk
+- [My project](https://github.com/NikitaPash/Pashchuk.University.CityVotingPlatform)
+- [My fork](https://github.com/NikitaPash/Kondratska.University.AirplaneLearning)
+
+- Vitaliy Zhuravskyi
+- [My project](https://github.com/TwoUfo/crowdcausify)
+- [My fork](https://github.com/TwoUfo/Kondratska.University.AirplaneLearning)
