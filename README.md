@@ -135,3 +135,6 @@ To use Airplane Learning, simply register or sign in with your Google account. T
 - [My project](https://github.com/NikitaPash/Pashchuk.University.CityVotingPlatform)
 - [My fork](https://github.com/NikitaPash/Kondratska.University.AirplaneLearning)
 
+- Vitaliy Zhuravskyi
+- [My project](https://github.com/TwoUfo/crowdcausify)
+- [My fork](https://github.com/TwoUfo/Kondratska.University.AirplaneLearning)
