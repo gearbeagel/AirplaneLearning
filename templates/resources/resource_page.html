@@ -26,7 +26,8 @@ Resources
                         <div class="card-body">
                             <a href="{{ resource.source }}" class="btn btn-primary btn-lg btn-block" style="width: 280px;"><h2>{{ resource.name }}</h2></a>
                         <br>
-                        <p class="card-text">{{ resource.description }}</p>
+                        <p class="card-text" style="text-align: center; color: lightgray; margin-bottom: -1px">{{ resource.humanized_added_at }}</p>
+                        <p class="card-text" style="text-align: center;">{{ resource.description }}</p>
                             <p class="card-text" style="background-color: {% if resource.type == 'Video' %}#578661{% elif resource.type == 'Article' %}#637d91{% elif resource.type == 'Other' %}#CC6666{% endif %}; color: white; padding: 10px 20px; border-radius: 20px; text-align: center; width: max-content">{{ resource.type }}</p>
                         </div>
                     </div>

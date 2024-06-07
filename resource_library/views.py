@@ -27,6 +27,7 @@ def resources(request):
         all_resources = Resource.objects.all().order_by('-added_at')
         for resource in all_resources:
             resource.humanized_added_at = humanize.naturaltime(resource.added_at)
+            print(resource.humanized_added_at)
 
         if is_json_request(request):
             return json_response(all_resources)
