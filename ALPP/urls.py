@@ -25,7 +25,6 @@ from ALPP.swagger import schema_view
 
 urlpatterns = ([
     path('admin/', admin.site.urls),
-    path('api/', include('modules.urls')),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('',  include('registration_handle.urls')),
     path("accounts/", include("allauth.urls")),

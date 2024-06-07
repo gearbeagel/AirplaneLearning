@@ -1,10 +1,12 @@
 import requests
 from django.contrib.auth.decorators import login_required
 from django.contrib.humanize.templatetags import humanize
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from opentelemetry import trace
-from rest_framework.decorators import api_view
+from rest_framework import status, permissions
+from rest_framework.decorators import api_view, permission_classes
 
 from discussion_forums.utils import load_profanity_words, contains_profanity
 from resource_library.models import Resource
@@ -15,6 +17,8 @@ tracer = trace.get_tracer(__name__)
 
 
 @login_required
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
 def resources(request):
     with tracer.start_as_current_span("resources", attributes={
         "http.method": request.method,
@@ -24,7 +28,27 @@ def resources(request):
         for resource in all_resources:
             resource.humanized_added_at = humanize.naturaltime(resource.added_at)
 
+        if is_json_request(request):
+            return json_response(all_resources)
+
         return render(request, "resources/resource_page.html", {'resources': all_resources})
+
+def is_json_request(request):
+    return 'application/json' in request.META.get('HTTP_ACCEPT', '') or request.content_type == 'application/json'
+
+def json_response(resources):
+    resources_data = [
+        {
+            'id': resource.id,
+            'name': resource.name,
+            'description': resource.description,
+            'source': resource.source,
+            'added_at': resource.added_at,
+            'humanized_added_at': resource.humanized_added_at,
+        }
+        for resource in resources
+    ]
+    return JsonResponse({'resources': resources_data}, status=status.HTTP_200_OK, safe=False)
 
 
 @login_required

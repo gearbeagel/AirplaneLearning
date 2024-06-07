@@ -8,6 +8,10 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.views.decorators.csrf import csrf_protect
 from opentelemetry import trace
+from rest_framework import permissions, status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+
 
 from profile_page.models import Profile
 from resource_library.models import Resource
@@ -26,6 +30,8 @@ def all_possible_classes(request):
     return render(request, 'module/modules_main.html', context)
 
 @login_required
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
 def modules_list(request, language_id):
     with tracer.start_as_current_span("modules_list"):
         user = request.user
@@ -48,15 +54,56 @@ def modules_list(request, language_id):
         lesson_statuses = LessonStatus.objects.filter(profile=profile, lesson__in=lessons)
         quiz_statuses = QuizStatus.objects.filter(profile=profile, quiz__in=quizzes)
 
-        context = {
-            'language': language,
-            'modules': modules,
-            'lessons': lessons,
-            'quizzes': quizzes,
-            'lesson_statuses': lesson_statuses,
-            'quiz_statuses': quiz_statuses,
+        # Map lesson and quiz statuses to their respective IDs
+        lesson_status_dict = {status.lesson.id: status.status for status in lesson_statuses}
+        quiz_status_dict = {status.quiz.id: status.status for status in quiz_statuses}
+
+        # Prepare the data structure with lessons and quizzes grouped by modules
+        modules_data = []
+        for module in modules:
+            module_lessons = lessons.filter(module=module)
+            module_quizzes = quizzes.filter(module=module)
+
+            module_data = {
+                'id': module.id,
+                'title': module.title,
+                'lessons': [{
+                    'id': lesson.id,
+                    'title': lesson.title,
+                    'status': lesson_status_dict.get(lesson.id, 'Not Started')
+                } for lesson in module_lessons],
+                'quizzes': [{
+                    'id': quiz.id,
+                    'title': quiz.title,
+                    'status': quiz_status_dict.get(quiz.id, 'Not Started')
+                } for quiz in module_quizzes]
+            }
+            modules_data.append(module_data)
+
+        # Final response data
+        data = {
+            'language': {
+                'id': language.id,
+                'name': language.name
+            },
+            'modules': modules_data
         }
-        return render(request, 'module/modules_list.html', context)
+
+        # Check if the request expects a JSON response
+        if 'application/json' in request.META.get('HTTP_ACCEPT', ''):
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            context = {
+                'language': language,
+                'modules': modules,
+                'lessons': lessons,
+                'quizzes': quizzes,
+                'lesson_statuses': lesson_statuses,
+                'quiz_statuses': quiz_statuses,
+            }
+            return render(request, 'module/modules_list.html', context)
+
+
 
 
 @login_required

@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.humanize.templatetags import humanize
 from django.core.mail import send_mail
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -23,6 +24,8 @@ tracer = trace.get_tracer(__name__)
 
 
 @login_required
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
 def main_forum_page(request):
     with tracer.start_as_current_span("main_forum_page") as span:
         modules_for_topics = Module.objects.filter(language=request.user.profile.chosen_language)
@@ -30,27 +33,47 @@ def main_forum_page(request):
         topics_for_lessons = Topic.objects.filter(subject__in=lessons_for_topics)
         all_topics = topics_for_lessons.order_by('-created_at')
         is_admin = request.user.is_superuser
+
+        for topic in all_topics:
+            topic.humanized_created_at = humanize.naturaltime(topic.created_at)
+
+        if is_json_request(request):
+            return json_response(all_topics)
+
         return render(request, "forums/main_forum_page.html", {'all_topics': all_topics, 'is_admin': is_admin})
 
 
+def is_json_request(request):
+    return 'application/json' in request.META.get('HTTP_ACCEPT', '') or request.content_type == 'application/json'
+
+
+def json_response(all_topics):
+    topics_data = [
+        {
+            'id': topic.id,
+            'title': topic.title,
+            'subject': topic.subject.title,
+            'humanized_created_at': topic.humanized_created_at,
+        }
+        for topic in all_topics
+    ]
+    return JsonResponse({'all_topics': topics_data}, status=status.HTTP_200_OK, safe=False)
+
+
 @login_required
-@api_view(['GET', 'POST'])
-@permission_classes([permissions.IsAuthenticated])
 def topic_page(request, topic_id):
     with tracer.start_as_current_span("topic_page") as span:
         topic = get_object_or_404(Topic, pk=topic_id)
         is_admin = request.user.is_superuser
         all_comments = Comment.objects.filter(topic_id=topic_id).order_by("-created_at")
 
-        profile_pictures = {comment.created_by.username: get_profile_pic_url(comment.created_by) for comment in all_comments}
+        profile_pictures = {comment.created_by.username: get_profile_pic_url(comment.created_by) for comment in
+                            all_comments}
         for comment in all_comments:
             comment.humanized_created_at = humanize.naturaltime(comment.created_at)
 
         if request.method == 'POST':
             return handle_post_request(request, topic, all_comments, profile_pictures, is_admin)
-
-        if is_json_request(request):
-            return json_response(topic, all_comments, profile_pictures)
 
         return render_topic_page(request, topic, all_comments, profile_pictures, is_admin)
 
@@ -86,28 +109,6 @@ def validate_comment(comment_text):
     if len(comment_text) > 500:
         return 'Your comment is too long! Make sure it is less than 500 symbols.'
     return None
-
-
-def is_json_request(request):
-    return 'application/json' in request.META.get('HTTP_ACCEPT', '')
-
-
-def json_response(topic, comments, profile_pictures):
-    data = {
-        'topic': {
-            'id': topic.id,
-            'title': topic.title,
-            'description': topic.description,
-            'created_at': topic.created_at,
-        },
-        'comments': [{
-            'message': comment.message,
-            'created_by': comment.created_by.username,
-            'created_at': comment.humanized_created_at
-        } for comment in comments],
-        'profile_pictures': profile_pictures
-    }
-    return Response(data, status=status.HTTP_200_OK)
 
 
 def render_topic_page(request, topic, comments, profile_pictures, is_admin):
