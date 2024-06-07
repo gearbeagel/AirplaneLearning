@@ -7,7 +7,7 @@ from profile_page.models import Profile
 schema_view = get_schema_view(
     openapi.Info(
         title="Airplane Learning API",
-        default_version='v1',
+        default_version='v1.3',
         description="How did you fly in here?",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="kondratskayavictoria@gmail.com"),
