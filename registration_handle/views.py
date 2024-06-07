@@ -35,7 +35,6 @@ def welcome_email(request):
     recipient_list = [user.email]
 
     send_mail(subject, plain_message, None, recipient_list, html_message=html_message, fail_silently=False)
-    return redirect('profile_page')
 
 
 def language_and_learning_path_selection(request):
@@ -48,21 +47,17 @@ def language_and_learning_path_selection(request):
         form = ProfileUpdateForm(request.POST)
         if form.is_valid():
             form_data = form.cleaned_data
-            try:
-                profile = Profile.objects.create(
-                    user=request.user,
-                    email=request.user.email,
-                    username=request.user.username,
-                    user_id=request.user.id,
-                    chosen_language=form_data['chosen_language'],
-                    learner_type=form_data['learner_type']
-                )
-                profile.save()
-                welcome_email(request)
-                return redirect('home')
-            except Exception as e:
-                print("Error occurred while creating profile:", e)
-                return HttpResponseBadRequest("Error occurred while creating profile. Please try again.")
+            profile = Profile.objects.create(
+                user=request.user,
+                email=request.user.email,
+                username=request.user.username,
+                user_id=request.user.id,
+                chosen_language=form_data['chosen_language'],
+                learner_type=form_data['learner_type']
+            )
+            profile.save()
+            welcome_email(request)
+            return redirect('home')
         else:
             return HttpResponseBadRequest("Form submission failed. Please check your input.")
 
